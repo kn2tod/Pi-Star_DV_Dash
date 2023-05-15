@@ -72,7 +72,7 @@ if ( $testMMDVModeDMR == 1 ) {
                                               $bmStaticTGList .= "TG".$staticTG->talkgroup." ";
                                             }
                                           }
-                                          $bmStaticTGList = wordwrap($bmStaticTGList, 15, "<br />\n");
+                                          $bmStaticTGList = wordwrap($bmStaticTGList, 25, "<br />\n");
                                           if (preg_match('/TG/', $bmStaticTGList) == false) { $bmStaticTGList = "None"; }
                                          } else { $bmStaticTGList = "None"; }
   if (isset($json->dynamicSubscriptions)) { $bmDynamicTGListJson = $json->dynamicSubscriptions;
@@ -94,10 +94,10 @@ if ( $testMMDVModeDMR == 1 ) {
   echo '<b>Active BrandMeister Connections</b>
   <table>
     <tr>
-      <th><a class=tooltip href="#">'.$lang['bm_master'].'<span><b>Connected Master</b></span></a></th>
-      <th><a class=tooltip href="#">Repeater ID<span><b>The ID for this Repeater/Hotspot</b></span></a></th>
-      <th><a class=tooltip href="#">Static TGs<span><b>Statically linked talkgroups</b></span></a></th>
-      <th><a class=tooltip href="#">Dynamic TGs<span><b>Dynamically linked talkgroups</b></span></a></th>
+      <th style="width:30%"><a class=tooltip href="#">'.$lang['bm_master'].'<span><b>Connected Master</b></span></a></th>
+      <th style="width:15%"><a class=tooltip href="#">Repeater ID<span><b>The ID for this Repeater/Hotspot</b></span></a></th>
+      <th style="width:35%"><a class=tooltip href="#">Static TGs<span><b>Statically linked talkgroups</b></span></a></th>
+      <th style="width:20%"><a class=tooltip href="#">Dynamic TGs<span><b>Dynamically linked talkgroups</b></span></a></th>
     </tr>'."\n";
 
   echo '    <tr>'."\n";
