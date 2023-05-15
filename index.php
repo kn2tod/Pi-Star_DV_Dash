@@ -15,6 +15,7 @@ if ($configfile = fopen($gatewayConfigPath,'r')) {
 $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 $rev=$version;
 $MYCALL=strtoupper($callsign);
+$MYHOST=php_uname('n');
 
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
@@ -51,7 +52,7 @@ $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="css/nice-select.min.css?ver=<?php echo $configPistarRelease['Pi-Star']['Version']; ?>" />
-    <title><?php echo "$MYCALL"." - ".$lang['digital_voice']." ".$lang['dashboard'];?></title>
+    <title><?php echo "$MYCALL ($MYHOST)"." - ".$lang['digital_voice']." ".$lang['dashboard'];?></title>
 <?php include_once "config/browserdetect.php"; ?>
     <script type="text/javascript" src="/jquery.min.js"></script>
     <script type="text/javascript" src="/functions.js"></script>
