@@ -134,6 +134,8 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	if (fopen($modemConfigFileMMDVMHost,'r')) { $configModem = parse_ini_file($modemConfigFileMMDVMHost, true); }
 }
 
+if (!isset($configModem['Modem']['Hardware'])) { $configModem['Modem']['Hardware'] = ""; }
+
 function aprspass ($callsign) {
 	$stophere = strpos($callsign, '-');
 	if ($stophere) $callsign = substr($callsign, 0, $stophere);
@@ -3903,7 +3905,8 @@ else:
     <td align="left"><a class="tooltip2" href="#"><?php echo $lang['dmr_master'];?>:<span><b>DMR Master (MMDVMHost)</b>Set your prefered DMR master here</span></a></td>
     <td style="text-align: left;"><select name="dmrMasterHost">
 <?php
-        $testMMDVMdmrMaster = $configmmdvm['DMR Network']['Address'];
+        $dmrMasterNow = "";
+        $testMMDVMdmrMaster  = $configmmdvm['DMR Network']['Address'];
 	$testMMDVMdmrMasterPort = $configmmdvm['DMR Network']['Port'];
         while (!feof($dmrMasterFile)) {
                 $dmrMasterLine = fgets($dmrMasterFile);
