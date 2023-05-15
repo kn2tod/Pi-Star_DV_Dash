@@ -47,6 +47,9 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
       }
     }
     if (substr($dmrMasterHost, 0, 2) == "BM") {
+      $postDataTG = '';
+      $targetREF  = '';
+      $targetTG   = '';
       if ( (isset($bmAPIkey)) && ( !empty($_POST) && ( isset($_POST["dropDyn"]) || isset($_POST["dropQso"]) || isset($_POST["tgSubmit"]) ) ) ): // Data has been posted for this page
           $bmAPIurl = 'https://api.brandmeister.network/v1.0/repeater/';
           // Are we a repeater
@@ -96,7 +99,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
           echo '<b>BrandMeister Manager</b>'."\n";
           echo "<table>\n<tr><th>Command Output</th></tr>\n<tr><td>";
           //echo "Sending command to BrandMeister API";
-          if (isset($feeback)) { print "BrandMeister APIv1: ".$feeback->{'message'}; } else { print "BrandMeister APIv1: No Responce"; }
+          if (isset($feeback)) { print "BrandMeister APIv1: ".$feeback->{'message'}; } else { print "BrandMeister APIv1: No Response"; }
           echo "</td></tr>\n</table>\n";
           echo "<br />\n";
           // Clean up...
@@ -153,8 +156,8 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
           echo '<b>BrandMeister Manager</b>'."\n";
           echo "<table>\n<tr><th>Command Output</th></tr>\n<tr><td>";
           //echo "Sending command to BrandMeister API";
-          //if (isset($feeback)) { print "BrandMeister APIv2: ".$feeback->{'message'}; } else { print "BrandMeister APIv2: No Responce"; }
-          if (isset($feeback)) { print "BrandMeister APIv2: OK"; } else { print "BrandMeister APIv2: No Responce"; }
+          //if (isset($feeback)) { print "BrandMeister APIv2: ".$feeback->{'message'}; } else { print "BrandMeister APIv2: No Response"; }
+          if (isset($feeback)) { print "BrandMeister APIv2: OK"; } else { print "BrandMeister APIv2: No Response"; }
           echo "</td></tr>\n</table>\n";
           echo "<br />\n";
           // Clean up...
@@ -177,10 +180,10 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
           echo '<td><input aria-labelledby="lblTG" type="text" name="tgNr" size="10" maxlength="7" /></td>';
           echo '<td role="radiogroup" aria-labelledby="lblTS"><input id="rbTS1" type="radio" name="TS" value="1" /><label for="rbTS1">TS1</label> <input id="rbTS2" type="radio" name="TS" value="2" checked="checked" /><label for="rbTS2">TS2</label></td>';
           echo '<td role="radiogroup" aria-labelledby="lblAddRemove"><input id="rbAdd" type="radio" name="TGmgr" value="ADD" checked="checked" /><label for="rbAdd">Add</label> <input id="rbDelete" type="radio" name="TGmgr" value="DEL" /><label for="rbDelete">Delete</label></td>';
-          echo '<td><input type="submit" value="Modify Static" name="tgSubmit" /></td>';
+          echo '<td><input type="submit" style="font-size: 12px" value="Modify Static" name="tgSubmit" /></td>';
           echo '</tr>'."\n";
           echo '    <tr>';
-          echo '<td colspan="4" style="background: #ffffff;"><input type="submit" value="Drop QSO" name="dropQso" /> <input type="submit" value="Drop All Dynamic" name="dropDyn" /></td>';
+          echo '<td colspan="4" style="background: #ffffff;"><input type="submit" style="font-size: 12px" value="Drop QSO" name="dropQso" /> <input type="submit" style="font-size: 12px" value="Drop All Dynamic" name="dropDyn" /></td>';
           echo '</tr>'."\n";
           echo '  </table>'."\n";
           echo '  <br />'."\n";
