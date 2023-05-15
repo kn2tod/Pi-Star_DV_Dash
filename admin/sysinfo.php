@@ -1,6 +1,13 @@
-<?php
+<?php @session_start();
+if (! isset($_SESSION['Platform'])) { $_SESSION['Platform'] = exec('/usr/local/bin/platformDetect.sh'); }
+$platform = $_SESSION['Platform'];
+if (! isset($_SESSION['Debian'])) { $_SESSION['Debian'] = exec('echo $(cat /etc/os-release | sed -n "s/VERSION_CODENAME=\(.*\)/(\u\1)/p")'); }
+$debian = $_SESSION['Debian'];
 // Load the language support
 require_once('config/language.php');
+require_once('config/ircddblocal.php');
+$MYCALL=strtoupper($callsign);
+$MYHOST=php_uname('n');
 // Load the Pi-Star Release file
 $pistarReleaseConfig = '/etc/pistar-release';
 $configPistarRelease = array();
@@ -89,7 +96,7 @@ function formatSize( $bytes ) {
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <meta http-equiv="Expires" content="0" />
-    <title>Pi-Star - <?php echo $lang['digital_voice']." ".$lang['dashboard']." - ".$lang['update'];?></title>
+    <title><?php echo "$MYCALL ($MYHOST) - ".$lang['digital_voice']." ".$lang['dashboard'];?></title>
     <link rel="stylesheet" type="text/css" href="css/pistar-css.php" />
     <script type="text/javascript" src="/jquery.min.js"></script>
     <script type="text/javascript" src="/jquery-timing.min.js"></script>
@@ -115,7 +122,7 @@ function formatSize( $bytes ) {
   <div class="container">
   <div class="header">
   <div style="font-size: 8px; text-align: left; padding-left: 8px; float: left;">Hostname: <?php echo php_uname('n'); ?></div><div  style="font-size: 8px; text-align: right; padding-right: 8px;">Pi-Star:<?php echo $configPistarRelease['Pi-Star']['Version']?> / Dashboard:<?php echo $version; ?></div>
-  <h1>Pi-Star - <?php echo $lang['digital_voice']." ".$lang['dashboard']." - SysInfo";?></h1>
+  <h1>Pi-Star <?php echo $lang['digital_voice']." ".$lang['dashboard']." - SysInfo";?></h1>
   <p style="padding-right: 5px; text-align: right; color: #ffffff;">
     <a href="/" style="color: #ffffff;"><?php echo $lang['dashboard'];?></a> |
     <a href="/admin/" style="color: #ffffff;"><?php echo $lang['admin'];?></a> |
@@ -128,17 +135,42 @@ function formatSize( $bytes ) {
   <table width="100%" border="0">
   <tr><th colspan="2">Pi-Star System Information</th></tr>
 <?php
+// Platform information
+echo "  <tbody>\n";
+echo "  <tr><th><b>System</b></th><th><b>Version</b></th></tr>\n";
+$uname=php_uname('r')." ".php_uname('v')." ".$debian;
+echo "  <tr><td align=\"left\">$platform</td><td align=\"left\">$uname</td></tr>\n";
+$rel = $configPistarRelease['Pi-Star']['Version'].":";
+$ver = substr($version,4,2)."/".substr($version,6,2)."/".substr($version,2,2);
+echo "  <tr><td align=\"left\">$MYHOST</td><td align=\"left\">$rel $ver</td></tr>\n";
+$python=exec('python -V 3>&1 1>&2 2>&3 3>&1 1>&2');
+echo "  <tr><td align=\"left\">Python</td><td align=\"left\">$python</td></tr>\n";
+$nginx=exec('nginx -v 3>&1 1>&2 2>&3 | sed "s/nginx version: \(.*\)/\u\1/g"');
+echo "  <tr><td align=\"left\">Nginx</td><td align=\"left\">$nginx</td></tr>\n";
+$php=exec('php -v | sed -n "s/^\(PHP .* \)(c.*/\1/p"');
+echo "  <tr><td align=\"left\">PHP</td><td align=\"left\">$php</td></tr>\n";
+echo "  </tbody>\n";
 // Ram information
 if ($system['mem_info']) {
-    echo "  <tr><td><b>Memory</b></td><td><b>Stats</b></td></tr>\n";
+    echo "  <tbody>\n";
+    echo "  <tr><th><b>Memory</b></th><th><b>Stats</b></th></tr>\n";
     $sysRamUsed = $system['mem_info']['MemTotal'] - $system['mem_info']['MemFree'] - $system['mem_info']['Buffers'] - $system['mem_info']['Cached'];
     $sysRamPercent = sprintf('%.2f',($sysRamUsed / $system['mem_info']['MemTotal']) * 100);
     echo "  <tr><td align=\"left\">RAM</td><td align=\"left\"><div class='progress progress-info' style='margin-bottom: 0;'><div class='bar' style='width: ".$sysRamPercent."%;'>Used&nbsp;".$sysRamPercent."%</div></div>";
     echo "  <b>Total:</b> ".formatSize($system['mem_info']['MemTotal'])."<b> Used:</b> ".formatSize($sysRamUsed)."<b> Free:</b> ".formatSize($system['mem_info']['MemTotal'] - $sysRamUsed)."</td></tr>\n";
+    echo "  </tbody>\n";
 }
+// Connection information
+echo "  <tbody>\n";
+echo "  <tr><th><b>Connection</b></th><th><b>Addresses</b></th></tr>\n";
+$conn = exec('echo $(route | grep default | awk \'{ print $8 }\') $(sudo wpa_cli -i wlan0 list_networks 2>/dev/null | sed -n \'s/\[CURRENT\]//p\' | awk \'{ print " (" $2 ")"}\')');
+$ipaddrs = exec('echo "$(hostname -I) ($(route | grep default | awk \'{ print $2 }\')) --> $(dig +short myip.opendns.com @resolver1.opendns.com)"');
+echo "  <tr><td align=\"left\">$conn</td><td align=\"left\">$ipaddrs</td></tr>\n";
+echo "  </tbody>\n";
 // Filesystem Information
 if (count($system['partitions']) > 0) {
-    echo "  <tr><td><b>Mount</b></td><td><b>Stats</b></td></tr>\n";
+    echo "  <tbody>\n";
+    echo "  <tr><th><b>Filesystem</b></th><th><b>Stats</b></th></tr>\n";
     foreach($system['partitions'] as $fs) {
         if ($fs['Used']['value'] > 0 && $fs['FileSystem']['text']!= "none" && $fs['FileSystem']['text']!= "udev") {
             $diskFree = $fs['Free']['value'];
@@ -150,9 +182,11 @@ if (count($system['partitions']) > 0) {
             echo "  <b>Total:</b> ".formatSize($diskTotal)."<b> Used:</b> ".formatSize($diskUsed)."<b> Free:</b> ".formatSize($diskFree)."</td></tr>\n";
         }
     }
+    echo "  </tbody>\n";
 }
 // Binary Information
-echo "  <tr><td><b>Binary</b></td><td><b>Version</b></td></tr>\n";
+echo "  <tbody>\n";
+echo "  <tr><th><b>Modules</b></th><th><b>Version</b></th></tr>\n";
 if (is_executable('/usr/local/bin/MMDVMHost')) {
     $MMDVMHost_Ver = exec('/usr/local/bin/MMDVMHost -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">MMDVMHost</td><td align=\"left\">".$MMDVMHost_Ver."</td></tr>\n";
@@ -197,6 +231,22 @@ if (is_executable('/usr/local/bin/DAPNETGateway')) {
     $DAPNETGateway_Ver = exec('/usr/local/bin/DAPNETGateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">DAPNETGateway</td><td align=\"left\">".$DAPNETGateway_Ver."</td></tr>\n";
 }
+if (is_executable('/usr/local/bin/APRSGateway')) {
+    $APRSGATEWAY_Ver = exec('/usr/local/bin/APRSGateway -v | head -n 2 | cut -d\' \' -f 3');
+    echo "  <tr><td align=\"left\">APRSGateway</td><td align=\"left\">".$APRSGATEWAY_Ver."</td></tr>\n";
+}
+if (is_executable('/usr/local/bin/NextionDriver')) {
+    $NEXTIONDRIVER_Ver = exec('/usr/local/bin/NextionDriver -V | head -n 2 | cut -d\' \' -f 3');
+    echo "  <tr><td align=\"left\">NextionDriver</td><td align=\"left\">".$NEXTIONDRIVER_Ver."</td></tr>\n";
+}
+$Firmware = isset($_SESSION['Firmware']) ? $_SESSION['Firmware'] : "";
+if (isset($Firmware)) {
+    $hat = exec('sed -n "s/Hardware=\(.*\)/\1/p" /etc/dstar-radio.mmdvmhost');
+    $hatx = exec('grep -sh "MMDVM protocol version" /var/log/pi-star/MMDVM* | tail -n 1');
+    $TCXOFreq = exec('echo "'.$hatx.'" | sed -n "s/.*\( [0-9]\{2\}\.[0-9]\{3,4\}\)M[Hh]z .*/\1 MHz/p"');
+    echo "  <tr><td align=\"left\">".$hat."</td><td align=\"left\">".$Firmware." - ".$TCXOFreq."</td></tr>\n";
+}
+echo "  </tbody>\n";
 ?>
   </table>  
   </div>
