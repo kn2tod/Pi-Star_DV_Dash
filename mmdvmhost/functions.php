@@ -1128,3 +1128,88 @@ if (!in_array($_SERVER["PHP_SELF"],array('/mmdvmhost/bm_links.php','/mmdvmhost/b
 	}
 }
 ?>
+
+<?php
+function getDMRinfo($callSign,$target)  {
+  $callsign = trim($callSign);
+ 
+  $DMRq = "/tmp/DMRIdx.dat";
+  exec("grep -w --color=never -m 1 ".$callsign." ".$DMRq,$output);
+  if (!$output) {
+     exec("grep --color=never -m 1 \",".$callsign.",\\|^".$callsign.",\" ".DMRIDDATPATH."/DMRIds.xtd.dat", $output);
+     if (!$output) {
+        exec("grep -w --color=never -m 1 ".$callsign." ".DMRIDDATPATH."/DMRIds.dat", $output);
+        if (!$output) {return "?".$callsign."?";}
+        $output[0] = $output[0]."\t\t\t";
+        }
+     $output[0] = strtr($output[0],",","\t");
+     $fp = fopen($DMRq,"a+");
+     if ($fp) {
+        fwrite($fp,$output[0]."\n");
+        fclose($fp);
+        }
+     }
+ 
+  $outs = explode("\t",$output[0]."\t\t\t");
+  $outs = array_map(function($v) {return empty($v) ? "" : $v;},$outs);
+  if (!in_array($outs[5],array("US","CAN"))) {
+     $outs[4] = $outs[5];
+     }
+ 
+//        return callsign    (  DMR ID   )   name,      [  city    state/country  ]
+  return $outs[1]." (".$outs[0].") ".$outs[2]." [".$outs[3]." ".$outs[4]."]";
+}
+ 
+function getTGdesc($target)  {
+  $x = $target;
+  if (substr($x,0,3) == "TG ") {
+     $x = substr($target,3);
+     $TGListq = "/usr/local/etc/TGList_BM.txt";
+     exec("grep -w --color=never -m 1 ".$x." ".$TGListq,$output);
+     if ($output) {
+        $cx = explode(";",$output[0]);
+        $x = $x.": ".$cx[2];
+        }
+     }
+  return $x;
+}
+ 
+function getActualModex($metaLastHeard, $mmdvmconfigs) {
+        // returns mode of repeater actual working in
+        $listElem = $metaLastHeard[0];
+        $mode = $listElem[1];
+        if (startsWith($mode, "DMR")) {
+           $mode = "DMR";
+        }
+ 
+        if ($listElem[6] == null) {   //if active, just return mode
+            return $mode;
+        }
+ 
+        $utc_tz =  new DateTimeZone("UTC");
+        $local_tz = new DateTimeZone(date_default_timezone_get ());
+        $timestamp = new DateTime($listElem[0], $utc_tz);
+        $timestamp->setTimeZone($local_tz); 
+ 
+        $now =  new DateTime();
+        $hangtime = getConfigItem("General", "ModeHang", $mmdvmconfigs);
+ 
+        if ($hangtime == "") {
+            $source = $listElem[5];
+            $modex = $mode;
+            if ($modex == "YSF") { $modex = "System Fusion"; }
+            if ($source == "RF") { $hangtime = getConfigItem($modex, "ModeHang", $mmdvmconfigs); }
+            else                 { $hangtime = getConfigItem($modex." Network", "ModeHang", $mmdvmconfigs); }
+            if ($hangtime == "") { $hangtime = getConfigItem("General", "RFModeHang", $mmdvmconfigs); }
+        }
+ 
+        $timestamp->add(new DateInterval("PT" . $hangtime . "S"));
+ 
+        $timestamp->add(new DateInterval("PT" . ceil($listElem[6]) . "S"));
+        if ($now->format("U") > $timestamp->format("U")) {
+            return "idle";
+        } else {
+            return $mode;
+        }
+}
+?>
