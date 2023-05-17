@@ -1,6 +1,9 @@
 <?php
 // Load the language support
 require_once('config/language.php');
+require_once('config/ircddblocal.php');
+$MYCALL=strtoupper($callsign);
+$MYHOST=php_uname('n');
 // Load the Pi-Star Release file
 $pistarReleaseConfig = '/etc/pistar-release';
 $configPistarRelease = array();
@@ -96,7 +99,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <meta http-equiv="Expires" content="0" />
-    <title>Pi-Star - <?php echo $lang['digital_voice']." ".$lang['dashboard']." - Calibration";?></title>
+    <title><?php echo "$MYCALL ($MYHOST) - ".$lang['digital_voice']." ".$lang['dashboard'];?></title>
     <link rel="stylesheet" type="text/css" href="css/pistar-css.php" />
     <script type="text/javascript" src="/jquery.min.js"></script>
     <script type="text/javascript" src="/jquery-timing.min.js"></script>
@@ -271,8 +274,8 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
   <body>
   <div class="container">
   <div class="header">
-  <div style="font-size: 8px; text-align: right; padding-right: 8px;">Pi-Star:<?php echo $configPistarRelease['Pi-Star']['Version']?> / Dashboard:<?php echo $version; ?></div>
-  <h1>Pi-Star - <?php echo $lang['digital_voice']." ".$lang['dashboard']." - Calibration";?></h1>
+  <div style="font-size: 8px; text-align: left; padding-left: 8px; float: left;">Hostname: <?php echo php_uname('n'); ?></div><div  style="font-size: 8px; text-align: right; padding-right: 8px;">Pi-Star:<?php echo $configPistarRelease['Pi-Star']['Version']?> / Dashboard:<?php echo $version; ?></div>
+  <h1>Pi-Star <?php echo $lang['digital_voice']." ".$lang['dashboard']." - Calibration - ".$MYCALL;?></h1>
   <p style="padding-right: 5px; text-align: right; color: #ffffff;">
     <a href="/" style="color: #ffffff;"><?php echo $lang['dashboard'];?></a> |
     <a href="/admin/" style="color: #ffffff;"><?php echo $lang['admin'];?></a> |
