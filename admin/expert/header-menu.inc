@@ -9,7 +9,7 @@
     <a href="/admin/config_backup.php" style="color: #ffffff;"><?php echo $lang['backup_restore'];?></a> |
     <a href="/admin/configure.php" style="color: #ffffff;"><?php echo $lang['configuration'];?></a>
   </p>
-  <p style="padding-right: 5px; text-align: right; color: #ffffff;">
+  <p style="padding-right: 5px; text-align: center; color: #ffffff;">
     <b>Quick Edit:</b>
     <a href="edit_dstarrepeater.php" style="color: #ffffff;">DStarRepeater</a> |
     <a href="edit_ircddbgateway.php" style="color: #ffffff;">ircDDBGateway</a> |
@@ -27,9 +27,10 @@
     <a href="fulledit_bmapikey.php" style="color: #ffffff;">BM API</a> |
     <a href="fulledit_dapnetapi.php" style="color: #ffffff;">DAPNET API</a> |
     <a href="fulledit_cron.php" style="color: #ffffff;">System Cron</a> |
-    <a href="fulledit_rssidat.php" style="color: #ffffff;">RSSI Dat</a>
-    &emsp;<b>Tools:</b>
+    <a href="fulledit_rssidat.php" style="color: #ffffff;">RSSI Dat</a><br />
+    <b>Tools:</b>
     <a href="edit_dashboard.php" style="color: #ffffff;">CSS Tool</a> |
-    <a href="ssh_access.php" style="color: #ffffff;">SSH Access</a>
+    <a href="ssh_access.php" style="color: #ffffff;">SSH Access</a> |
+    <a href="/admin/calibration.php" style="color: #ffffff;">Calibration</a><br />
   </p>
   </div>
