@@ -51,12 +51,13 @@ if ($_SERVER["PHP_SELF"] == "/admin/power.php") {
   <tr><th colspan="2"><?php echo $lang['power'];?></th></tr>
   <?php
         if ( escapeshellcmd($_POST["action"]) == "reboot" ) {
+                $wait = exec ('grep -i "pi zero" /proc/cpuinfo') ? "90" : "50" ;
                 echo '<tr><td colspan="2" style="background: #000000; color: #00ff00;"><br /><br />Reboot command has been sent to your Pi,
-                        <br />please wait up to 90 secs for it to reboot.<br />
+                        <br />please wait up to '.$wait.' secs for it to reboot.<br />
                         <br />You will be re-directed back to the
-                        <br />dashboard automatically in 90 seconds.<br /><br /><br />
+                        <br />dashboard automatically in '.$wait.' seconds.<br /><br /><br />
                         <script language="JavaScript" type="text/javascript">
-                                setTimeout("location.href = \'/index.php\'",90000);
+                                setTimeout("location.href = \'/index.php\'",'.$wait.'000);
                         </script>
                         </td></tr>';
                 system('sudo sync && sudo sync && sudo sync && sudo mount -o remount,ro / > /dev/null &');
