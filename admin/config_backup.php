@@ -70,9 +70,15 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
           $output .= shell_exec("sudo cp /etc/p25gateway $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/ysfgateway $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/ysf2dmr $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/ysf2nxdn $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/ysf2p25  $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/dgidgateway $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/nxdngateway $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/dmrgateway $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/m17gateway $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/aprsgateway $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/dmr2nxdn $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/dmr2ysf  $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/mobilegps $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/starnetserver $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/timeserver $backupDir 2>&1");
@@ -83,6 +89,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 	  $output .= shell_exec("sudo cp /etc/bmapi.key $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/dapnetapi.key $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /etc/pistar-css.ini $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /etc/crontab $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /usr/local/etc/RSSI.dat $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /var/www/dashboard/config/ircddblocal.php $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /var/www/dashboard/config/config.php $backupDir 2>&1");
@@ -98,7 +105,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
             $local_tz = new DateTimeZone(date_default_timezone_get ());
             $dt = new DateTime($utc_time, $utc_tz);
             $dt->setTimeZone($local_tz);
-            $local_time = $dt->format('Y-M-d');
+            $local_time = $dt->format('Y-m-d');
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
 	    if ($hostNameInfo != "pi-star") {
@@ -254,7 +261,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 	  either to this Pi-Star or another one.<br />
 	  <ul>
 		  <li>System Passwords / Dashboard passwords are NOT backed up / restored.</li>
-		  <li>Wireless Configuration IS backed up and restored</li>
+		  <li>Wireless Configuration, Crontab and Dashboard Color Codes ARE backed up and restored.</li>
 	  </ul>
   </td>
   </tr>
