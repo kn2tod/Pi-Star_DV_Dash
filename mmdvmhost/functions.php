@@ -506,6 +506,8 @@ function getHeardList($logLines) {
 		//removing invalid lines
 		if(strpos($logLine,"BS_Dwn_Act")) {
 			continue;
+		} else if(strlen($logLine) < 20) {
+			continue;
 		} else if(strpos($logLine,"invalid access")) {
 			continue;
 		} else if(strpos($logLine,"received RF header for wrong repeater")) {
