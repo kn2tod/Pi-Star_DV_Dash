@@ -375,3 +375,4 @@ if ( $testMMDVModePOCSAG == 1 ) { //Hide the POCSAG information when POCSAG Netw
 	echo "</table>\n";
 }
 ?>
+<br />
