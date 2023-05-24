@@ -1,9 +1,11 @@
+<?php @session_start(); ?>
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/config.php';          // MMDVMDash Config
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';        // MMDVMDash Tools
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/functions.php';    // MMDVMDash Functions
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 
+if ( ! isset($_SESSION['CS_URL'])) {
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
     // Use the values from the file
@@ -12,7 +14,7 @@ if (file_exists('/etc/pistar-css.ini')) {
 
     // Set the Values from the config file
     if (isset($piStarCss['Lookup']['Service'])) { $callsignLookupSvc = $piStarCss['Lookup']['Service']; }		// Lookup Service "QRZ" or "RadioID"
-    else { $callsignLookupSvc = "RadioID"; }										// Set the default if its missing										// Set the default if its missing
+    else { $callsignLookupSvc = "RadioID"; }										// Set the default if its missing
 } else {
     // Default values
     $callsignLookupSvc = "RadioID";
@@ -25,6 +27,17 @@ if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ")) { $calls
 $idLookupUrl = "https://database.radioid.net/database/view?id=";
 if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
 if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
+$_SESSION['CS_URL'] = $callsignLookupUrl;
+}
+$callsignLookupUrl = $_SESSION['CS_URL'];
+
+if ( ! isset($_SESSION['LH_limits'])) {
+  $lcount = exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
+  if ( $lcount < 20 )  { $lcount = 20; }
+  if ( $lcount > 100 ) { $lcount = 100; }
+  $_SESSION['LH_limits'] = $lcount;
+}
+$lcount = $_SESSION['LH_limits'];
 
 ?>
 <b><?php echo $lang['last_heard_list'];?></b>
@@ -41,7 +54,7 @@ if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/
     </tr>
 <?php
 $i = 0;
-for ($i = 0;  ($i <= 19); $i++) { //Last 20 calls
+for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	if (isset($lastHeard[$i])) {
 		$listElem = $lastHeard[$i];
 		if ( $listElem[2] ) {
