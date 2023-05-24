@@ -29,6 +29,7 @@ if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.ra
 if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
 $_SESSION['CS_URL'] = $callsignLookupUrl;
 }
+$idLookupUrl = "https://database.radioid.net/database/view?id=";
 $callsignLookupUrl = $_SESSION['CS_URL'];
 
 if ( ! isset($_SESSION['LH_limits'])) {
