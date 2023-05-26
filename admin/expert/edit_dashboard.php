@@ -1,3 +1,4 @@
+<?php @session_start(); ?>
 <?php
 // Load the language support
 require_once('../config/language.php');
@@ -51,10 +52,11 @@ if (!file_exists('/etc/pistar-css.ini')) {
 	$fileContent .= "[Content]\nText=000000\n\n";
 	$fileContent .= "[BannerH1]\nEnabled=0\nText=\"Some Text\"\n\n";
 	$fileContent .= "[BannerExtText]\nEnabled=0\nText=\"Some long text entry\"\n\n";
-	$fileContent .= "[Lookup]\nService=\"RadioID\"\n";
+	$fileContent .= "[Lookup]\nService=\"RadioID\"\n\n";
+	$fileContent .= "[Last Heard]\nDepth=20\n\n";
 	fwrite($outFile, $fileContent);
 	fclose($outFile);
-	
+
 	// Put the file back where it should be
 	exec('sudo mount -o remount,rw /');                             // Make rootfs writable
 	exec('sudo cp /tmp/bW1kd4jg6b3N0DQo.tmp /etc/pistar-css.ini');  // Move the file back
@@ -73,6 +75,7 @@ $filepath = '/tmp/bW1kd4jg6b3N0DQo.tmp';
 
 //after the form submit
 if($_POST) {
+	unset ($_SESSION['LH_limits']);
 	$data = $_POST;
 	// Factory Reset Handler Here
 	if (empty($_POST['factoryReset']) != TRUE ) {
@@ -148,7 +151,7 @@ echo '<form action="" method="post">'."\n";
 		echo "<input type=\"hidden\" value=\"$section\" name=\"$section\" />\n";
 		echo "<table>\n";
 		echo "<tr><th colspan=\"2\">$section</th></tr>\n";
-		// print all other values as input fields, so can edit. 
+		// print all other values as input fields, so can edit.
 		// note the name='' attribute it has both section and key
 		foreach($values as $key=>$value) {
 		  if ( $section == "Lookup" && $key == "Service" ) {
@@ -167,7 +170,7 @@ echo '<form action="" method="post">'."\n";
 		    echo "  </select>\n";
 		    echo "</td></tr>\n";
 		  } else {
-		    echo "<tr><td align=\"right\" width=\"30%\">$key</td><td align=\"left\"><input type=\"text\" name=\"{$section}[$key]\" value=\"$value\" /></td></tr>\n";			
+		    echo "<tr><td align=\"right\" width=\"30%\">$key</td><td align=\"left\"><input type=\"text\" name=\"{$section}[$key]\" value=\"$value\" /></td></tr>\n";
 		  }
 		}
 		echo "</table>\n";

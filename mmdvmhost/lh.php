@@ -86,7 +86,8 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 		if ( substr($listElem[4], 0, 6) === 'CQCQCQ' ) {
 			echo "<td align=\"left\">$listElem[4]</td>";
 		} else {
-			echo "<td align=\"left\">".str_replace(" ","&nbsp;", $listElem[4])."</td>";
+			$tgName = getTGdesc($listElem[4]);
+			echo "<td title=\"$tgName\" align=\"left\">".str_replace(" ","&nbsp;", $listElem[4])."</td>";
 		}
 
 
