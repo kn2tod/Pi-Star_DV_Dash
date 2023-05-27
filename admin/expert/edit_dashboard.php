@@ -76,6 +76,7 @@ $filepath = '/tmp/bW1kd4jg6b3N0DQo.tmp';
 //after the form submit
 if($_POST) {
 	unset ($_SESSION['LH_limits']);
+	unset ($_SESSION['CS_URL']);
 	$data = $_POST;
 	// Factory Reset Handler Here
 	if (empty($_POST['factoryReset']) != TRUE ) {
