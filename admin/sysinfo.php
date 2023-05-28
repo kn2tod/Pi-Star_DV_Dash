@@ -227,20 +227,28 @@ if (is_executable('/usr/local/bin/NXDNGateway')) {
     $NXDNGateway_Ver = exec('/usr/local/bin/NXDNGateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">NXDNGateway</td><td align=\"left\">".$NXDNGateway_Ver."</td></tr>\n";
 }
+if (is_executable('/usr/local/bin/NXDN2DMR')) {
+    $NXDN2DMR_Ver = exec('/usr/local/bin/NXDN2DMR -v | cut -d\' \' -f 3-');
+    echo "  <tr><td align=\"left\">NXDN2DMR</td><td align=\"left\">".$NXDN2DMR_Ver."</td></tr>\n";
+}
 if (is_executable('/usr/local/bin/DAPNETGateway')) {
     $DAPNETGateway_Ver = exec('/usr/local/bin/DAPNETGateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">DAPNETGateway</td><td align=\"left\">".$DAPNETGateway_Ver."</td></tr>\n";
 }
 if (is_executable('/usr/local/bin/APRSGateway')) {
-    $APRSGATEWAY_Ver = exec('/usr/local/bin/APRSGateway -v | head -n 2 | cut -d\' \' -f 3');
+    $APRSGATEWAY_Ver = exec('/usr/local/bin/APRSGateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">APRSGateway</td><td align=\"left\">".$APRSGATEWAY_Ver."</td></tr>\n";
 }
 if (is_executable('/usr/local/bin/M17Gateway')) {
     $M17Gateway = exec('/usr/local/bin/M17Gateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">M17Gateway</td><td align=\"left\">".$M17Gateway."</td></tr>\n";
 }
+if (is_executable('/usr/sbin/gpsd')) {
+    $GPSD = exec('/usr/sbin/gpsd -V | cut -d\':\' -f 2');
+    echo "  <tr><td align=\"left\">GPSD</td><td align=\"left\">".$GPSD."</td></tr>\n";
+}
 if (is_executable('/usr/local/bin/NextionDriver')) {
-    $NEXTIONDRIVER_Ver = exec('/usr/local/bin/NextionDriver -V | head -n 2 | cut -d\' \' -f 3');
+    $NEXTIONDRIVER_Ver = exec('/usr/local/bin/NextionDriver -V | head -n 2 | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">NextionDriver</td><td align=\"left\">".$NEXTIONDRIVER_Ver."</td></tr>\n";
 }
 $Firmware = isset($_SESSION['Firmware']) ? $_SESSION['Firmware'] : "";
