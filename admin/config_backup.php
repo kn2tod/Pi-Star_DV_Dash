@@ -55,7 +55,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
           $backupDir = "/tmp/config_backup";
           $backupZip = "/tmp/config_backup.zip";
 	  $hostNameInfo = exec('cat /etc/hostname');
-          
+
           $output .= shell_exec("sudo rm -rf $backupZip 2>&1");
           $output .= shell_exec("sudo rm -rf $backupDir 2>&1");
           $output .= shell_exec("sudo mkdir $backupDir 2>&1");
@@ -93,12 +93,13 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 	  $output .= shell_exec("sudo cp /usr/local/etc/RSSI.dat $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /var/www/dashboard/config/ircddblocal.php $backupDir 2>&1");
 	  $output .= shell_exec("sudo cp /var/www/dashboard/config/config.php $backupDir 2>&1");
+	  $output .= shell_exec("sudo cp /var/www/dashboard/config/language.php $backupDir 2>&1");
           $output .= "Compressing backup files\n";
           $output .= shell_exec("sudo zip -j $backupZip $backupDir/* 2>&1");
           $output .= "Starting download\n";
-          
+
           echo "<tr><td align=\"left\"><pre>$output</pre></td></tr>\n";
-          
+
           if (file_exists($backupZip)) {
             $utc_time = gmdate('Y-m-d H:i:s');
             $utc_tz =  new DateTimeZone('UTC');
@@ -137,7 +138,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
                   $filename = $_FILES["fileToUpload"]["name"];
 	  	  $source = $_FILES["fileToUpload"]["tmp_name"];
 	          $type = $_FILES["fileToUpload"]["type"];
-	
+
 	          $name = explode(".", $filename);
 	          $accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
 	          foreach($accepted_types as $mime_type) {
@@ -152,7 +153,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 		        $output .= "The file you are trying to upload is not a .zip file. Please try again.\n";
 	        }
 		$target_path = $target_dir.$filename;
-          
+
 		if(move_uploaded_file($source, $target_path)) {
 			$zip = new ZipArchive();
 		        $x = $zip->open($target_path);
@@ -163,7 +164,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 		        }
 		        $output .= "Your .zip file was uploaded and unpacked.\n";
 			$output .= "Stopping Services.\n";
-			
+
 			// Stop the DV Services
 			shell_exec('sudo systemctl stop cron.service 2>&1');		//Cron
 			shell_exec('sudo systemctl stop dstarrepeater.service 2>&1');	//D-Star Radio Service
@@ -177,10 +178,10 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 			shell_exec('sudo systemctl stop p25gateway.service 2>&1');	//P25Gateway
 			shell_exec('sudo systemctl stop dapnetgateway.service 2>&1');	//DAPNETGateway
 			shell_exec('sudo systemctl stop mobilegps.service 2>&1');	//MobileGPS
-			
+
 			// Make the disk Writable
 			shell_exec('sudo mount -o remount,rw / 2>&1');
-			
+
 			// Overwrite the configs
 			$output .= "Writing new Config\n";
 			$output .= shell_exec("sudo rm -f /etc/dstar-radio.* 2>&1")."\n";
@@ -189,19 +190,19 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 			$output .= shell_exec("sudo mv -f /tmp/config_restore/config.php /var/www/dashboard/config/ 2>&1")."\n";
 			$output .= shell_exec("sudo mv -v -f /tmp/config_restore/wpa_supplicant.conf /etc/wpa_supplicant/ 2>&1")."\n";
 			$output .= shell_exec("sudo mv -v -f /tmp/config_restore/* /etc/ 2>&1")."\n";
-			
+
 			//Restore the Timezone Config
                         $timeZone = shell_exec('grep date /var/www/dashboard/config/config.php | grep -o "\'.*\'" | sed "s/\'//g"');
                         $timeZone = preg_replace( "/\r|\n/", "", $timeZone);                    //Remove the linebreaks
                         shell_exec('sudo timedatectl set-timezone '.$timeZone.' 2>&1');
-			
+
 			//Restore ircDDGBateway Link Manager Password
 			$ircRemotePassword = shell_exec('grep remotePassword /etc/ircddbgateway | awk -F\'=\' \'{print $2}\'');
 			shell_exec('sudo sed -i "/password=/c\\password='.$ircRemotePassword.'" /root/.Remote\ Control');
 
 			// Make the disk Read-Only
 			shell_exec('sudo mount -o remount,ro / 2>&1');
-			
+
 			// Start the services
 			$output .= "Starting Services.\n";
 			shell_exec('sudo systemctl start dstarrepeater.service 2>&1');		//D-Star Radio Service
@@ -219,7 +220,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
 			shell_exec('sudo systemctl start dapnetgateway.service 2>&1');		//DAPNETGateway
 			shell_exec('sudo systemctl start mobilegps.service 2>&1');		//MobileGPS
 			shell_exec('sudo systemctl start cron.service 2>&1');			//Cron
-			
+
 			// Complete
 			$output .= "Configuration Restore Complete.\n";
 		}
