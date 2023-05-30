@@ -7,6 +7,10 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translat
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/ircddblocal.php');
 
+//Load the MMDVMHost config file (passed down)
+if (! isset($_SESSION['TXFreq'])) { $_SESSION['TXFreq'] = getMHZ(getConfigItem("Info", "TXFrequency", $mmdvmconfigs)); }
+if (! isset($_SESSION['RXFreq'])) { $_SESSION['RXFreq'] = getMHZ(getConfigItem("Info", "RXFrequency", $mmdvmconfigs)); }
+
 //Load the ircDDBGateway config file
 $configs = array();
 if ($configfile = fopen($gatewayConfigPath,'r')) {
@@ -67,6 +71,7 @@ if (file_exists('/etc/dmr2nxdn')) {
 }
 ?>
 
+<br />
 <table>
   <tr><th colspan="2"><?php echo $lang['modes_enabled'];?></th></tr>
   <tr><?php showMode("D-Star", $mmdvmconfigs);?><?php showMode("DMR", $mmdvmconfigs);?></tr>
@@ -91,52 +96,71 @@ if (file_exists('/etc/dmr2nxdn')) {
 <tr><th>Trx</th><?php
 // TRX Status code
 if (isset($lastHeard[0])) {
-	$listElem = $lastHeard[0];
-	if ( $listElem[2] && $listElem[6] == null && $listElem[5] !== 'RF') {
+	$xElem = null;
+	$n = 0;
+	$xi = min(12,count($lastHeard));
+	for ($i = 0; $i < $xi; $i++) {
+	   $listElem = $lastHeard[$i];
+	   $listNull = $listElem[2] && $listElem[6];
+	   if ($listNull == null && $listElem[5] !== 'RF') {
+	      $xElem = $listElem[1];
+	      $n = $i;
+	      break;
+	   }
+	}
+	$listElem = $lastHeard[$n];
+	$listNull = $listElem[2] && $listElem[6];
+	if ($xElem !== null) {
 	        echo "<td style=\"background:#f33;\">TX $listElem[1]</td>";
 	        }
 	        else {
-	        if (getActualMode($lastHeard, $mmdvmconfigs) === 'idle') {
-	                echo "<td style=\"background:#0b0; color:#030;\">Listening</td>";
+	        $amode = getActualModex($lastHeard, $mmdvmconfigs);
+	        if ($amode === 'idle') {
+	                echo "<td style=\"background:#0b0; color:#030;\">Listening...</td>";
 	                }
-	        elseif (getActualMode($lastHeard, $mmdvmconfigs) === NULL) {
-	                if (isProcessRunning("MMDVMHost")) { echo "<td style=\"background:#0b0; color:#030;\">Listening</td>"; } else { echo "<td style=\"background:#606060; color:#b0b0b0;\">OFFLINE</td>"; }
+	        elseif ($amode === NULL) {
+	                if (isProcessRunning("MMDVMHost")) {
+	                    echo "<td style=\"background:#0b0; color:#030;\">Listening...</td>"; 
+	                    }
+	                else {
+	                    echo "<td style=\"background:#606060; color:#b0b0b0;\">OFFLINE</td>"; 
+	                    }
 	                }
-	        elseif ($listElem[2] && $listElem[6] == null && getActualMode($lastHeard, $mmdvmconfigs) === 'D-Star') {
+	        elseif ($listNull == null && $amode === 'D-Star') {
 	                echo "<td style=\"background:#4aa361;\">RX D-Star</td>";
 	                }
-	        elseif (getActualMode($lastHeard, $mmdvmconfigs) === 'D-Star') {
+	        elseif ($amode === 'D-Star') {
 	                echo "<td style=\"background:#ade;\">Listening D-Star</td>";
 	                }
-	        elseif ($listElem[2] && $listElem[6] == null && getActualMode($lastHeard, $mmdvmconfigs) === 'DMR') {
+	        elseif ($listNull == null && $amode === 'DMR') {
 	                echo "<td style=\"background:#4aa361;\">RX DMR</td>";
 	                }
-	        elseif (getActualMode($lastHeard, $mmdvmconfigs) === 'DMR') {
+	        elseif ($amode === 'DMR') {
 	                echo "<td style=\"background:#f93;\">Listening DMR</td>";
 	                }
-	        elseif ($listElem[2] && $listElem[6] == null && getActualMode($lastHeard, $mmdvmconfigs) === 'YSF') {
+	        elseif ($listNull == null && $amode === 'YSF') {
 	                echo "<td style=\"background:#4aa361;\">RX YSF</td>";
 	                }
-	        elseif (getActualMode($lastHeard, $mmdvmconfigs) === 'YSF') {
+	        elseif ($amode === 'YSF') {
 	                echo "<td style=\"background:#ff9;\">Listening YSF</td>";
 	                }
-	        elseif ($listElem[2] && $listElem[6] == null && getActualMode($lastHeard, $mmdvmconfigs) === 'P25') {
+	        elseif ($listNull == null && $amode === 'P25') {
         	        echo "<td style=\"background:#4aa361;\">RX P25</td>";
         	        }
-        	elseif (getActualMode($lastHeard, $mmdvmconfigs) === 'P25') {
+        	elseif ($amode === 'P25') {
         	        echo "<td style=\"background:#f9f;\">Listening P25</td>";
         	        }
-		elseif ($listElem[2] && $listElem[6] == null && getActualMode($lastHeard, $mmdvmconfigs) === 'NXDN') {
+		elseif ($listNull == null && $amode === 'NXDN') {
         	        echo "<td style=\"background:#4aa361;\">RX NXDN</td>";
         	        }
-        	elseif (getActualMode($lastHeard, $mmdvmconfigs) === 'NXDN') {
+        	elseif ($amode === 'NXDN') {
         	        echo "<td style=\"background:#c9f;\">Listening NXDN</td>";
         	        }
-		elseif (getActualMode($lastHeard, $mmdvmconfigs) === 'POCSAG') {
+		elseif ($amode === 'POCSAG') {
         	        echo "<td style=\"background:#4aa361;\">POCSAG</td>";
         	        }
         	else {
-        	        echo "<td>".getActualMode($lastHeard, $mmdvmconfigs)."</td>";
+        	        echo "<td>".$amode."</td>";
         	        }
 		}
 	}
@@ -144,15 +168,17 @@ else {
 	echo "<td></td>";
 }
 ?></tr>
-<tr><th>Tx</th><td style="background: #ffffff;"><?php echo getMHZ(getConfigItem("Info", "TXFrequency", $mmdvmconfigs)); ?></td></tr>
-<tr><th>Rx</th><td style="background: #ffffff;"><?php echo getMHZ(getConfigItem("Info", "RXFrequency", $mmdvmconfigs)); ?></td></tr>
+<tr><th>Tx</th><td style="background: #ffffff;"><?php echo $_SESSION['TXFreq']; ?></td></tr>
+<tr><th>Rx</th><td style="background: #ffffff;"><?php echo $_SESSION['RXFreq']; ?></td></tr>
 <?php
-if (getDVModemFirmware()) {
-echo '<tr><th>FW</th><td style="background: #ffffff;">'.getDVModemFirmware().'</td></tr>'."\n";
+$Firmware = getDVModemFirmware();
+if ($Firmware) {
+echo '<tr><th>FW</th><td style="background: #ffffff;">'.$Firmware.'</td></tr>'."\n";
 } ?>
 <?php
-if (getDVModemTCXOFreq()) {
-echo '<tr><th>TCXO</th><td style="background: #ffffff;">'.getDVModemTCXOFreq().'</td></tr>'."\n";
+$TCXOFreq = getDVModemTCXOFreq();
+if ($TCXOFreq) {
+echo '<tr><th>TCXO</th><td style="background: #ffffff;">'.$TCXOFreq.'</td></tr>'."\n";
 } ?>
 </table>
 
@@ -305,6 +331,7 @@ if ( $testMMDVModeYSF == 1 || $testDMR2YSF ) { //Hide the YSF information when S
         echo "</table>\n";
 }
 
+$testYSF2DMR = "";
 if ( isset($configysf2dmr['Enabled']['Enabled']) ) { $testYSF2DMR = $configysf2dmr['Enabled']['Enabled']; }
 if ( $testYSF2DMR ) { //Hide the YSF2DMR information when YSF2DMR Network mode not enabled.
         $dmrMasterFile = fopen("/usr/local/etc/DMR_Hosts.txt", "r");
