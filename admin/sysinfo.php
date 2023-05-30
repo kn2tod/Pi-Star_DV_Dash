@@ -149,6 +149,8 @@ $nginx=exec('nginx -v 3>&1 1>&2 2>&3 | sed "s/nginx version: \(.*\)/\u\1/g"');
 echo "  <tr><td align=\"left\">Nginx</td><td align=\"left\">$nginx</td></tr>\n";
 $php=exec('php -v | sed -n "s/^\(PHP .* \)(c.*/\1/p"');
 echo "  <tr><td align=\"left\">PHP</td><td align=\"left\">$php</td></tr>\n";
+$git=exec('git --version | sed "s/git version/Git/g"');
+echo "  <tr><td align=\"left\">GIT</td><td align=\"left\">$git</td></tr>\n";
 echo "  </tbody>\n";
 // Ram information
 if ($system['mem_info']) {
