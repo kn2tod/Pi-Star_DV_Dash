@@ -68,17 +68,19 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 		echo "<tr>";
 		echo "<td align=\"left\">$local_time</td>";
 		echo "<td align=\"left\">".str_replace('Slot ', 'TS', $listElem[1])."</td>";
-		if (is_numeric($listElem[2])) {
-			if ($listElem[2] > 9999) { echo "<td align=\"left\"><a href=\"".$idLookupUrl.$listElem[2]."\" target=\"_blank\">$listElem[2]</a></td>"; }
+		if (is_numeric($listElem[2]))   {
+			$DMRinfo = getDMRinfo($listElem[2],$listElem[4]);
+			if ($listElem[2] > 9999) { echo "<td align=\"left\"><a href=\"".$idLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a></td>"; }
 			else { echo "<td align=\"left\">".$listElem[2]."</td>"; }
 		} elseif (!preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $listElem[2])) {
                         echo "<td align=\"left\">$listElem[2]</td>";
 		} else {
-			if (strpos($listElem[2],"-") > 0) { $listElem[2] = substr($listElem[2], 0, strpos($listElem[2],"-")); }
+			if (strpos($listElem[2],"-") > 0) { $listElem[2] = substr($listElem[2], 0, strpos($listElem[2],"-"));}
+			$DMRinfo = getDMRinfo($listElem[2],$listElem[4]);
 			if ( $listElem[3] && $listElem[3] != '    ' ) {
-				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" target=\"_blank\">$listElem[2]</a>/$listElem[3]</div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."*\" target=\"_blank\">GPS</a>&#41;</div></td>";
+				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a>/$listElem[3]</div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
 			} else {
-				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" target=\"_blank\">$listElem[2]</a></div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."*\" target=\"_blank\">GPS</a>&#41;</div></td>";
+				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a></div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
 			}
 		}
 
