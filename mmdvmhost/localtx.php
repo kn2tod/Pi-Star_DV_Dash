@@ -44,10 +44,13 @@ if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/
 $counter = 0;
 $i = 0;
 $TXListLim = count($localTXList);
+$prevElem = array();
 for ($i = 0; $i < $TXListLim; $i++) {
 		$listElem = $localTXList[$i];
 		if ($listElem[5] == "RF" && ($listElem[1] == "D-Star" || startsWith($listElem[1], "DMR") || $listElem[1] == "YSF" || $listElem[1]== "P25" || $listElem[1]== "NXDN")) {
-			if ($counter <= 19) { //last 20 calls
+			$currElem = array($listElem[1],$listElem[2],$listElem[3],$listElem[4],$listElem[5],$listElem[6]);
+			if ($counter <= 19 && $currElem !== $prevElem ) { //last 20 calls
+				$prevElem = $currElem;
 				$utc_time = $listElem[0];
                         	$utc_tz =  new DateTimeZone('UTC');
                         	$local_tz = new DateTimeZone(date_default_timezone_get ());

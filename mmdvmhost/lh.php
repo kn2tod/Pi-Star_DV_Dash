@@ -5,6 +5,8 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';        // MMDVMDa
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/functions.php';    // MMDVMDash Functions
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 
+if (! isset($_SESSION['LHSW'])) { $_SESSION['LHSW'] = 0; }
+
 if ( ! isset($_SESSION['CS_URL'])) {
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
@@ -42,6 +44,27 @@ $lcount = $_SESSION['LH_limits'];
 
 ?>
 <b><?php echo $lang['last_heard_list'];?></b>
+<?php
+  $lhsw = $_SESSION['LHSW'];
+  if ($lhsw) {$lhbutton = "LH"; $lhbgnd1 = "";                   $lhbgnd2 = "background:#c2c2c2";}
+  else       {$lhbutton = "LL"; $lhbgnd1 = "background:#c2c2c2"; $lhbgnd2 = "";                  }
+  $lcount = exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
+  $lhcount = count($lastHeard);
+  $fsmode = exec ('sed -n "/\/dev\/root/ {s/.*\(r[ow]\),.*/\1/p}" /proc/mounts');
+  $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
+?>
+  <table>
+    <tr>
+      <td align="left">
+         <input type="submit" style="font-size: 11px; <?php echo $lhbgnd2; ?>" value="<?php echo 'LL'; ?>" name="LastHeardSW";/>
+         <input type="submit" style="font-size: 11px; <?php echo $lhbgnd1; ?>" value="<?php echo 'LH'; ?>" name="LastHeardSW";/>
+      </td>
+      <td align="right" width="25"><?php echo $fsmode;  echo "&nbsp ";?></td>
+      <td align="right" width="25"><?php echo $pubprv;  echo "&nbsp ";?></td>
+      <td align="right" width="35"><?php echo $lhcount; echo "&nbsp ";?></td>
+      <td align="right" width="25"><?php echo $lcount;  echo "&nbsp ";?></td>
+    </tr>
+  </table>
   <table>
     <tr>
       <th><a class="tooltip" href="#"><?php echo $lang['time'];?> (<?php echo date('T')?>)<span><b>Time in <?php echo date('T')?> time zone</b></span></a></th>
@@ -55,10 +78,23 @@ $lcount = $_SESSION['LH_limits'];
     </tr>
 <?php
 $i = 0;
+$prevElem = array();
+
+  if (!empty($_POST) && isset($_POST["LastHeardSW"])) {
+     $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
+     unset($_POST);
+     echo '<script type="text/javascript">';
+     echo '  setTimeout(function() { window.location=window.location;},500);';
+     echo '</script>';
+  }
+  else {
+
 for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	if (isset($lastHeard[$i])) {
 		$listElem = $lastHeard[$i];
-		if ( $listElem[2] ) {
+		$currElem = array($listElem[1],$listElem[2],$listElem[3],$listElem[4],$listElem[5],$listElem[6]);
+		if ( $listElem[2] && $currElem !== $prevElem ) {
+			$prevElem = $currElem;
 			$utc_time = $listElem[0];
                         $utc_tz =  new DateTimeZone('UTC');
                         $local_tz = new DateTimeZone(date_default_timezone_get ());
@@ -131,5 +167,6 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	}
 }
 
+  }
 ?>
   </table>

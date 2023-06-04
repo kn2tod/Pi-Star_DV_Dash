@@ -503,6 +503,7 @@ function getHeardList($logLines) {
 		$loss		= "";
 		$ber		= "";
 		$rssi		= "";
+		$eot		= " ";
 		//removing invalid lines
 		if(strpos($logLine,"BS_Dwn_Act")) {
 			continue;
@@ -529,6 +530,7 @@ function getHeardList($logLines) {
 		}
 
 		if(strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
+			$eot = "*";
 			$lineTokens = explode(", ",$logLine);
 			if (array_key_exists(2,$lineTokens)) {
 				$duration = strtok($lineTokens[2], " ");
@@ -704,7 +706,7 @@ function getHeardList($logLines) {
 
 		// Callsign or ID should be less than 11 chars long, otherwise it could be errorneous
 		if ( strlen($callsign) < 11 ) {
-			array_push($heardList, array($timestamp, $mode, $callsign, $id, $target, $source, $duration, $loss, $ber, $rssi));
+			array_push($heardList, array($timestamp, $mode, $callsign, $id, $target, $source, $duration, $loss, $ber, $rssi, $eot));
 			$duration = "";
 			$loss ="";
 			$ber = "";
@@ -720,10 +722,18 @@ function getLastHeard($logLines) {
 	$heardCalls = array();
 	$heardList = getHeardList($logLines);
 	$counter = 0;
+	$modes = array("D-Star","YSF","P25","NXDN","POCSAG");
+	$lhsw = isset($_SESSION['LHSW']) ? $_SESSION['LHSW'] : 0;
 	foreach ($heardList as $listElem) {
-		if ( ($listElem[1] == "D-Star") || ($listElem[1] == "YSF") || ($listElem[1] == "P25") || ($listElem[1] == "NXDN") || ($listElem[1] == "POCSAG") || (startsWith($listElem[1], "DMR")) ) {
+		if ( (in_array($listElem[1],$modes)) || (startsWith($listElem[1], "DMR")) ) {
 			$callUuid = $listElem[2]."#".$listElem[1].$listElem[3].$listElem[4].$listElem[5];
-			if(!(array_search($callUuid, $heardCalls) > -1)) {
+			if ( $lhsw == 1 ) {
+				if ($listElem[10] == " ") {
+				    array_push($lastHeard, $listElem);
+				    $counter++;
+				}
+			}
+			elseif (!(array_search($callUuid, $heardCalls) > -1)) {
 				array_push($heardCalls, $callUuid);
 				array_push($lastHeard, $listElem);
 				$counter++;
