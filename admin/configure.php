@@ -1,4 +1,7 @@
-<?php
+<?php @session_start();
+if (! isset($_SESSION['Platform'])) { $_SESSION['Platform'] = exec('/usr/local/bin/platformDetect.sh'); }
+$platform = $_SESSION['Platform'];
+
 // Get the CPU temp and colour the box accordingly...
 $cpuTempCRaw = exec('cat /sys/class/thermal/thermal_zone0/temp');
 if ($cpuTempCRaw > 1000) { $cpuTempC = round($cpuTempCRaw / 1000, 1); } else { $cpuTempC = round($cpuTempCRaw, 1); }
@@ -295,7 +298,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
     <tr>
     <td><?php echo php_uname('n');?></td>
     <td><?php echo php_uname('r');?></td>
-    <td colspan="2"><?php echo exec('/usr/local/bin/platformDetect.sh');?></td>
+    <td colspan="2"><?php echo "$platform";?></td>
     <td><?php echo $cpuLoad[0];?> / <?php echo $cpuLoad[1];?> / <?php echo $cpuLoad[2];?></td>
     <?php echo $cpuTempHTML; ?>
     </tr>
@@ -3369,6 +3372,8 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	// Make the root filesystem read-only
 	system('sudo sync && sudo sync && sudo sync && sudo mount -o remount,ro /');
+
+	session_destroy();
 
 else:
 	// Output the HTML Form here
