@@ -1,20 +1,23 @@
+<?php @session_start(); ?>
 <?php include_once $_SERVER['DOCUMENT_ROOT'].'/config/ircddblocal.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';
-$configs = array();
-
-if ($configfile = fopen($gatewayConfigPath,'r')) {
-        while ($line = fgets($configfile)) {
-                list($key,$value) = preg_split('/=/',$line);
-                $value = trim(str_replace('"','',$value));
-                if ($key != 'ircddbPassword' && strlen($value) > 0)
-                $configs[$key] = $value;
-        }
-
-}
-$progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
-$rev="20141101";
-$MYCALL=strtoupper($callsign);
+// $configs = array();
+// 
+// if ($configfile = fopen($gatewayConfigPath,'r')) {
+//         while ($line = fgets($configfile)) {
+//                 list($key,$value) = preg_split('/=/',$line);
+//                 $value = trim(str_replace('"','',$value));
+//                 if ($key != 'ircddbPassword' && strlen($value) > 0)
+//                 $configs[$key] = $value;
+//         }
+// 
+// }
+// $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
+// $rev="20141101";
+// $MYCALL=strtoupper($callsign);
+if (! isset($_SESSION['Platform'])) { $_SESSION['Platform'] = exec('/usr/local/bin/platformDetect.sh'); }
+$platform = $_SESSION['Platform'];
 ?>
 <?php
 $cpuLoad = sys_getloadavg();
@@ -37,7 +40,7 @@ if ($cpuTempC >= 69) { $cpuTempHTML = "<td style=\"background: #f00\">".$cpuTemp
   <tr>
     <td><?php echo php_uname('n');?></td>
     <td><?php echo php_uname('r');?></td>
-    <td colspan="2"><?php echo exec('/usr/local/bin/platformDetect.sh');?></td>
+    <td colspan="2"><?php echo "$platform";?></td>
     <td><?php echo $cpuLoad[0];?> / <?php echo $cpuLoad[1];?> / <?php echo $cpuLoad[2];?></td>
     <?php echo $cpuTempHTML; ?>
   </tr>
