@@ -95,6 +95,7 @@ if (file_exists('/etc/dmr2nxdn')) {
 <tr><th colspan="2"><?php echo $lang['radio_info'];?></th></tr>
 <tr><th>Trx</th><?php
 // TRX Status code
+if (isset($_SESSION['LH'])) {$lastHeard = $_SESSION['LH'];}
 if (isset($lastHeard[0])) {
 	$xElem = null;
 	$n = 0;

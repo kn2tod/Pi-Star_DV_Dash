@@ -352,6 +352,7 @@ function getDAPNETGatewayLog()  {
 // I: 1970-01-01 00:00:00.000 MMDVM protocol version: 1, description: SkyBridge-v1.5.2 20201108 14.7456MHz ADF7021 FW by CA6JAU GitID #89daa20
 
 function getDVModemFirmware() {
+	if (isset($_SESSION['Firmware'])) {return $_SESSION['Firmware'];}
 	$logMMDVMNow = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d").".log";
 	$logMMDVMPrevious = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
 	$logSearchString = "MMDVM protocol version";
@@ -411,10 +412,12 @@ function getDVModemFirmware() {
 			$modemFirmware = "SkyBrg:".strtok(substr($logLine, 77, 12), ' ');
 		}
 	}
+	$_SESSION['Firmware'] = $modemFirmware;
 	return $modemFirmware;
 }
 
 function getDVModemTCXOFreq() {
+	if (isset($_SESSION['TCXOFreq'])) {return $_SESSION['TCXOFreq'];}
 	$logMMDVMNow = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d").".log";
 	$logMMDVMPrevious = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
 	$logSearchString = "MMDVM protocol version";
@@ -431,6 +434,7 @@ function getDVModemTCXOFreq() {
 			$modemTCXOFreq = str_replace("MHz"," MHz", $modemTCXOFreq);
 		}
 	}
+	$_SESSION['TCXOFreq'] = $modemTCXOFreq;
 	return $modemTCXOFreq;
 }
 
@@ -650,7 +654,7 @@ function getHeardList($logLines) {
 		$target = trim(substr($logLine, strpos($logLine, "to") + 3));
 		// Handle more verbose logging from MMDVMHost
                 if (strpos($target,",") !== 'false') { $target = explode(",", $target)[0]; }
-		
+
 		$source = "RF";
 		if (strpos($logLine,"network") > 0 || strpos($logLine,"POCSAG") > 0) {
 			$source = "Net";
@@ -1121,10 +1125,14 @@ function getActualReflector($logLines, $mode) {
 //Some basic inits
 $mmdvmconfigs = getMMDVMConfig();
 if (!in_array($_SERVER["PHP_SELF"],array('/mmdvmhost/bm_links.php','/mmdvmhost/bm_manager.php'),true)) {
-	$logLinesMMDVM = getMMDVMLog();
-	$reverseLogLinesMMDVM = $logLinesMMDVM;
-	array_multisort($reverseLogLinesMMDVM,SORT_DESC);
-	$lastHeard = getLastHeard($reverseLogLinesMMDVM);
+	isset($lastHeard) ? : $lastHeard = array();
+	if (in_array($_SERVER["PHP_SELF"],array('/mmdvmhost/lh.php'),true)) {
+		$logLinesMMDVM = getMMDVMLog();
+		$reverseLogLinesMMDVM = $logLinesMMDVM;
+		array_multisort($reverseLogLinesMMDVM,SORT_DESC);
+		$lastHeard = getLastHeard($reverseLogLinesMMDVM);
+		$_SESSION['LH'] = $lastHeard;
+	}
 
 	// Only need these in repeaterinfo.php
 	if (strpos($_SERVER["PHP_SELF"], 'repeaterinfo.php') !== false || strpos($_SERVER["PHP_SELF"], 'index.php') !== false) {
@@ -1144,7 +1152,7 @@ if (!in_array($_SERVER["PHP_SELF"],array('/mmdvmhost/bm_links.php','/mmdvmhost/b
 <?php
 function getDMRinfo($callSign,$target)  {
   $callsign = trim($callSign);
- 
+
   $DMRq = "/tmp/DMRIdx.dat";
   exec("grep -w --color=never -m 1 ".$callsign." ".$DMRq,$output);
   if (!$output) {
@@ -1161,17 +1169,17 @@ function getDMRinfo($callSign,$target)  {
         fclose($fp);
         }
      }
- 
+
   $outs = explode("\t",$output[0]."\t\t\t");
   $outs = array_map(function($v) {return empty($v) ? "" : $v;},$outs);
   if (!in_array($outs[5],array("US","CAN"))) {
      $outs[4] = $outs[5];
      }
- 
+
 //        return callsign    (  DMR ID   )   name,      [  city    state/country  ]
   return $outs[1]." (".$outs[0].") ".$outs[2]." [".$outs[3]." ".$outs[4]."]";
 }
- 
+
 function getTGdesc($target)  {
   $x = $target;
   if (substr($x,0,3) == "TG ") {
@@ -1185,7 +1193,7 @@ function getTGdesc($target)  {
      }
   return $x;
 }
- 
+
 function getActualModex($metaLastHeard, $mmdvmconfigs) {
         // returns mode of repeater actual working in
         $listElem = $metaLastHeard[0];
@@ -1193,19 +1201,19 @@ function getActualModex($metaLastHeard, $mmdvmconfigs) {
         if (startsWith($mode, "DMR")) {
            $mode = "DMR";
         }
- 
+
         if ($listElem[6] == null) {   //if active, just return mode
             return $mode;
         }
- 
+
         $utc_tz =  new DateTimeZone("UTC");
         $local_tz = new DateTimeZone(date_default_timezone_get ());
         $timestamp = new DateTime($listElem[0], $utc_tz);
         $timestamp->setTimeZone($local_tz); 
- 
+
         $now =  new DateTime();
         $hangtime = getConfigItem("General", "ModeHang", $mmdvmconfigs);
- 
+
         if ($hangtime == "") {
             $source = $listElem[5];
             $modex = $mode;
@@ -1214,9 +1222,9 @@ function getActualModex($metaLastHeard, $mmdvmconfigs) {
             else                 { $hangtime = getConfigItem($modex." Network", "ModeHang", $mmdvmconfigs); }
             if ($hangtime == "") { $hangtime = getConfigItem("General", "RFModeHang", $mmdvmconfigs); }
         }
- 
+
         $timestamp->add(new DateInterval("PT" . $hangtime . "S"));
- 
+
         $timestamp->add(new DateInterval("PT" . ceil($listElem[6]) . "S"));
         if ($now->format("U") > $timestamp->format("U")) {
             return "idle";
