@@ -10,7 +10,7 @@ if (file_exists('/etc/pistar-css.ini')) {
     // Use the values from the file
     $piStarCssFile = '/etc/pistar-css.ini';
 	if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
-    
+
     // Set the Values from the config file
     $backgroundPage = $piStarCss['Background']['Page'];		// usually off-white
     $backgroundContent = $piStarCss['Background']['Content'];   // The White background in the content section
@@ -21,7 +21,8 @@ if (file_exists('/etc/pistar-css.ini')) {
     $textContent = $piStarCss['Content']['Text'];            	// Used for the section titles
     $tableRowEvenBg = $piStarCss['Tables']['BgEven']; 		// Table Row BG Colour (Even)
     $tableRowOddBg = $piStarCss['Tables']['BgOdd'];		// Table Row BG Colour (Odd)
-    
+    $dashboardWidth = isset($piStarCss['Background']['Width']) ? $piStarCss['Background']['Width'] : "820px";  // Overall dashboard width
+
 } else {
     // Default values
     $backgroundPage = "edf0f5";         // usually off-white
@@ -33,15 +34,16 @@ if (file_exists('/etc/pistar-css.ini')) {
     $textContent = "000000";            // Used for the section titles
     $tableRowEvenBg = "f7f7f7";		// Table Row BG Colour (Even)
     $tableRowOddBg = "d0d0d0";		// Table Row BG Colour (Odd)
+    $dashboardWidth = "820px";          // Overall dashboard width
 }
 ?>
 .container {
-    width: 820px;
+    width: <?php echo $dashboardWidth; ?>;
     text-align: left;
     margin: auto;
     border-radius: 10px 10px 10px 10px;
     -moz-border-radius: 10px 10px 10px 10px;
-    -webkit-border-radius: 10px 10px 10px 10px; 
+    -webkit-border-radius: 10px 10px 10px 10px;
     -khtml-border-radius: 10px 10px 10px 10px;
     -ms-border-radius: 10px 10px 10px 10px;
     box-shadow: 3px 3px 3px #707070;
@@ -62,7 +64,7 @@ body, font {
     padding : 5px 0px 5px 0px;
     border-radius: 10px 10px 0 0;
     -moz-border-radius: 10px 10px 0px 0px;
-    -webkit-border-radius: 10px 10px 0px 0px; 
+    -webkit-border-radius: 10px 10px 0px 0px;
     -khtml-border-radius: 10px 10px 0px 0px;
     -ms-border-radius: 10px 10px 0px 0px;
  }
@@ -112,7 +114,7 @@ body, font {
     padding : 10px 0 10px 0;
     border-radius: 0 0 10px 10px;
     -moz-border-radius: 0px 0px 10px 10px;
-    -webkit-border-radius: 0px 0px 10px 10px; 
+    -webkit-border-radius: 0px 0px 10px 10px;
     -khtml-border-radius: 0px 0px 10px 10px;
     -ms-border-radius: 0px 0px 10px 10px;
     clear : both;
@@ -178,7 +180,7 @@ body {
 
 a {
     text-decoration:none;
-    
+
 }
 
 a:link, a:visited {
@@ -217,7 +219,7 @@ a.tooltip:hover span {
     color: #000000;
     border:1px solid #000000;
     background: #f7f7f7;
-    font: 12px Verdana, sans-serif; 
+    font: 12px Verdana, sans-serif;
     text-align: left;
     white-space: nowrap;
 }
@@ -274,7 +276,7 @@ a.tooltip2:hover span {
     color: #000000;
     border:1px solid #000000;
     background: #f7f7f7;
-    font: 12px Verdana, sans-serif; 
+    font: 12px Verdana, sans-serif;
     text-align: left;
     white-space: normal;
 }
