@@ -48,7 +48,6 @@ $lcount = $_SESSION['LH_limits'];
   $lhsw = $_SESSION['LHSW'];
   if ($lhsw) {$lhbutton = "LH"; $lhbgnd1 = "";                   $lhbgnd2 = "background:#c2c2c2";}
   else       {$lhbutton = "LL"; $lhbgnd1 = "background:#c2c2c2"; $lhbgnd2 = "";                  }
-  $lcount = exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
   $lhcount = count($lastHeard);
   $fsmode = exec ('sed -n "/\/dev\/root/ {s/.*\(r[ow]\),.*/\1/p}" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
