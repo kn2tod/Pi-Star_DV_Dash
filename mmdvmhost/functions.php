@@ -1,3 +1,4 @@
+<?php @session_start(); ?>
 <?php
 function getMMDVMConfig() {
 	// loads /etc/mmdvmhost into array for further use
@@ -352,7 +353,9 @@ function getDAPNETGatewayLog()  {
 // I: 1970-01-01 00:00:00.000 MMDVM protocol version: 1, description: SkyBridge-v1.5.2 20201108 14.7456MHz ADF7021 FW by CA6JAU GitID #89daa20
 
 function getDVModemFirmware() {
-	if (isset($_SESSION['Firmware'])) {return $_SESSION['Firmware'];}
+	$modemFirmware = (isset($_SESSION['Firmware']) ? $_SESSION['Firmware'] : '');
+	if  ($modemFirmware != '') {return $modemFirmware; }
+
 	$logMMDVMNow = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d").".log";
 	$logMMDVMPrevious = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
 	$logSearchString = "MMDVM protocol version";
@@ -1184,11 +1187,13 @@ function getTGdesc($target)  {
   $x = $target;
   if (substr($x,0,3) == "TG ") {
      $x = substr($target,3);
-     $TGListq = "/usr/local/etc/TGList_BM.txt";
-     exec("grep -w --color=never -m 1 ".$x." ".$TGListq,$output);
-     if ($output) {
-        $cx = explode(";",$output[0]);
-        $x = $x.": ".$cx[2];
+     if (is_numeric($x)) {
+        $TGListq = "/usr/local/etc/TGList_BM.txt";
+        exec("grep -w --color=never -m 1 ".$x." ".$TGListq,$output);
+        if ($output) {
+           $cx = explode(";",$output[0]);
+           $x = $x.": ".$cx[2];
+           }
         }
      }
   return $x;
