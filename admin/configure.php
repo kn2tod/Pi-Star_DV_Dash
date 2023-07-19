@@ -1,7 +1,4 @@
-<?php @session_start();
-if (! isset($_SESSION['Platform'])) { $_SESSION['Platform'] = exec('/usr/local/bin/platformDetect.sh'); }
-$platform = $_SESSION['Platform'];
-
+<?php
 // Get the CPU temp and colour the box accordingly...
 $cpuTempCRaw = exec('cat /sys/class/thermal/thermal_zone0/temp');
 if ($cpuTempCRaw > 1000) { $cpuTempC = round($cpuTempCRaw / 1000, 1); } else { $cpuTempC = round($cpuTempCRaw, 1); }
@@ -137,8 +134,6 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	if (fopen($modemConfigFileMMDVMHost,'r')) { $configModem = parse_ini_file($modemConfigFileMMDVMHost, true); }
 }
 
-if (!isset($configModem['Modem']['Hardware'])) { $configModem['Modem']['Hardware'] = ""; }
-
 function aprspass ($callsign) {
 	$stophere = strpos($callsign, '-');
 	if ($stophere) $callsign = substr($callsign, 0, $stophere);
@@ -160,7 +155,6 @@ function aprspass ($callsign) {
 $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 $rev=$version;
 $MYCALL=strtoupper($callsign);
-$MYHOST=php_uname('n');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -180,7 +174,7 @@ $MYHOST=php_uname('n');
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="css/nice-select.min.css?ver=<?php echo $configPistarRelease['Pi-Star']['Version']; ?>" />
     <meta http-equiv="Expires" content="0" />
-    <title><?php echo "$MYCALL ($MYHOST)"." - ".$lang['digital_voice']." ".$lang['dashboard']." - ".$lang['configuration'];?></title>
+    <title><?php echo "$MYCALL"." - ".$lang['digital_voice']." ".$lang['dashboard']." - ".$lang['configuration'];?></title>
     <link rel="stylesheet" type="text/css" href="css/pistar-css.php?version=0.95" />
     <script type="text/javascript">
 	function disablesubmitbuttons() {
@@ -268,8 +262,8 @@ if (file_exists($bmAPIkeyFile) && fopen($bmAPIkeyFile,'r')) {
 <?php } } ?>
 <div class="container">
 <div class="header">
-<div style="font-size: 8px; text-align: left; padding-left: 8px; float: left;">Hostname: <?php echo php_uname('n'); ?></div><div  style="font-size: 8px; text-align: right; padding-right: 8px;">Pi-Star:<?php echo $configPistarRelease['Pi-Star']['Version']?> / <?php echo $lang['dashboard'].": ".$version; ?></div>
-<h1>Pi-Star <?php echo $lang['digital_voice']." - ".$lang['configuration']." - ".$MYCALL;?></h1>
+<div style="font-size: 8px; text-align: right; padding-right: 8px;">Pi-Star:<?php echo $configPistarRelease['Pi-Star']['Version']?> / <?php echo $lang['dashboard'].": ".$version; ?></div>
+<h1>Pi-Star <?php echo $lang['digital_voice']." - ".$lang['configuration'];?></h1>
 <p style="padding-right: 5px; text-align: right; color: #ffffff;">
  <a href="/" style="color: #ffffff;"><?php echo $lang['dashboard'];?></a> |
  <a href="/admin/" style="color: #ffffff;"><?php echo $lang['admin'];?></a> |
@@ -298,7 +292,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
     <tr>
     <td><?php echo php_uname('n');?></td>
     <td><?php echo php_uname('r');?></td>
-    <td colspan="2"><?php echo "$platform";?></td>
+    <td colspan="2"><?php echo exec('/usr/local/bin/platformDetect.sh');?></td>
     <td><?php echo $cpuLoad[0];?> / <?php echo $cpuLoad[1];?> / <?php echo $cpuLoad[2];?></td>
     <?php echo $cpuTempHTML; ?>
     </tr>
@@ -1247,6 +1241,11 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 			if (isset($configdmr2nxdn['DMR Network']['LocalAddress'])) {
 				$configdmr2nxdn['DMR Network']['LocalAddress'] = "127.0.0.3";
 			}
+		}
+
+		// TGIF
+		if (substr($dmrMasterHostArr[3], 0, 4) == "TGIF") {
+			unset ($configmmdvm['DMR Network']['Options']);
 		}
 
 		// Set the DMR+ / HBLink Options= line
@@ -3373,8 +3372,6 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	// Make the root filesystem read-only
 	system('sudo sync && sudo sync && sudo sync && sudo mount -o remount,ro /');
 
-	session_destroy();
-
 else:
 	// Output the HTML Form here
 	if ((file_exists('/etc/dstar-radio.mmdvmhost') || file_exists('/etc/dstar-radio.dstarrepeater')) && !$configModem['Modem']['Hardware']) { echo "<script type\"text/javascript\">\n\talert(\"WARNING:\\nThe Modem selection section has been updated,\\nPlease re-select your modem from the list.\")\n</script>\n"; }
@@ -3910,8 +3907,7 @@ else:
     <td align="left"><a class="tooltip2" href="#"><?php echo $lang['dmr_master'];?>:<span><b>DMR Master (MMDVMHost)</b>Set your prefered DMR master here</span></a></td>
     <td style="text-align: left;"><select name="dmrMasterHost">
 <?php
-        $dmrMasterNow = "";
-        $testMMDVMdmrMaster  = $configmmdvm['DMR Network']['Address'];
+        $testMMDVMdmrMaster = $configmmdvm['DMR Network']['Address'];
 	$testMMDVMdmrMasterPort = $configmmdvm['DMR Network']['Port'];
         while (!feof($dmrMasterFile)) {
                 $dmrMasterLine = fgets($dmrMasterFile);
@@ -4985,7 +4981,7 @@ echo '
 <br />
     <h2>'.$lang['wifi_config'].'</h2>
     <table><tr><td>
-    <iframe frameborder="0" scrolling="no" name="wifi" src="wifi.php?page=wlan0_info" width="100%" onload="javascript:resizeIframe(this);">If you can see this message, your browser does not support iFrames, however if you would like to see the content please click <a href="wifi.php?page=wlan0_info">here</a>.</iframe>
+    <iframe frameborder="0" scrolling="auto" name="wifi" src="wifi.php?page=wlan0_info" width="100%" onload="javascript:resizeIframe(this);">If you can see this message, your browser does not support iFrames, however if you would like to see the content please click <a href="wifi.php?page=wlan0_info">here</a>.</iframe>
     </td></tr></table>
     <br />
     <form id="autoApPassForm" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" method="post">
