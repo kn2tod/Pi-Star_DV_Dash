@@ -68,7 +68,7 @@ $lcount = $_SESSION['LH_limits'];
     <tr>
       <th><a class="tooltip" href="#"><?php echo $lang['time'];?> (<?php echo date('T')?>)<span><b>Time in <?php echo date('T')?> time zone</b></span></a></th>
       <th><a class="tooltip" href="#"><?php echo $lang['mode'];?><span><b>Transmitted Mode</b></span></a></th>
-      <th style="min-width:14ch"><a class="tooltip" href="#"><?php echo $lang['callsign'];?><span><b>Callsign</b></span></a></th>
+      <th style="min-width:22ch"><a class="tooltip" href="#"><?php echo $lang['callsign'];?><span><b>Callsign</b></span></a></th>
       <th><a class="tooltip" href="#"><?php echo $lang['target'];?><span><b>Target, D-Star Reflector, DMR Talk Group etc</b></span></a></th>
       <th><a class="tooltip" href="#"><?php echo $lang['src'];?><span><b>Received from source</b></span></a></th>
       <th><a class="tooltip" href="#"><?php echo $lang['dur'];?>(s)<span><b>Duration in Seconds</b></span></a></th>
@@ -112,10 +112,12 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 		} else {
 			if (strpos($listElem[2],"-") > 0) { $listElem[2] = substr($listElem[2], 0, strpos($listElem[2],"-"));}
 			$DMRinfo = getDMRinfo($listElem[2],$listElem[4]);
+			$fname = explode(' ',$DMRinfo);
+			$fname[2] = strtolower($fname[2]);
 			if ( $listElem[3] && $listElem[3] != '    ' ) {
 				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a>/$listElem[3]</div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
 			} else {
-				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a></div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
+				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2] [$fname[2]]</a></div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
 			}
 		}
 
