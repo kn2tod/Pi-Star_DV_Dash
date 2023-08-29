@@ -54,7 +54,7 @@ $TXListLim = count($localTXList);
 $prevElem = array();
 for ($i = 0; $i < $TXListLim; $i++) {
 		$listElem = $localTXList[$i];
-		if ($listElem[5] == "RF" && ($listElem[1] == "D-Star" || startsWith($listElem[1], "DMR") || $listElem[1] == "YSF" || $listElem[1]== "P25" || $listElem[1]== "NXDN")) {
+		if ($listElem[5] == "RF" && ($listElem[1] == "D-Star" || startsWith($listElem[1], "DMR") || $listElem[1] == "YSF" || $listElem[1]== "P25" || $listElem[1] == "NXDN" || $listElem[1] == "M17")) {
 			$currElem = array($listElem[1],$listElem[2],$listElem[3],$listElem[4],$listElem[5],$listElem[6]);
 			if ($counter <= 19 && $currElem !== $prevElem ) { //last 20 calls
 				$prevElem = $currElem;
