@@ -167,6 +167,7 @@ function showMode($mode, $mmdvmconfigs) {
 					echo "<td style=\"background:#b00; color:#500; width:50%;\">";
 				}
 			}
+			else { echo "<td style=\"background:#606060; color:#b0b0b0;\" aria-disabled=\"true>\">"; }
 		}
 	}
 	elseif ( ($mode == "YSF XMode") && (getEnabled("System Fusion", $mmdvmconfigs) == 1) ) {
