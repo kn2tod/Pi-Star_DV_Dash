@@ -27,6 +27,7 @@ $lang = array (
   "ysf_config"                  =>  "Yaesu System Fusion Configuration",
   "p25_config"                  =>  "P25 Configuration",
   "nxdn_config"                 =>  "NXDN Configuration",
+  "m17_config"                  =>  "M17 Configuration",
   "pocsag_config"               =>  "POCSAG Configuration",
   "mobilegps_config"            =>  "Mobile GPS Configuration",
   "wifi_config"                 =>  "Wireless Configuration",
@@ -51,6 +52,7 @@ $lang = array (
   "ysf_mode"                    =>  "YSF Mode",
   "p25_mode"                    =>  "P25 Mode",
   "nxdn_mode"                   =>  "NXDN Mode",
+  "m17_mode"                    =>  "M17 Mode",
   "mmdvm_display"               =>  "MMDVM Display Type",
   "mode_hangtime"               =>  "Mode Hangtime",
   // Config Page - General Configuration
@@ -93,6 +95,8 @@ $lang = array (
   // Config Page - NXDN Configuration
   "nxdn_startup_host"            =>  "NXDN Startup Host",
   "nxdn_ran"                     =>  "NXDN RAN",
+  // Config Page - M17 Configuration
+  "m17_startup_reflector"       =>  "M17 Startup Reflector",
   // Config Page - MobileGPS Configuration
   "mobilegps_enable"            =>  "MobileGPS Enable",
   "mobilegps_port"              =>  "GPS Port",
@@ -111,7 +115,9 @@ $lang = array (
   "internet"                    =>  "Internet",
   "radio_info"                  =>  "Radio Info",
   "dstar_repeater"              =>  "D-Star Repeater",
+  "m17_repeater"                =>  "M17 Repeater",
   "dstar_net"                   =>  "D-Star Network",
+  "m17_net"                     =>  "M17 Network",
   "dmr_repeater"                =>  "DMR Repeater",
   "dmr_master"                  =>  "DMR Master",
   "ysf_net"                     =>  "YSF Network",
