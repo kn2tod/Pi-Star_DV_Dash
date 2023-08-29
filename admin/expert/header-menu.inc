@@ -15,13 +15,15 @@
     <a href="edit_ircddbgateway.php" style="color: #ffffff;">ircDDBGateway</a> |
     <a href="edit_timeserver.php" style="color: #ffffff;">TimeServer</a> |
     <a href="edit_mmdvmhost.php" style="color: #ffffff;">MMDVMHost</a> |
-    <a href="edit_dmrgateway.php" style="color: #ffffff;">DMR GW</a> |
-    <a href="edit_ysfgateway.php" style="color: #ffffff;">YSF GW</a> |
-    <a href="edit_p25gateway.php" style="color: #ffffff;">P25 GW</a> |
-    <a href="edit_nxdngateway.php" style="color: #ffffff;">NXDN GW</a> |
-    <a href="edit_dapnetgateway.php" style="color: #ffffff;">DAPNET GW</a><br />
+    <a href="edit_dmrgateway.php" style="color: #ffffff;">DMR</a> |
+    <a href="edit_m17gateway.php" style="color: #ffffff;">M17</a> |
+    <a href="edit_ysfgateway.php" style="color: #ffffff;">YSF</a> |
+    <a href="edit_p25gateway.php" style="color: #ffffff;">P25</a> |
+    <a href="edit_nxdngateway.php" style="color: #ffffff;">NXDN</a> |
+    <a href="edit_dapnetgateway.php" style="color: #ffffff;">DAPNET</a><br />
     <b>Full Edit:</b>
     <a href="fulledit_dmrgateway.php" style="color: #ffffff;">DMR GW</a> |
+    <a href="fulledit_m17gateway.php" style="color: #ffffff;">M17 GW</a> |
     <a href="fulledit_pistar-remote.php" style="color: #ffffff;">PiStar-Remote</a> |
     <a href="fulledit_wpaconfig.php" style="color: #ffffff;">WiFi</a> |
     <a href="fulledit_bmapikey.php" style="color: #ffffff;">BM API</a> |
