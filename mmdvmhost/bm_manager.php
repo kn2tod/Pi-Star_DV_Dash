@@ -92,6 +92,9 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
             'timeout' => 2,
             ),
           );
+
+          syslog(LOG_NOTICE,"BM Admin --> $bmAPIurl $method $postData");
+
           $context = stream_context_create($opts);
           $result = @file_get_contents($bmAPIurl, false, $context);
           $feeback=json_decode($result);
@@ -121,17 +124,17 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
           if ( (isset($_POST["tgNr"])) && (isset($_POST["tgSubmit"])) ) { $targetTG = preg_replace("/[^0-9]/", "", $_POST["tgNr"]); }
           if ( ($_POST["TGmgr"] == "ADD") && (isset($_POST["tgSubmit"])) ) { $bmAPIurl = $bmAPIurl.$dmrID."/talkgroup/"; $method = "POST"; }
           if ( ($_POST["TGmgr"] == "DEL") && (isset($_POST["tgSubmit"])) ) { $bmAPIurl = $bmAPIurl.$dmrID."/talkgroup/".$targetSlot."/".$targetTG; $method = "DELETE"; }
-          
+
           // Build the Data
           if ( (!isset($_POST["dropDyn"])) && (!isset($_POST["dropQso"])) && isset($targetTG) && $_POST["TGmgr"] == "ADD" ) {
             $postDataTG = array(
               'slot' => $targetSlot,
-              'group' => $targetTG              
+              'group' => $targetTG
             );
           }
           // Build the Query
           $postData = '';
-          if ($_POST["TGmgr"] == "ADD") { $postData = json_encode($postDataTG); }
+          if ( (!isset($_POST["dropQso"])) && (!isset($_POST["dropDyn"])) && $_POST["TGmgr"] == "ADD" ) { $postData = json_encode($postDataTG); }
           $postHeaders = array(
             'Content-Type: accept: application/json',
             'Content-Length: '.strlen($postData),
@@ -149,6 +152,9 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
             'timeout' => 2,
             ),
           );
+
+          syslog(LOG_NOTICE,"BM Admin --> $bmAPIurl $method $postData");
+
           $context = stream_context_create($opts);
           $result = @file_get_contents($bmAPIurl, false, $context);
           $feeback=json_decode($result);
@@ -177,13 +183,14 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
             <th><a class=tooltip href="#">Action<span><b>Take Action</b></span></a></th>
           </tr>'."\n";
           echo '    <tr>';
-          echo '<td><input aria-labelledby="lblTG" type="text" name="tgNr" size="10" maxlength="7" /></td>';
-          echo '<td role="radiogroup" aria-labelledby="lblTS"><input id="rbTS1" type="radio" name="TS" value="1" /><label for="rbTS1">TS1</label> <input id="rbTS2" type="radio" name="TS" value="2" checked="checked" /><label for="rbTS2">TS2</label></td>';
-          echo '<td role="radiogroup" aria-labelledby="lblAddRemove"><input id="rbAdd" type="radio" name="TGmgr" value="ADD" checked="checked" /><label for="rbAdd">Add</label> <input id="rbDelete" type="radio" name="TGmgr" value="DEL" /><label for="rbDelete">Delete</label></td>';
-          echo '<td><input type="submit" style="font-size: 12px" value="Modify Static" name="tgSubmit" /></td>';
+          echo '<td><input aria-labelledby="lblTG" type="text" name="tgNr" size="10" maxlength="7" /></td>'."\n";
+          echo '<td rowspan="2" role="radiogroup" aria-labelledby="lblTS"><input id="rbTS1" type="radio" name="TS" value="1" /><label for="rbTS1">TS1</label> <input id="rbTS2" type="radio" name="TS" value="2" checked="checked" /><label for="rbTS2">TS2</label></td>'."\n";
+          echo '<td role="radiogroup" aria-labelledby="lblAddRemove"><input id="rbAdd" type="radio" name="TGmgr" value="ADD" checked="checked" /><label for="rbAdd">Add</label> <input id="rbDelete" type="radio" name="TGmgr" value="DEL" /><label for="rbDelete">Delete</label></td>'."\n";
+          echo '<td><input type="submit" style="font-size: 12px" value="Modify Static" name="tgSubmit" /></td>'."\n";
           echo '</tr>'."\n";
           echo '    <tr>';
-          echo '<td colspan="4" style="background: #ffffff;"><input type="submit" style="font-size: 12px" value="Drop QSO" name="dropQso" /> <input type="submit" style="font-size: 12px" value="Drop All Dynamic" name="dropDyn" /></td>';
+          echo '<td  style="background: #ffffff;"></td>'."\n";
+          echo '<td colspan="2" style="background: #ffffff;"><input type="submit" style="font-size: 12px" value="Drop QSO" name="dropQso" /> <input type="submit" style="font-size: 12px" value="Drop All Dynamic" name="dropDyn" /></td>'."\n";
           echo '</tr>'."\n";
           echo '  </table>'."\n";
           echo '  <br />'."\n";
