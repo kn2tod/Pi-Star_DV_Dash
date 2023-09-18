@@ -151,6 +151,10 @@ $php=exec('php -v | sed -n "s/^\(PHP .* \)(c.*/\1/p"');
 echo "  <tr><td align=\"left\">PHP</td><td align=\"left\">$php</td></tr>\n";
 $git=exec('git --version | sed "s/git version/Git/g"');
 echo "  <tr><td align=\"left\">GIT</td><td align=\"left\">$git</td></tr>\n";
+if (is_executable('/usr/sbin/cupsd')) {
+  $cups=exec("sudo dpkg -l cups 2>/dev/null | tail -n 1 | awk '{print \$3}'");
+  echo "  <tr><td align=\"left\">CUPS</td><td align=\"left\">$cups</td></tr>\n";
+}
 echo "  </tbody>\n";
 // Ram information
 if ($system['mem_info']) {
@@ -244,6 +248,10 @@ if (is_executable('/usr/local/bin/APRSGateway')) {
 if (is_executable('/usr/local/bin/M17Gateway')) {
     $M17Gateway = exec('/usr/local/bin/M17Gateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">M17Gateway</td><td align=\"left\">".$M17Gateway."</td></tr>\n";
+}
+if (is_executable('/usr/local/bin/DGIdGateway')) {
+    $DGIdGateway = exec('/usr/local/bin/DGIdGateway -v | cut -d\' \' -f 3-');
+    echo "  <tr><td align=\"left\">DGIdGateway</td><td align=\"left\">".$DGIdGateway."</td></tr>\n";
 }
 if (is_executable('/usr/sbin/gpsd')) {
     $GPSD = exec('/usr/sbin/gpsd -V | cut -d\':\' -f 2');
