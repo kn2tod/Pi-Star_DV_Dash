@@ -50,9 +50,9 @@ if ( $testMMDVModeDMR == 1 ) {
   // Use BM API to get information about current TGs
   $jsonContext = stream_context_create(array('http'=>array('timeout' => 2, 'header' => 'User-Agent: Pi-Star Dashboard for '.$dmrID) )); // Add Timout and User Agent to include DMRID
   if (isset($bmAPIkeyV2)) {
-    $json = json_decode(@file_get_contents("https://api.brandmeister.network/v2/device/$dmrID/profile", true, $jsonContext));
+    $json = json_decode(@file_get_contents("https://api.brandmeister.network/v2/device/$dmrID/profile", false, $jsonContext));
   } else {
-    $json = json_decode(@file_get_contents("https://api.brandmeister.network/v1.0/repeater/?action=PROFILE&q=$dmrID", true, $jsonContext));
+    $json = json_decode(@file_get_contents("https://api.brandmeister.network/v1.0/repeater/?action=PROFILE&q=$dmrID", false, $jsonContext));
   }
 
   // Set some Variable
@@ -72,7 +72,7 @@ if ( $testMMDVModeDMR == 1 ) {
                                               $bmStaticTGList .= "TG".$staticTG->talkgroup." ";
                                             }
                                           }
-                                          $bmStaticTGList = wordwrap($bmStaticTGList, 25, "<br />\n");
+                                          $bmStaticTGList = wordwrap($bmStaticTGList, 30, "<br />\n");
                                           if (preg_match('/TG/', $bmStaticTGList) == false) { $bmStaticTGList = "None"; }
                                          } else { $bmStaticTGList = "None"; }
   if (isset($json->dynamicSubscriptions)) { $bmDynamicTGListJson = $json->dynamicSubscriptions;
@@ -87,7 +87,7 @@ if ( $testMMDVModeDMR == 1 ) {
                                                $bmDynamicTGList .= "TG".$dynamicTG->talkgroup." ";
                                              }
                                            }
-                                           $bmDynamicTGList = wordwrap($bmDynamicTGList, 15, "<br />\n");
+                                           $bmDynamicTGList = wordwrap($bmDynamicTGList, 20, "<br />\n");
                                            if (preg_match('/TG/', $bmDynamicTGList) == false) { $bmDynamicTGList = "None"; }
                                           } else { $bmDynamicTGList = "None"; }
 
