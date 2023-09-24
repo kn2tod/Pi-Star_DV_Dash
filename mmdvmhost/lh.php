@@ -46,8 +46,8 @@ $lcount = $_SESSION['LH_limits'];
 <b><?php echo $lang['last_heard_list'];?></b>
 <?php
   $lhsw = $_SESSION['LHSW'];
-  if ($lhsw) {$lhbutton = "LH"; $lhbgnd1 = "";                   $lhbgnd2 = "background:#c2c2c2";}
-  else       {$lhbutton = "LL"; $lhbgnd1 = "background:#c2c2c2"; $lhbgnd2 = "";                  }
+  $lhlh = ( $lhsw ? "Live Log" : "Last Heard" );
+  $lhbgnd1 = "border-width:thin";
   $lhcount = count($lastHeard);
   $fsmode = exec ('sed -n "/\/dev\/root/ {s/.*\(r[ow]\),.*/\1/p}" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
@@ -56,8 +56,8 @@ $lcount = $_SESSION['LH_limits'];
   <table>
     <tr>
       <td align="left">
-         <input type="submit" style="font-size: 11px; <?php echo $lhbgnd2; ?>" value="<?php echo 'LL'; ?>" name="LastHeardSW";/>
-         <input type="submit" style="font-size: 11px; <?php echo $lhbgnd1; ?>" value="<?php echo 'LH'; ?>" name="LastHeardSW";/>
+         <input type="submit" style="font-size: 10px; <?php echo $lhbgnd1; ?>" value="<?php echo 'LH / LL'; ?>" name="LastHeardSW";/>
+         <?php echo $lhlh; ?>
       </td>
       <td align="right" width="25"><?php echo $ovfl;    echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $fsmode;  echo "&nbsp ";?></td>
