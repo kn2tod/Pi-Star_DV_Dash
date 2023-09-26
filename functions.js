@@ -338,3 +338,17 @@ function toggleDstarDplusHostfiles(event) {
   }
   if(event.keyCode == '32') { document.getElementById('aria-toggle-dplusHostFiles').click(); }
 }
+function toggleM17Checkbox(event) {
+  switch(document.getElementById('aria-toggle-m17').getAttribute('aria-checked')) {
+    case "true":
+      document.getElementById('aria-toggle-m17').setAttribute('aria-checked', "false");
+      //document.getElementById('toggle-m17').click();
+      break;
+    case "false":
+      document.getElementById('aria-toggle-m17').setAttribute('aria-checked', "true");
+      //document.getElementById('toggle-m17').click();
+      break;
+  }
+  if(event.keyCode == '32') { document.getElementById('aria-toggle-m17').click(); }
+}
+
