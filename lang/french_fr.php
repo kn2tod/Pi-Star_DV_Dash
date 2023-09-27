@@ -1,6 +1,6 @@
 <?php
 //
-// Frehcn FR Language Pack
+// French FR Language Pack
 // Pierre Philippe (F4MZI)
 // Updated: 01-Nov-2017
 //
@@ -27,6 +27,7 @@ $lang = array (
   "ysf_config"                  =>  "Configuration Yaesu System Fusion",
   "p25_config"                  =>  "Configuration P25",
   "nxdn_config"                 =>  "Configuration NXDN",
+  "m17_config"                  =>  "Configuration M17",
   "pocsag_config"               =>  "Configuration POCSAG",
   "mobilegps_config"            =>  "Mobile GPS Configuration",
   "wifi_config"                 =>  "Configuration R&eacute;seau WIFI",
@@ -51,6 +52,7 @@ $lang = array (
   "ysf_mode"                    =>  "Mode YSF",
   "p25_mode"                    =>  "Mode P25",
   "nxdn_mode"                   =>  "Mode NXDN",
+  "m17_mode"                    =>  "Mode M17",
   "mmdvm_display"               =>  "Afficheur MMDVM",
   "mode_hangtime"               =>  "Mode Hangtime",
   // Config Page - General Configuration
@@ -93,6 +95,8 @@ $lang = array (
   // Config Page - NXDN Configuration
   "nxdn_startup_host"            =>  "H&ocirc;te de d&eacute;marrage NXDN",
   "nxdn_ran"                     =>  "NXDN RAN",
+  // Config Page - M17 Configuration
+  "m17_startup_reflector"       =>  ""R&eacute;flecteur M17 au d&eacute;marrage",
   // Config Page - MobileGPS Configuration
   "mobilegps_enable"            =>  "MobileGPS Enable",
   "mobilegps_port"              =>  "GPS Port",
@@ -111,7 +115,9 @@ $lang = array (
   "internet"                    =>  "Internet",
   "radio_info"                  =>  "Info Radio",
   "dstar_repeater"              =>  "Relais D-Star",
+  "m17_repeater"                =>  "Relais M17",
   "dstar_net"                   =>  "R&eacute;seau D-Star",
+  "m17_net"                     =>  "R&eacute;seau M17",
   "dmr_repeater"                =>  "Relais DMR",
   "dmr_master"                  =>  "Master DMR",
   "ysf_net"                     =>  "R&eacute;seau YSF",
@@ -148,3 +154,4 @@ $lang = array (
   "service_status"              =>  "&Eacute;tat du service"
 );
 ?>
+
