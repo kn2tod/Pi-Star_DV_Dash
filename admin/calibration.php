@@ -57,13 +57,13 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
       $_SESSION['mmdvmcal_offset'] = 0;
     }
   }
-  
+
   if (isset($_GET['ajax'])) {
     //session_start();
     if (!file_exists('/tmp/pi-star_mmdvmcal.log')) {
       exit();
     }
-    
+
     $handle = fopen('/tmp/pi-star_mmdvmcal.log', 'rb');
     if (isset($_SESSION['mmdvmcal_offset'])) {
       fseek($handle, 0, SEEK_END);
@@ -82,7 +82,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
 
   $RXFrequency = exec('grep "RXFrequency" /etc/mmdvmhost | awk -F "=" \'{print $2}\'');
   $RXOffset = exec('grep "RXOffset" /etc/mmdvmhost | awk -F "=" \'{print $2}\'');
-  
+
 ?>
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -99,7 +99,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <meta http-equiv="Expires" content="0" />
-    <title><?php echo "$MYCALL ($MYHOST) - ".$lang['digital_voice']." ".$lang['dashboard'];?></title>
+    <title><?php echo "$MYCALL ($MYHOST) - ".$lang['digital_voice']." ".$lang['dashboard']." - Calibration";?></title>
     <link rel="stylesheet" type="text/css" href="css/pistar-css.php" />
     <script type="text/javascript" src="/jquery.min.js"></script>
     <script type="text/javascript" src="/jquery-timing.min.js"></script>
@@ -123,7 +123,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
       });
       return false;
     }
-    
+
     var sendcmd_lock=false;
 
     function sendcmd(cmd='', param='') {
@@ -142,7 +142,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
       });
       return false;
     }
-    
+
     var cnt=0; tcnt=0;
     var cfrms=0; cbits=0, cberr=0;
     var tfrms=0; tbits=0, tberr=0;
@@ -159,7 +159,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
           if (isScrolledToBottom)
             objDiv.scrollTop = objDiv.scrollHeight;
 <?php } ?>
-          
+
           if (("\n"+data).includes("Version:")) {
             setTimeout(function(){ sendcmd('e', (~~'<?php echo $RXFrequency; ?>'+rxoffset).toString() ); }, 1000);
           }
@@ -213,7 +213,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
             $('#ledP25').attr("src", 'images/20red.png');
             $('#ledNXDN').attr("src", 'images/20green.png');
           }
-          
+
           if (data.includes("voice end received,")) {
             eot=true;
           }
@@ -288,7 +288,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
   <table width="100%">
   <tr><th>Calibration Tool</th></tr>
   <tr><td align="left">
-  
+
 <table width="800" border="0" cellspacing="0" cellpadding="5">
   <tr>
     <td align="center" valign="middle"><table border="0" cellspacing="0" cellpadding="5">
@@ -391,7 +391,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/calibration.php") {
       </tr>
     </table></td>
   </tr>
-</table>  
+</table>
 
   </td></tr>
   <tr><td align="left">
