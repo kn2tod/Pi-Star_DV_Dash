@@ -102,6 +102,15 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
                         $dt = new DateTime($utc_time, $utc_tz);
                         $dt->setTimeZone($local_tz);
                         $local_time = $dt->format('H:i:s M jS');
+
+		if ($listElem[2] == "********" ) {
+			echo "<tr style=\"background: #f93;\">";
+			echo "<td align=\"left\">$local_time</td>";
+			echo "<td align=\"left\">-------</td><td align=\"left\">-------</td>";
+			echo "<td align=\"left\">--------</td>";
+			echo "<td>---</td><td>---</td><td>---</td><td>---</td>";
+		} else {
+
 		echo "<tr>";
 		echo "<td align=\"left\">$local_time</td>";
 		echo "<td align=\"left\">".str_replace('Slot ', 'TS', $listElem[1])."</td>";
@@ -164,6 +173,7 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 			elseif (floatval($listElem[8]) >= 0.0 && floatval($listElem[8]) <= 1.9) { echo "<td style=\"background:#1d1;\">$listElem[8]</td>"; }
 			elseif (floatval($listElem[8]) >= 2.0 && floatval($listElem[8]) <= 4.9) { echo "<td style=\"background:#fa0;\">$listElem[8]</td>"; }
 			else { echo "<td style=\"background:#f33;\">$listElem[8]</td>"; }
+		}
 		}
 		echo "</tr>\n";
 		}
