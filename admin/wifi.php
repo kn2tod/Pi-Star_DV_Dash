@@ -58,10 +58,10 @@ switch($page) {
 				//Cant get these unless we are connected :)
 				if (strpos($strWlan0,'inet addr:') !== false) {
 					preg_match('/inet addr:([0-9.]+)/i',$strWlan0,$result);
-					$strIPAddress = $result[1];
+					$strIPAddress = isset($result[1]) ? $result[1] ; null;
 				} else {
 					preg_match('/inet ([0-9.]+)/i',$strWlan0,$result);
-					$strIPAddress = $result[1];
+					$strIPAddress = isset($result[1]) ? $result[1] ; null;
 				}
 				if (strpos($strWlan0,'Mask:') !== false) {
 					preg_match('/Mask:([0-9.]+)/i',$strWlan0,$result);
