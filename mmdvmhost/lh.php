@@ -49,7 +49,7 @@ $lcount = $_SESSION['LH_limits'];
   $lhlh = ( $lhsw ? "Live Log" : "Last Heard" );
   $lhbgnd1 = "border-width:thin";
   $lhcount = count($lastHeard);
-  $fsmode = exec ('sed -n "/\/dev\/root/ {s/.*\(r[ow]\),.*/\1/p}" /proc/mounts');
+  $fsmode = exec ('sed -n "s/\/dev\/.* \/ ext4 \(r[ow]\).*/\1/p" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
   $ovfl = exec ('grep -a -m 1 -ih "overflow in the DMR" /var/log/pi-star/MMDVM*.log | sed "s/.* overflow .*/ov/g"');
 ?>
