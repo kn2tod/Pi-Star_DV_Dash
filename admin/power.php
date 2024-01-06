@@ -52,6 +52,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/power.php") {
   <?php
         if ( escapeshellcmd($_POST["action"]) == "reboot" ) {
                 $wait = exec ('grep -i "pi zero" /proc/cpuinfo') ? "90" : "50" ;
+                $wait = exec ('grep -i "pi5" /proc/cpuinfo') ? "$wait" : "25" ;
                 echo '<tr><td colspan="2" style="background: #000000; color: #00ff00;"><br /><br />Reboot command has been sent to your Pi,
                         <br />please wait up to '.$wait.' secs for it to reboot.<br />
                         <br />You will be re-directed back to the
