@@ -261,6 +261,10 @@ if (is_executable('/usr/local/bin/NextionDriver')) {
     $NEXTIONDRIVER_Ver = exec('/usr/local/bin/NextionDriver -V | head -n 2 | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">NextionDriver</td><td align=\"left\">".$NEXTIONDRIVER_Ver."</td></tr>\n";
 }
+if (is_executable('/usr/local/bin/AMBEserver')) {
+    $AMBEserver_Ver = exec('/usr/local/bin/AMBEserver -v | cut -d\' \' -f 3-');
+    echo "  <tr><td align=\"left\">AMBEserver</td><td align=\"left\">".$AMBEserver_Ver."</td></tr>\n";
+}
 $Firmware = isset($_SESSION['Firmware']) ? $_SESSION['Firmware'] : "";
 if (isset($Firmware)) {
     $hat = exec('sed -n "s/Hardware=\(.*\)/\1/p" /etc/dstar-radio.mmdvmhost');
