@@ -255,12 +255,14 @@ echo '<br />
 <div class="network" id="networkbox">'."\n";
 		if (!isset($wifiCountry)) { $wifiCountry = "JP"; }
 		$output .= 'WiFi Regulatory Domain (Country Code) : <select name="wifiCountryCode">'."\n";
-		if (file_exists('/lib/crda/regulatory.bin')) {
+		if (file_exists('/lib/crda/regulatory.bin') && file_exists('/lib/crda/libreg.so')) {
 			exec('regdbdump /lib/crda/regulatory.bin | fgrep country | cut -b 9-10', $regDomains);
 		} elseif (file_exists('/usr/local/etc/wireless-db.txt')) {
-		        exec('cat /usr/local/etc/wireless-db.txt | fgrep country | cut -b 9-10', $regDomains);
+		        exec('fgrep country /usr/local/etc/wireless-db.txt | cut -b 9-10', $regDomains);
+		} elseif (file_exists('/usr/share/zoneinfo/zone.tab')) {
+			exec('cat /usr/share/zoneinfo/zone.tab | cut -f1 | grep -v -E "^(#|$)" | sort | uniq', $regDomains);
 		} elseif (file_exists('/lib/crda/db.txt')) {
-			exec('cat /usr/lib/crda/db.txt | fgrep country | cut -b 9-10', $regDomains);
+			exec('fgrep country /usr/lib/crda/db.txt | cut -b 9-10', $regDomains);
 		} else {
 			$regDomains = array("AU","FR","DE","GB","US","JP");
 		}
