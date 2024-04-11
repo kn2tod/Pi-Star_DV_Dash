@@ -48,6 +48,18 @@ function getNXDNGatewayConfig() {
 	return $conf;
 }
 
+function getM17GatewayConfig() {
+	// loads /etc/m17gateway into array for further use
+	$conf = array();
+	if ($configs = @fopen('/etc/m17gateway', 'r')) {
+		while ($config = fgets($configs)) {
+			array_push($conf, trim ( $config, " \t\n\r\0\x0B"));
+			}
+		fclose($configs);
+	}
+	return $conf;
+}
+
 function getDAPNETGatewayConfig() {
 	// loads /etc/dapnetgateway into array for further use
 	$conf = array();
@@ -134,6 +146,14 @@ function showMode($mode, $mmdvmconfigs) {
 				echo "<td style=\"background:#b00; color:#500; width:50%;\">";
 			}
 		}
+		elseif ($mode == "M17 Network") {
+			if (isProcessRunning("M17Gateway")) {
+				echo "<td style=\"background:#0b0; color:#030; width:50%;\">";
+			} else {
+				echo "<td style=\"background:#b00; color:#500; width:50%;\">";
+			}
+		}
+
 		elseif ($mode == "DAPNET Network") {
 			if (isProcessRunning("DAPNETGateway")) {
 				echo "<td style=\"background:#0b0; color:#030; width:50%;\">";
@@ -160,7 +180,7 @@ function showMode($mode, $mmdvmconfigs) {
 			}
 		}
 		else {
-			if ($mode == "D-Star" || $mode == "DMR" || $mode == "System Fusion" || $mode == "P25" || $mode == "NXDN" || $mode == "POCSAG") {
+			if ($mode == "D-Star" || $mode == "DMR" || $mode == "System Fusion" || $mode == "P25" || $mode == "NXDN" || $mode == "POCSAG" || $mode == "M17") {
 				if (isProcessRunning("MMDVMHost")) {
 					echo "<td style=\"background:#0b0; color:#030; width:50%;\">";
 				} else {
@@ -312,6 +332,27 @@ function getNXDNGatewayLog()  {
         }
 	if (sizeof($logLines1) == 0) { $logLines = $logLines2; } else { $logLines = $logLines1; }
         return array_filter($logLines);
+}
+
+function getM17GatewayLog() {
+	// Open Logfile and copy loglines into LogLines-Array()
+	$logLines = array();
+	$logLines1 = array();
+	$logLines2 = array();
+	$logPath = "/var/log/pi-star/M17Gateway-".gmdate("Y-m-d").".log";
+	if (file_exists($logPath)) {
+		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "ink|Starting|witched" $logPath | cut -d" " -f2- | tail -1`);
+	}
+	$logLines1 = array_filter($logLines1);
+	if (sizeof($logLines1) == 0) {
+		$logPath = "/var/log/pi-star/M17Gateway-".gmdate("Y-m-d", time() - 86340).".log";
+		if (file_exists($logPath)) {
+			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "ink|Starting|witched" $logPath | cut -d" " -f2- | tail -1`);
+		}
+		$logLines2 = array_filter($logLines2);
+	}
+	if (sizeof($logLines1) == 0) { $logLines = $logLines2; } else { $logLines = $logLines1; }
+	return array_filter($logLines);
 }
 
 function getDAPNETGatewayLog()  {
@@ -478,6 +519,11 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 NXDN, received network transmission from 10999 to TG 65000
 // M: 2000-00-00 00:00:00.000 NXDN, network end of transmission, 1.8 seconds, 0% packet loss
 // M: 2000-00-00 00:00:00.000 POCSAG, transmitted 1 frame(s) of data from 1 message(s)
+// M: 2000-00-00 00:00:00.000 POCSAG, transmitted 1 frame(s) of data from 1 message(s)
+// M: 2000-00-00 00:00:00.000 M17, received RF late entry voice transmission from IU5BON to INFO
+// M: 2000-00-00 00:00:00.000 M17, received RF end of transmission from IU5BON to INFO, 2.1 seconds, BER: 0.2%, RSSI: -47/-47/-47 dBm
+// M: 2000-00-00 00:00:00.000 M17, received network voice transmission from IU5BON to ECHO
+// M: 2000-00-00 00:00:00.000 M17, received network end of transmission from IU5BON to ECHO, 13.4 seconds
 function getHeardList($logLines) {
 	//array_multisort($logLines,SORT_DESC);
 	$heardList = array();
@@ -505,6 +551,11 @@ function getHeardList($logLines) {
         $nxdnloss	= "";
         $nxdnber	= "";
 	$nxdnrssi	= "";
+	$m17duration	= "";
+	$m17loss	= "";
+	$m17ber		= "";
+	$m17rssi	= "";
+
 	$pocsagduration	= "";
 	foreach ($logLines as $logLine) {
 		$duration	= "";
@@ -634,6 +685,12 @@ function getHeardList($logLines) {
 						$nxdnber	= $ber;
 						$nxdnrssi	= $rssi;
 						break;
+					case "M17":
+						$m17duration	= $duration;
+						$m17loss	= $loss;
+						$m17ber		= $ber;
+						$m17rssi	= $rssi;
+						break;
 					case "POCSAG":
 						$pocsagduration	= "POCSAG Data";
 						break;
@@ -705,6 +762,12 @@ function getHeardList($logLines) {
                 		$ber		= $nxdnber;
 				$rssi		= $nxdnrssi;
                 		break;
+			case "M17":
+				$duration       = $m17duration;
+				$loss           = $m17loss;
+				$ber            = $m17ber;
+				$rssi           = $m17rssi;
+				break;
 			case "POCSAG":
 				$callsign	= "DAPNET";
 				$target		= "DAPNET User";
@@ -1050,6 +1113,25 @@ function getActualLink($logLines, $mode) {
         }
         break;
 
+    case "M17":
+	if (isProcessRunning("M17Gateway")) {
+	    foreach ($logLines as $logLine) {
+		    if (preg_match_all('/Linked .* reflector (M17-.\{3\} [A-Z])/',$logLine,$linx) > 0){
+		        return $linx[1][0];
+		    }
+		    if (strpos($logLine,"Starting M17Gateway")) {
+		        return "Not Linked";
+		    }
+		    if (strpos($logLine,"nlink")) {
+		        return "Not Linked";
+		    }
+	    }
+	    return "Not Linked";
+	} else {
+	    return "Service Not Started";
+	}
+	break;
+
     case "P25":
 	// 00000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000111111111122
 	// 01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901
@@ -1145,6 +1227,9 @@ if (!in_array($_SERVER["PHP_SELF"],array('/mmdvmhost/bm_links.php','/mmdvmhost/b
 		array_multisort($reverseLogLinesYSFGateway,SORT_DESC);
 		$logLinesP25Gateway = getP25GatewayLog();
 		$logLinesNXDNGateway = getNXDNGatewayLog();
+		$logLinesM17Gateway = getM17GatewayLog();
+		$reverseLogLinesM17Gateway = $logLinesM17Gateway;
+		array_multisort($reverseLogLinesM17Gateway,SORT_DESC);
 	}
 	// Only need these in index.php
 	if (strpos($_SERVER["PHP_SELF"], 'index.php') !== false || strpos($_SERVER["PHP_SELF"], 'pages.php') !== false) {
@@ -1230,6 +1315,8 @@ function getActualModex($metaLastHeard, $mmdvmconfigs) {
         }
 
         $timestamp->add(new DateInterval("PT" . $hangtime . "S"));
+
+        if (! is_numeric($listElem[6])) { return $mode; }
 
         $timestamp->add(new DateInterval("PT" . ceil($listElem[6]) . "S"));
         if ($now->format("U") > $timestamp->format("U")) {
