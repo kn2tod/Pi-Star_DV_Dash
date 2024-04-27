@@ -32,6 +32,8 @@
     <a href="fulledit_rssidat.php" style="color: #ffffff;">RSSI Dat</a><br />
     <b>Tools:</b>
     <a href="edit_dashboard.php" style="color: #ffffff;">CSS Tool</a> |
+    <a href="modem_fw_upgrade.php" style="color: #ffffff;">FW</a> |
+    <a href="nextion_fw_update.php" style="color: #ffffff;">Nextion</a> |
     <a href="ssh_access.php" style="color: #ffffff;">SSH Access</a> |
     <a href="/admin/calibration.php" style="color: #ffffff;">Calibration</a><br />
   </p>
