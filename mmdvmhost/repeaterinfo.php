@@ -218,6 +218,7 @@ echo "</table>\n";
 }
 
 $testMMDVModeDMR = getConfigItem("DMR", "Enable", $mmdvmconfigs);
+$dmrId = getConfigItem("DMR", "Id", $mmdvmconfigs);
 if ( $testMMDVModeDMR == 1 ) { //Hide the DMR information when DMR mode not enabled.
 $dmrMasterFile = fopen("/usr/local/etc/DMR_Hosts.txt", "r");
 $dmrMasterHost = getConfigItem("DMR Network", "Address", $mmdvmconfigs);
@@ -225,6 +226,7 @@ $dmrMasterPort = getConfigItem("DMR Network", "Port", $mmdvmconfigs);
 if ($dmrMasterHost == '127.0.0.1') {
 	if (isset($configdmrgateway['XLX Network 1']['Address'])) { $xlxMasterHost1 = $configdmrgateway['XLX Network 1']['Address']; }
 	else { $xlxMasterHost1 = ""; }
+	$dmrId = $configdmrgateway['DMR Network 1']['Id'];
 	$dmrMasterHost1 = $configdmrgateway['DMR Network 1']['Address'];
 	$dmrMasterHost2 = $configdmrgateway['DMR Network 2']['Address'];
 	$dmrMasterHost3 = str_replace('_', ' ', $configdmrgateway['DMR Network 3']['Name']);
@@ -263,7 +265,8 @@ fclose($dmrMasterFile);
 echo "<br />\n";
 echo "<table>\n";
 echo "<tr><th colspan=\"2\">".$lang['dmr_repeater']."</th></tr>\n";
-echo "<tr><th>DMR ID</th><td style=\"background: #ffffff;\">".getConfigItem("DMR", "Id", $mmdvmconfigs)."</td></tr>\n";
+//echo "<tr><th>DMR ID</th><td style=\"background: #ffffff;\">".getConfigItem("DMR", "Id", $mmdvmconfigs)."</td></tr>\n";
+echo "<tr><th>DMR ID</th><td style=\"background: #ffffff;\">".$dmrId."</td></tr>\n";
 echo "<tr><th>DMR CC</th><td style=\"background: #ffffff;\">".getConfigItem("DMR", "ColorCode", $mmdvmconfigs)."</td></tr>\n";
 echo "<tr><th>TS1</th>";
 if (getConfigItem("DMR Network", "Slot1", $mmdvmconfigs) == 1) { echo "<td style=\"background:#0b0;\">enabled</td></tr>\n"; } else { echo "<td style=\"background:#606060; color:#b0b0b0;\">disabled</td></tr>\n"; }
