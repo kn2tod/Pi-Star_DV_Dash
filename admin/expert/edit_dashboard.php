@@ -113,6 +113,7 @@ if($_POST) {
 			$content .= "[".$section."]\n";
 			//append the values
 			foreach($values as $key=>$value) {
+				$value = str_replace("'", "", $value);
 				if ($value == '') {
 					$content .= $key."=none\n";
 				}
