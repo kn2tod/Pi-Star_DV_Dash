@@ -147,6 +147,14 @@ $parsed_ini = parse_ini_file($filepath, true);
 if (isset($parsed_ini['Lookup']['popupWidth']))  { unset($parsed_ini['Lookup']['popupWidth']); }
 if (isset($parsed_ini['Lookup']['popupHeight'])) { unset($parsed_ini['Lookup']['popupHeight']); }
 
+function chek_ini_fld($fld) {
+	if ( strlen(trim($fld)) <> 6 ) { return false; }
+//	if ( preg_match('/^0-9a-f]+$/i', $fld) ) { return false; }
+//	if ( ! ctype_xdigit($fld) ) { return false; }
+	if ( ! trim($fld, '0..9A..Fa..f') == '' ) { return false; }
+	return true;
+}
+
 echo '<form action="" method="post">'."\n";
 	foreach($parsed_ini as $section=>$values) {
 		// keep the section as hidden text so we can update once the form submitted
@@ -172,7 +180,13 @@ echo '<form action="" method="post">'."\n";
 		    echo "  </select>\n";
 		    echo "</td></tr>\n";
 		  } else {
-		    echo "<tr><td align=\"right\" width=\"30%\">$key</td><td align=\"left\"><input type=\"text\" name=\"{$section}[$key]\" value=\"$value\" style=\"font-family: monospace;\" /></td></tr>\n";
+		    $err = "";
+		    if ( in_array($section, array('Background', 'Text', 'Tables', 'Content')) ) {
+		      if ( ! in_array($key, array('Width','Enabled','Depth')) ) {
+		        if ( ! chek_ini_fld($value)) { $err = "background-color: #ff9090;"; }
+		      }
+		    }
+		    echo "<tr><td align=\"right\" width=\"30%\">$key</td><td align=\"left\"><input type=\"text\" name=\"{$section}[$key]\" value=\"$value\" style=\"font-family: monospace; $err\" /></td></tr>\n";
 		  }
 		}
 		echo "</table>\n";
