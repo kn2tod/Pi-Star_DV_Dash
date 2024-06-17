@@ -1249,7 +1249,7 @@ function getDMRinfo($callSign,$target)  {
      if (!$output) {
         exec("grep -w --color=never -m 1 ".$callsign." ".DMRIDDATPATH."/DMRIds.dat", $output);
         if (!$output) {return "?".$callsign."?";}
-        $output[0] = $output[0]."\t\t\t";
+        $output[0] = $output[0]."\t\t\t\t";
         }
      $output[0] = strtr($output[0],",","\t");
      $fp = fopen($DMRq,"a+");
@@ -1259,7 +1259,7 @@ function getDMRinfo($callSign,$target)  {
         }
      }
 
-  $outs = explode("\t",$output[0]."\t\t\t");
+  $outs = explode("\t",$output[0]."\t\t\t\t");
   $outs = array_map(function($v) {return empty($v) ? "" : $v;},$outs);
   if (!in_array($outs[5],array("US","CAN"))) {
      $outs[4] = $outs[5];
