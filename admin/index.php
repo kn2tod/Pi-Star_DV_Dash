@@ -97,6 +97,7 @@ if ( ($_SERVER["PHP_SELF"] == "/admin/index.php") && ($configPistarRelease['Pi-S
   echo ' <a href="/admin/power.php" style="color: #ffffff;">'.$lang['power'].'</a> |'."\n";
   echo ' <a href="/admin/update.php" style="color: #ffffff;">'.$lang['update'].'</a> |'."\n";
   echo ' <a href="/admin/sysinfo.php" style="color: #ffffff;">'."System".'</a> |'."\n";
+  echo ' <a href="/admin/expert/" style="color: #ffffff;">'."Expert".'</a> |'."\n";
   } ?>
  <a href="/admin/configure.php" style="color: #ffffff;"><?php echo $lang['configuration'];?></a>
 </p>
