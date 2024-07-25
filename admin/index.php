@@ -16,6 +16,9 @@ $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 $rev=$version;
 $MYCALL=strtoupper($callsign);
 $MYHOST=php_uname('n');
+$Debian=exec('sed -n "s/VERSION_CODENAME=\(.*\)/\u\1/p" /etc/os-release');
+$Linux=php_uname('s')." ".php_uname('r')." ".php_uname('v')." ".php_uname('m');
+$Hardware=exec('sed -n "s|^Model.*: Raspberry \(.*\)|\1|p" /proc/cpuinfo');
 
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
@@ -43,6 +46,8 @@ $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
     <meta name="language" content="English" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <?php echo "<meta name=\"generator\" content=\"$progname $rev\" />\n"; ?>
+    <?php echo "<meta name=\"system\" content=\"$Debian $Linux\" />\n"; ?>
+    <?php echo "<meta name=\"platform\" content=\"$Hardware\" />\n"; ?>
     <meta name="Author" content="Hans-J. Barthen (DL5DI), Kim Huebel (DG9VH) and Andy Taylor (MW0MWZ)" />
     <meta name="Description" content="Pi-Star Dashboard" />
     <meta name="KeyWords" content="MW0MWZ,MMDVMHost,ircDDBGateway,D-Star,ircDDB,Pi-Star,Blackwood,Wales,DL5DI,DG9VH" />
@@ -53,7 +58,7 @@ $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="css/nice-select.min.css?ver=<?php echo $configPistarRelease['Pi-Star']['Version']; ?>" />
     <title><?php echo "$MYCALL ($MYHOST)"." - ".$lang['digital_voice']." ".$lang['dashboard'];?></title>
-<?php include_once "config/browserdetect.php"; ?>
+    <?php include_once "config/browserdetect.php"; ?>
     <script type="text/javascript" src="/jquery.min.js"></script>
     <script type="text/javascript" src="/functions.js"></script>
     <script type="text/javascript">
