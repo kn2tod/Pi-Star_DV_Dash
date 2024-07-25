@@ -3854,33 +3854,28 @@ else:
 	    </select>
 	    Port: <select name="mmdvmDisplayPort">
 	    <?php
-            if (($configmmdvm['General']['Display'] == "None") || ($configmmdvm['General']['Display'] == "")) {
-                echo '      <option selected="selected" value="None">None</option>'."\n";
-            } else {
-                echo '      <option value="None">None</option>'."\n";
-            }
-            if (isset($configmmdvm['Nextion']['Port'])) {
-                if ($configmmdvm['Nextion']['Port'] == "modem") {
-                        echo '      <option selected="selected" value="modem">modem</option>'."\n";
-                } else {
-                        echo '      <option value="modem">modem</option>'."\n";
-                }
-                if ( ($configmmdvm['Nextion']['Port'] == "None") || ($configmmdvm['Nextion']['Port'] == "" )) { } else {
-			$currentPort = str_replace($configmmdvm['Nextion']['Port'], "/dev/", "");
-                        echo '      <option selected="selected" value="'.$currentPort.'">'.$configmmdvm['Nextion']['Port'].'</option>'."\n";
-                }
-            }
-            exec('ls /dev/ | egrep -h "ttyA|ttyUSB"', $availablePorts);
-            foreach($availablePorts as $port) {
-                 echo "     <option value=\"$port\">/dev/$port</option>\n";
-            }
+	    $availablePorts = array("None","modem");
+	    exec('ls /dev/tty* | egrep -h "ttyA|ttyUSB|ttyN"', $availablePorts);
+
+	    $currentPort = "";
+
+	    if (($configmmdvm['General']['Display'] == "None") || ($configmmdvm['General']['Display'] == "")) {
+	        $currentPort = "None";
+	    }
+
+	    if (isset($configmmdvm['Nextion']['Port'])) {
+	        $currentPort = $configmmdvm['Nextion']['Port'];
+		$currentPort = $currentPort ? $currentPort : "None";
+	    }
+
+	    foreach($availablePorts as $port) {
+	        if ($currentPort == $port) {
+		   echo "\t    <option selected=\"selected\" value=\"$port\">$port</option>\n";
+	        } else {
+		   echo "\t    <option value=\"$port\">$port</option>\n";
+	        }
+	    }
 	    ?>
-	    <?php if (file_exists('/dev/ttyS2')) { ?>
-	    <option <?php if ($configmmdvm['Nextion']['Port'] == "/dev/ttyS2") {echo 'selected="selected" ';}; ?>value="ttyS2">/dev/ttyS2</option>
-    	    <?php } ?>
-	    <?php if (file_exists('/dev/ttyNextionDriver')) { ?>
-	    <option <?php if ($configmmdvm['Nextion']['Port'] == "/dev/ttyNextionDriver") {echo 'selected="selected" ';}; ?>value="ttyNextionDriver">/dev/ttyNextionDriver</option>
-    	    <?php } ?>
 	    </select>
 	    Nextion Layout: <select name="mmdvmNextionDisplayType">
 	    <option <?php if ($configmmdvm['Nextion']['ScreenLayout'] == "0") {echo 'selected="selected" ';}; ?>value="G4KLX">G4KLX</option>
