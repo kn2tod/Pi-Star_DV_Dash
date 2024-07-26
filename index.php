@@ -36,6 +36,7 @@ if (file_exists('/etc/pistar-css.ini')) {
 $pistarReleaseConfig = '/etc/pistar-release';
 $configPistarRelease = array();
 $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
+$ver=$configPistarRelease['Pi-Star']['Version'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -48,9 +49,10 @@ $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
     <?php echo "<meta name=\"generator\" content=\"$progname $rev\" />\n"; ?>
     <?php echo "<meta name=\"system\" content=\"$Debian $Linux\" />\n"; ?>
     <?php echo "<meta name=\"platform\" content=\"$Hardware\" />\n"; ?>
-    <meta name="Author" content="Hans-J. Barthen (DL5DI), Kim Huebel (DG9VH) and Andy Taylor (MW0MWZ)" />
+    <?php echo "<meta name=\"version\" content=\"Pi-Star: $ver - $rev\" />\n"; ?>
+    <meta name="Author" content="Hans-J. Barthen (DL5DI), Kim Huebel (DG9VH), Andy Taylor (MW0MWZ), Mark Prichard (KN2TOD)" />
     <meta name="Description" content="Pi-Star Dashboard" />
-    <meta name="KeyWords" content="MW0MWZ,MMDVMHost,ircDDBGateway,D-Star,ircDDB,Pi-Star,Blackwood,Wales,DL5DI,DG9VH" />
+    <meta name="KeyWords" content="MW0MWZ,MMDVMHost,ircDDBGateway,D-Star,ircDDB,Pi-Star,Blackwood,Wales,DL5DI,DG9VH,KN2TOD" />
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="expires" content="0" />
@@ -252,7 +254,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo '<div id="localTxs">'."\n";
 	include 'mmdvmhost/localtx.php';				// MMDVMDash Local Trasmissions
 	echo '</div>'."\n";
-	
+
 	// If POCSAG is enabled, show the information pannel
 	$testMMDVModePOCSAG = getConfigItem("POCSAG Network", "Enable", $mmdvmconfigs);
 	if ( $testMMDVModePOCSAG == 1 ) {
@@ -339,6 +341,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 Pi-Star / Pi-Star Dashboard, &copy; Andy Taylor (MW0MWZ) 2014-<?php echo date("Y"); ?>.<br />
 ircDDBGateway Dashboard by Hans-J. Barthen (DL5DI),<br />
 MMDVMDash developed by Kim Huebel (DG9VH), <br />
+Further enhancements by Mark Prichard (KN2TOD), <br />
 Need help? Click <a style="color: #ffffff;" href="https://www.facebook.com/groups/pistarusergroup/" target="_new">here for the Facebook Group</a><br />
 or Click <a style="color: #ffffff;" href="https://forum.pistar.uk/" target="_new">here to join the Support Forum</a><br />	
 Get your copy of Pi-Star from <a style="color: #ffffff;" href="http://www.pistar.uk/downloads/" target="_new">here</a>.<br />
