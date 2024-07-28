@@ -17,7 +17,6 @@ $configPistarRelease = array();
 $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
 $ver=$configPistarRelease['Pi-Star']['Version'];
 //Load the Version Info
-require_once('../config/version.php');
 ?>
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
