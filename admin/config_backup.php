@@ -54,46 +54,46 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
           $output = "Finding config files to be backed up\n";
           $backupDir = "/tmp/config_backup";
           $backupZip = "/tmp/config_backup.zip";
-	  $hostNameInfo = exec('cat /etc/hostname');
+          $hostNameInfo = exec('cat /etc/hostname');
 
           $output .= shell_exec("sudo rm -rf $backupZip 2>&1");
           $output .= shell_exec("sudo rm -rf $backupDir 2>&1");
           $output .= shell_exec("sudo mkdir $backupDir 2>&1");
-	  if (shell_exec('cat /etc/dhcpcd.conf | grep "static ip_address" | grep -v "#"')) {
-		  $output .= shell_exec("sudo cp /etc/dhcpcd.conf $backupDir 2>&1");
-	  }
+          if (shell_exec('cat /etc/dhcpcd.conf | grep "static ip_address" | grep -v "#"')) {
+            $output .= shell_exec("sudo cp /etc/dhcpcd.conf $backupDir 2>&1");
+          }
           $output .= shell_exec("sudo cp /etc/wpa_supplicant/wpa_supplicant.conf $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/ircddbgateway $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/mmdvmhost $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/dstarrepeater $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/dapnetgateway $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/dapnetgateway $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/p25gateway $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/ysfgateway $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/ysf2dmr $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/ysf2nxdn $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/ysf2p25  $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/dgidgateway $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/nxdngateway $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/dmrgateway $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/m17gateway $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/aprsgateway $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/dmr2nxdn $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/dmr2ysf  $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/mobilegps $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/ysf2dmr $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/ysf2nxdn $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/ysf2p25  $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/dgidgateway $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/nxdngateway $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/dmrgateway $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/m17gateway $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/aprsgateway $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/dmr2nxdn $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/dmr2ysf  $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/mobilegps $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/starnetserver $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/timeserver $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/dstar-radio.* $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/pistar-remote $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/hosts $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/hostname $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/bmapi.key $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/dapnetapi.key $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/pistar-css.ini $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /etc/crontab $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /usr/local/etc/RSSI.dat $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /var/www/dashboard/config/ircddblocal.php $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /var/www/dashboard/config/config.php $backupDir 2>&1");
-	  $output .= shell_exec("sudo cp /var/www/dashboard/config/language.php $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/pistar-remote $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/hosts $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/hostname $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/bmapi.key $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/dapnetapi.key $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/pistar-css.ini $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/crontab $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /usr/local/etc/RSSI.dat $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /var/www/dashboard/config/ircddblocal.php $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /var/www/dashboard/config/config.php $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /var/www/dashboard/config/language.php $backupDir 2>&1");
           $output .= "Compressing backup files\n";
           $output .= shell_exec("sudo zip -j $backupZip $backupDir/* 2>&1");
           $output .= "Starting download\n";
@@ -109,12 +109,12 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
             $local_time = $dt->format('Y-m-d');
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-	    if ($hostNameInfo != "pi-star") {
-		    header('Content-Disposition: attachment; filename="'.basename("Pi-Star_Config_".$hostNameInfo."_".$local_time.".zip").'"');
-	    }
-	    else {
-		    header('Content-Disposition: attachment; filename="'.basename("Pi-Star_Config_$local_time.zip").'"');
-	    }
+            if ($hostNameInfo != "pi-star") {
+              header('Content-Disposition: attachment; filename="'.basename("Pi-Star_Config_".$hostNameInfo."_".$local_time.".zip").'"');
+            }
+            else {
+            header('Content-Disposition: attachment; filename="'.basename("Pi-Star_Config_$local_time.zip").'"');
+            }
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
