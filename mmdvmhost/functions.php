@@ -256,18 +256,18 @@ function getMMDVMLog()  {
 	$logLines2 = array();
 	$logPath = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d").".log";
 	if (file_exists($logPath)) {
-		$logLines1 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -250`);
+		$logLines1 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
 	}
-	$logLines1 = array_slice($logLines1, -250);
-	if (sizeof($logLines1) < 250) {
+	$logLines1 = array_slice($logLines1, -400);
+	if (sizeof($logLines1) < 400) {
 		$logPath = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
 		if (file_exists($logPath)) {
-			$logLines2 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -250`);
+			$logLines2 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
 		}
 	}
-	$logLines2 = array_slice($logLines2, -250);
+	$logLines2 = array_slice($logLines2, -400);
 	$logLines = $logLines1 + $logLines2;
-	$logLines = array_slice($logLines, -250);
+	$logLines = array_slice($logLines, -400);
 	return $logLines;
 }
 
