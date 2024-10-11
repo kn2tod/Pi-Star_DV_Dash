@@ -87,6 +87,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
           $output .= shell_exec("sudo cp /etc/hosts $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/hostname $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/bmapi.key $backupDir 2>&1");
+          $output .= shell_exec("sudo cp /etc/motd-ext $backupDir 2>&1"); 
           $output .= shell_exec("sudo cp /etc/dapnetapi.key $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/pistar-css.ini $backupDir 2>&1");
           $output .= shell_exec("sudo cp /etc/crontab $backupDir 2>&1");
