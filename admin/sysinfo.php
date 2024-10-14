@@ -6,12 +6,20 @@ $debian = $_SESSION['Debian'];
 // Load the language support
 require_once('config/language.php');
 require_once('config/ircddblocal.php');
+require_once('config/version.php');
+$progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
+$rev=$version;
 $MYCALL=strtoupper($callsign);
 $MYHOST=php_uname('n');
 // Load the Pi-Star Release file
 $pistarReleaseConfig = '/etc/pistar-release';
 $configPistarRelease = array();
 $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
+$ver=$configPistarRelease['Pi-Star']['Version'];
+$Debian=exec('sed -n "s/VERSION_CODENAME=\(.*\)/\u\1/p" /etc/os-release');
+$Linux=php_uname('s')." ".php_uname('r')." ".php_uname('v')." ".php_uname('m');
+$Hardware=exec('sed -n "s|^Model.*: Raspberry \(.*\)|\1|p" /proc/cpuinfo');
+$ModemFW=exec('grep -ihs "MMDVM protocol version:" /var/log/pi-star/MMDVM* | tail -n 1 | sed -n "s/.*description: \(.*-[0-9v.]* \).*/\1/p"');
 // Load the Version Info
 require_once('config/version.php');
 
@@ -92,6 +100,11 @@ function formatSize( $bytes ) {
     <meta name="Author" content="Andrew Taylor (MW0MWZ)" />
     <meta name="Description" content="Pi-Star SysInfo" />
     <meta name="KeyWords" content="Pi-Star" />
+    <?php echo "<meta name=\"generator\" content=\"$progname $rev\" />\n"; ?>
+    <?php echo "<meta name=\"system\" content=\"$Debian $Linux\" />\n"; ?>
+    <?php echo "<meta name=\"platform\" content=\"$Hardware\" />\n"; ?>
+    <meta name="modem" content="<?php echo "$ModemFW"; ?>" />
+    <?php echo "<meta name=\"version\" content=\"Pi-Star: $ver - $rev\" />\n"; ?>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="pragma" content="no-cache" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
