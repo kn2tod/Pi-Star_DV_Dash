@@ -19,6 +19,7 @@ $MYHOST=php_uname('n');
 $Debian=exec('sed -n "s/VERSION_CODENAME=\(.*\)/\u\1/p" /etc/os-release');
 $Linux=php_uname('s')." ".php_uname('r')." ".php_uname('v')." ".php_uname('m');
 $Hardware=exec('sed -n "s|^Model.*: Raspberry \(.*\)|\1|p" /proc/cpuinfo');
+$CodeBase=exec('sed -n "s/.*\/\/.*\/\(.*\)\/.*/(\1)/p" /var/www/dashboard/.git/config 2>/dev/null');
 
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
@@ -50,6 +51,7 @@ $ver=$configPistarRelease['Pi-Star']['Version'];
     <?php echo "<meta name=\"system\" content=\"$Debian $Linux\" />\n"; ?>
     <?php echo "<meta name=\"platform\" content=\"$Hardware\" />\n"; ?>
     <?php echo "<meta name=\"version\" content=\"Pi-Star: $ver - $rev\" />\n"; ?>
+    <?php echo "<meta name=\"codebase\" content=\"$CodeBase\" />\n"; ?>
     <meta name="Author" content="Hans-J. Barthen (DL5DI), Kim Huebel (DG9VH), Andy Taylor (MW0MWZ), Mark Prichard (KN2TOD)" />
     <meta name="Description" content="Pi-Star Dashboard" />
     <meta name="KeyWords" content="MW0MWZ,MMDVMHost,ircDDBGateway,D-Star,ircDDB,Pi-Star,Blackwood,Wales,DL5DI,DG9VH,KN2TOD" />
