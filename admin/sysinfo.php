@@ -20,6 +20,7 @@ $Debian=exec('sed -n "s/VERSION_CODENAME=\(.*\)/\u\1/p" /etc/os-release');
 $Linux=php_uname('s')." ".php_uname('r')." ".php_uname('v')." ".php_uname('m');
 $Hardware=exec('sed -n "s|^Model.*: Raspberry \(.*\)|\1|p" /proc/cpuinfo');
 $ModemFW=exec('grep -ihs "MMDVM protocol version:" /var/log/pi-star/MMDVM* | tail -n 1 | sed -n "s/.*description: \(.*-[0-9v.]* \).*/\1/p"');
+$CodeBase=exec('sed -n "s/.*\/\/.*\/\(.*\)\/.*/(\1)/p" /var/www/dashboard/.git/config 2>/dev/null');
 // Load the Version Info
 require_once('config/version.php');
 
@@ -163,7 +164,7 @@ echo "  <tr><td align=\"left\">Nginx</td><td align=\"left\">$nginx</td></tr>\n";
 $php=exec('php -v | sed -n "s/^\(PHP .* \)(c.*/\1/p"');
 echo "  <tr><td align=\"left\">PHP</td><td align=\"left\">$php</td></tr>\n";
 $git=exec('git --version | sed "s/git version/Git/g"');
-echo "  <tr><td align=\"left\">GIT</td><td align=\"left\">$git</td></tr>\n";
+echo "  <tr><td align=\"left\">GIT</td><td align=\"left\">$git $CodeBase</td></tr>\n";
 if (is_executable('/usr/sbin/cupsd')) {
   $cups=exec("sudo dpkg -l cups 2>/dev/null | tail -n 1 | awk '{print \$3}'");
   echo "  <tr><td align=\"left\">CUPS</td><td align=\"left\">$cups</td></tr>\n";
