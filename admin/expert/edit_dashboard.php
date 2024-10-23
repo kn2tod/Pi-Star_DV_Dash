@@ -177,6 +177,11 @@ echo '<form action="" method="post">'."\n";
 		    } else {
 		      echo "    <option value=\"QRZ\">QRZ Callsign Lookup</option>\n";
 		    }
+		    if ($value == "Callook") {
+		      echo "    <option value=\"Callook\" selected=\"selected\">Callook Callsign Lookup</option>\n";
+		    } else {
+		      echo "    <option value=\"Callook\">Callook Callsign Lookup</option>\n";
+		    }
 		    echo "  </select>\n";
 		    echo "</td></tr>\n";
 		  } else {

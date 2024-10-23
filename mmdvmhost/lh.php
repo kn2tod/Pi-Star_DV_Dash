@@ -23,12 +23,13 @@ if (file_exists('/etc/pistar-css.ini')) {
 }
 
 // Safety net
-if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ")) { $callsignLookupSvc = "RadioID"; }
+if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ") && ($callsignLookupSvc != "Callook")) { $callsignLookupSvc = "RadioID"; }
 
 // Setup the URL(s)
 $idLookupUrl = "https://database.radioid.net/database/view?id=";
 if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
 if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
+if ($callsignLookupSvc == "Callook") { $callsignLookupUrl = "https://callook.info/"; }
 $_SESSION['CS_URL'] = $callsignLookupUrl;
 }
 $idLookupUrl = "https://database.radioid.net/database/view?id=";
