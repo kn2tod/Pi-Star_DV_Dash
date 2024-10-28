@@ -35,6 +35,8 @@
     <a href="modem_fw_upgrade.php" style="color: #ffffff;">FW</a> |
     <a href="nextion_fw_update.php" style="color: #ffffff;">Nextion</a> |
     <a href="ssh_access.php" style="color: #ffffff;">SSH Access</a> |
-    <a href="/admin/calibration.php" style="color: #ffffff;">Calibration</a><br />
+    <a href="/admin/calibration.php" style="color: #ffffff;">Calibration</a> |
+    <a href="/admin/live_modem_log.php" style="color: #ffffff;"><?php echo $lang['live_logs'];?></a><br />
+
   </p>
   </div>
