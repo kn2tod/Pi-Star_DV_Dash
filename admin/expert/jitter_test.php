@@ -15,7 +15,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
     if ($_GET['group'] == "brandmeister") { $target = "BM"; }
     if ($_GET['group'] == "dmrplus")      { $target = "DMR+"; }
     if ($_GET['group'] == "hblink")       { $target = "HB"; }
-  } else { $target = "DMR+"; }
+  } else { $target = "BM"; }
 
   if (!isset($_GET['ajax'])) {
     system('sudo touch /var/log/pi-star/pi-star_icmptest.log > /dev/null 2>&1 &');
