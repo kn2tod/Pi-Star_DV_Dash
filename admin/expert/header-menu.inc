@@ -36,7 +36,8 @@
     <a href="nextion_fw_update.php" style="color: #ffffff;">Nextion</a> |
     <a href="ssh_access.php" style="color: #ffffff;">SSH Access</a> |
     <a href="/admin/calibration.php" style="color: #ffffff;">Calibration</a> |
-    <a href="/admin/live_modem_log.php" style="color: #ffffff;"><?php echo $lang['live_logs'];?></a><br />
-
+    <a href="/admin/live_modem_log.php" style="color: #ffffff;"><?php echo $lang['live_logs'];?></a> |
+    <a href="/admin/expert/hostfile_update.php" style="color: #ffffff;">Host Update</a> |
+    <a href="/admin/expert/jitter_test.php" style="color: #ffffff;">Jitter Test</a><br />
   </p>
   </div>
