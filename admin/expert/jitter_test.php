@@ -11,23 +11,15 @@ require_once('../config/version.php');
 // Sanity Check that this file has been opened correctly
 if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
 
-  $target = "BM";
   if (isset($_GET['group'])) {
-    if ($_GET['group'] == "brandmeister") { $target = "BM"; }
-    if ($_GET['group'] == "dmrplus")      { $target = "DMR+"; }
-    if ($_GET['group'] == "hblink")       { $target = "HB"; }
-    if ($_GET['group'] == "hb")           { $target = "HB"; }
-    if ($_GET['group'] == "xlx")          { $target = "XLX"; }
-    if ($_GET['group'] == "freedmr")      { $target = "FreeDMR"; }
-    if ($_GET['group'] == "freestar")     { $target = "FreeSTAR"; }
-    if ($_GET['group'] == "tgif")         { $target = "TGIF"; }
-    if ($_GET['group'] == "fd")           { $target = "FD"; }
-  }
-
-  if (!isset($_GET['ajax'])) {
-    system('sudo touch /tmp/jittertest.log > /dev/null 2>&1 &');
-    system('sudo truncate -s 0 /tmp/jittertest.log > /dev/null 2>&1 &');
-    system('sudo /usr/local/sbin/pistar-jittertest '.$target.' > /dev/null 2>&1 &');
+    $target = strtoupper($_GET['group']);
+    if ($target == "BRANDMEISTER") { $target = "BM"; }
+    if ($target == "DMRPLUS")      { $target = "DMR+"; }
+    if ($target == "HBLINK")       { $target = "HB"; }
+    if ($target == "FREEDMR")      { $target = "FreeDMR"; }
+    if ($target == "FREESTAR")     { $target = "FreeSTAR"; }
+  } else {
+    $target = "BM";
   }
 
   // Sanity Check Passed.
@@ -35,34 +27,31 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
   session_start();
 
   if (!isset($_GET['ajax'])) {
-    //unset($_SESSION['update_offset']);
-    if (file_exists('/tmp/jittertest.log')) {
-      $_SESSION['update_offset'] = filesize('/tmp/jittertest.log');
-    } else {
-      $_SESSION['update_offset'] = 0;
+    system('sudo touch /tmp/jittertest.log > /dev/null 2>&1 &');
+    system('sudo truncate -s 0 /tmp/jittertest.log > /dev/null 2>&1 &');
+    system('sudo /usr/local/sbin/pistar-jittertest '.$target.' > /dev/null 2>&1 &');
+    $_SESSION['update_offset'] = filesize('/tmp/jittertest.log');
     }
-  }
 
-  if (isset($_GET['ajax'])) {
+  else {
     //session_start();
-    if (!file_exists('/tmp/jittertest.log')) {
-      exit();
-    }
+    if (file_exists('/tmp/jittertest.log')) {
 
-    $handle = fopen('/tmp/jittertest.log', 'rb');
-    if (isset($_SESSION['update_offset'])) {
-      fseek($handle, 0, SEEK_END);
-      if ($_SESSION['update_offset'] > ftell($handle))    //log rotated/truncated
-        $_SESSION['update_offset'] = 0;                   //continue at beginning of the new log
-        $data = stream_get_contents($handle, -1, $_SESSION['update_offset']);
-        $_SESSION['update_offset'] += strlen($data);
-        echo "<pre>$data</pre>";
-      }
-    else {
-      fseek($handle, 0, SEEK_END);
-      $_SESSION['update_offset'] = ftell($handle);
-      }
-  exit();
+      $handle = fopen('/tmp/jittertest.log', 'rb');
+      if (isset($_SESSION['update_offset'])) {
+        fseek($handle, 0, SEEK_END);
+        if ($_SESSION['update_offset'] > ftell($handle))    //log rotated/truncated
+          $_SESSION['update_offset'] = 0;                   //continue at beginning of the new log
+          $data = stream_get_contents($handle, -1, $_SESSION['update_offset']);
+          $_SESSION['update_offset'] += strlen($data);
+          echo "<pre>$data</pre>";
+        }
+      else {
+        fseek($handle, 0, SEEK_END);
+        $_SESSION['update_offset'] = ftell($handle);
+        }
+    }
+    exit();
   }
 
 ?>
@@ -100,15 +89,18 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
     });
     </script>
   </head>
+
   <body>
   <div class="container">
   <?php include './header-menu.inc'; ?>
+
   <div class="contentwide">
   <table width="100%">
   <tr><th>Jitter Tests</th></tr>
   <tr><td align="left"><div id="tail">Starting jitter tests, please wait...<br /></div></td></tr>
   </table>
   </div>
+
   <div class="footer">
   Pi-Star web config, &copy; Andy Taylor (MW0MWZ) 2014-<?php echo date("Y"); ?>.<br />
   Need help? Click <a style="color: #ffffff;" href="https://www.facebook.com/groups/pistarusergroup/" target="_new">here for the Support Group</a><br />
