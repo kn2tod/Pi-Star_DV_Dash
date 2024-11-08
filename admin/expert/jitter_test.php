@@ -11,15 +11,22 @@ require_once('../config/version.php');
 // Sanity Check that this file has been opened correctly
 if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
 
+  $target = "BM";
   if (isset($_GET['group'])) {
     if ($_GET['group'] == "brandmeister") { $target = "BM"; }
     if ($_GET['group'] == "dmrplus")      { $target = "DMR+"; }
     if ($_GET['group'] == "hblink")       { $target = "HB"; }
-  } else { $target = "BM"; }
+    if ($_GET['group'] == "hb")           { $target = "HB"; }
+    if ($_GET['group'] == "xlx")          { $target = "XLX"; }
+    if ($_GET['group'] == "freedmr")      { $target = "FreeDMR"; }
+    if ($_GET['group'] == "freestar")     { $target = "FreeSTAR"; }
+    if ($_GET['group'] == "tgif")         { $target = "TGIF"; }
+    if ($_GET['group'] == "fd")           { $target = "FD"; }
+  }
 
   if (!isset($_GET['ajax'])) {
-    system('sudo touch /var/log/pi-star/pi-star_icmptest.log > /dev/null 2>&1 &');
-    system('sudo echo "" > /var/log/pi-star/pi-star_icmptest.log > /dev/null 2>&1 &');
+    system('sudo touch /tmp/jittertest.log > /dev/null 2>&1 &');
+    system('sudo truncate -s 0 /tmp/jittertest.log > /dev/null 2>&1 &');
     system('sudo /usr/local/sbin/pistar-jittertest '.$target.' > /dev/null 2>&1 &');
   }
 
@@ -29,8 +36,8 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
 
   if (!isset($_GET['ajax'])) {
     //unset($_SESSION['update_offset']);
-    if (file_exists('/var/log/pi-star/pi-star_icmptest.log')) {
-      $_SESSION['update_offset'] = filesize('/var/log/pi-star/pi-star_icmptest.log');
+    if (file_exists('/tmp/jittertest.log')) {
+      $_SESSION['update_offset'] = filesize('/tmp/jittertest.log');
     } else {
       $_SESSION['update_offset'] = 0;
     }
@@ -38,18 +45,18 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
 
   if (isset($_GET['ajax'])) {
     //session_start();
-    if (!file_exists('/var/log/pi-star/pi-star_icmptest.log')) {
+    if (!file_exists('/tmp/jittertest.log')) {
       exit();
     }
 
-    $handle = fopen('/var/log/pi-star/pi-star_icmptest.log', 'rb');
+    $handle = fopen('/tmp/jittertest.log', 'rb');
     if (isset($_SESSION['update_offset'])) {
       fseek($handle, 0, SEEK_END);
-      if ($_SESSION['update_offset'] > ftell($handle)) //log rotated/truncated
-        $_SESSION['update_offset'] = 0; //continue at beginning of the new log
-      $data = stream_get_contents($handle, -1, $_SESSION['update_offset']);
-      $_SESSION['update_offset'] += strlen($data);
-      echo "<pre>$data</pre>";
+      if ($_SESSION['update_offset'] > ftell($handle))    //log rotated/truncated
+        $_SESSION['update_offset'] = 0;                   //continue at beginning of the new log
+        $data = stream_get_contents($handle, -1, $_SESSION['update_offset']);
+        $_SESSION['update_offset'] += strlen($data);
+        echo "<pre>$data</pre>";
       }
     else {
       fseek($handle, 0, SEEK_END);
@@ -98,8 +105,8 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
   <?php include './header-menu.inc'; ?>
   <div class="contentwide">
   <table width="100%">
-  <tr><th>Test Running</th></tr>
-  <tr><td align="left"><div id="tail">Starting test, please wait...<br /></div></td></tr>
+  <tr><th>Jitter Tests</th></tr>
+  <tr><td align="left"><div id="tail">Starting jitter tests, please wait...<br /></div></td></tr>
   </table>
   </div>
   <div class="footer">
