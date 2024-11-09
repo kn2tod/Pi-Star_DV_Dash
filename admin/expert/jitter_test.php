@@ -11,6 +11,10 @@ require_once('../config/version.php');
 // Sanity Check that this file has been opened correctly
 if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
 
+  if (! empty($_POST['hostgroup'] )) {
+    $target = $_POST['hostgroup'];
+    unset ($_POST['hostgroup']);
+  } else {
   if (isset($_GET['group'])) {
     $target = strtoupper($_GET['group']);
     if ($target == "BRANDMEISTER") { $target = "BM"; }
@@ -20,6 +24,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
     if ($target == "FREESTAR")     { $target = "FreeSTAR"; }
   } else {
     $target = "BM";
+  }
   }
 
   // Sanity Check Passed.
@@ -34,7 +39,6 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
     }
 
   else {
-    //session_start();
     if (file_exists('/tmp/jittertest.log')) {
 
       $handle = fopen('/tmp/jittertest.log', 'rb');
@@ -75,6 +79,22 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
     <script type="text/javascript" src="/jquery.min.js"></script>
     <script type="text/javascript" src="/jquery-timing.min.js"></script>
     <script type="text/javascript">
+
+    function disableSubmitButtons() {
+            var inputs = document.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                    if (inputs[i].type === 'button') {
+                            inputs[i].disabled = true;
+                            inputs[i].value = 'Please Wait...';
+                    }
+            }
+    }
+
+    function submitform() {
+        disableSubmitButtons();
+        document.getElementById("up_fw").submit();
+    }
+
     $(function() {
       $.repeat(1000, function() {
         $.get('/admin/expert/jitter_test.php?ajax', function(data) {
@@ -97,6 +117,38 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
   <div class="contentwide">
   <table width="100%">
   <tr><th>Jitter Tests</th></tr>
+  <tr><td>
+  <?php
+    $output = shell_exec('sed -n "s/\(^[A-Za-z+]*\)_.*/\1/p" /usr/local/etc/DMR_Hosts.txt | sort | uniq');
+
+    if ($output !== null) {
+        // Split the output into an array of options
+        $options = explode("\n", trim($output));
+
+        // Create the select element
+        echo '<p><form method="post" id="up_fw">';
+        echo '<label for="hostgroup">Select host group: </label>';
+        echo '<select id="hostgroup" name="hostgroup">';
+        echo '<option value="" disabled selected>select group...</option>';
+        // Output each option with user-friendly names
+        foreach ($options as $option) {
+            $select = ($option == $target ? "selected=selected" : "");
+            echo '<option value="' .$option.'"' .$select. '>' .$option. '</option>';
+        }
+        echo '</select>';
+        echo '    ';
+        echo '<input type="button" value="test" onclick="submitform()">';
+        echo '</form></p>';
+    } else {
+        echo '<p>Error executing the command.</p>';
+    }
+  ?>
+  </form>
+  </td></tr>
+
+  <div class="contentwide">
+  <table width="100%">
+  <tr><th>Results</th></tr>
   <tr><td align="left"><div id="tail">Starting jitter tests, please wait...<br /></div></td></tr>
   </table>
   </div>
