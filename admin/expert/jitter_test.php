@@ -146,10 +146,10 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
   </form>
   </td></tr>
 
-  <div class="contentwide">
+  <div class="contentwide" style="width:100%">
   <table width="100%">
   <tr><th>Results</th></tr>
-  <tr><td align="left"><div id="tail">Starting jitter tests, please wait...<br /></div></td></tr>
+  <tr><td align="left"><div id="tail" style="width:100%">Starting jitter tests, please wait...<br /></div></td></tr>
   </table>
   </div>
 
