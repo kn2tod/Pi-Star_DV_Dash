@@ -42,7 +42,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/ssh_access.php") {
   <div class="contentwide">
   <table width="100%">
   <tr><th>SSH - Pi-Star</th></tr>
-  <tr><td align="left"><div id="tail">
+  <tr><td align="left"><div id="tail" style="width:100%">
     <?php if (isset($shellPort)) {
       echo "<iframe src=\"http://".$_SERVER['HTTP_HOST'].":".$shellPort."\" style=\"border:0px #ffffff none; background:#ffffff; color:#00ff00;\" name=\"Pi-Star_SSH\" scrolling=\"no\" frameborder=\"0\" marginheight=\"0px\" marginwidth=\"0px\" height=\"100%\" width=\"100%\"></iframe>";
     }
