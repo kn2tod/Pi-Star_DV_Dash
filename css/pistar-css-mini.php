@@ -10,7 +10,7 @@ if (file_exists('/etc/pistar-css.ini')) {
     // Use the values from the file
     $piStarCssFile = '/etc/pistar-css.ini';
 	if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
-    
+
     // Set the Values from the config file
     $backgroundPage = $piStarCss['Background']['Page'];		// usually off-white
     $backgroundContent = $piStarCss['Background']['Content'];   // The White background in the content section
@@ -21,7 +21,8 @@ if (file_exists('/etc/pistar-css.ini')) {
     $textContent = $piStarCss['Content']['Text'];            	// Used for the section titles
     $tableRowEvenBg = $piStarCss['Tables']['BgEven']; 		// Table Row BG Colour (Even)
     $tableRowOddBg = $piStarCss['Tables']['BgOdd'];		// Table Row BG Colour (Odd)
-    
+    $dashboardWidth = isset($piStarCss['Background']['Width']) ? $piStarCss['Background']['Width'] : "820px";  // Overall dashboard width
+
 } else {
     // Default values
     $backgroundPage = "edf0f5";         // usually off-white
@@ -33,19 +34,20 @@ if (file_exists('/etc/pistar-css.ini')) {
     $textContent = "000000";            // Used for the section titles
     $tableRowEvenBg = "f7f7f7";		// Table Row BG Colour (Even)
     $tableRowOddBg = "d0d0d0";		// Table Row BG Colour (Odd)
+    $dashboardWidth = "820px";          // Overall dashboard width
 }
 ?>
 .container {
-    width: 100%;
+    width: <?php echo $dashboardWidth; ?>;
     text-align: left;
     margin: auto;
-    background : #<?php echo $backgroundContent; ?>;
     border-radius: 10px 10px 10px 10px;
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px; 
     -khtml-border-radius: 10px 10px 10px 10px;
     -ms-border-radius: 10px 10px 10px 10px;
     box-shadow: 3px 3px 3px #707070;
+    background : #<?php echo $backgroundContent; ?>;
 }
 
 body, font {
