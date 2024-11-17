@@ -48,7 +48,6 @@ $lcount = $_SESSION['LH_limits'];
 <?php
   $lhsw = $_SESSION['LHSW'];
   $lhlh = ( $lhsw ? "Live Log" : "Last Heard" );
-  $lhbgnd1 = "border-width:thin";
   $lhcount = count($lastHeard);
   $fsmode = exec ('sed -n "s/\/dev\/.* \/ ext4 \(r[ow]\).*/\1/p" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
@@ -56,15 +55,19 @@ $lcount = $_SESSION['LH_limits'];
 ?>
   <table>
     <tr>
+      <form action="" method="post">
       <td align="left">
-         <input type="submit" style="font-size: 10px; <?php echo $lhbgnd1; ?>" value="<?php echo 'LH / LL'; ?>" name="LastHeardSW";/>
-         <?php echo $lhlh; ?>
+         <input type="submit" style="font-size: 10px; border-width:thin" value="LH / LL" name="LastHeardSW";/> <?php echo $lhlh; ?>
       </td>
       <td align="right" width="25"><?php echo $ovfl;    echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $fsmode;  echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $pubprv;  echo "&nbsp ";?></td>
       <td align="right" width="35"><?php echo $lhcount; echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $lcount;  echo "&nbsp ";?></td>
+      <td align="right" width="25">
+         <input type="submit" style="font-size: 10px; border-width:thin" value="CL" name="CutlineSW";/>
+      </td>
+      </form>
     </tr>
   </table>
   <table>
@@ -81,6 +84,14 @@ $lcount = $_SESSION['LH_limits'];
 <?php
 $i = 0;
 $prevElem = array();
+
+  if (!empty($_POST) && isset($_POST["CutlineSW"])) {
+     unset($_POST);
+     system ('echo "M: $(date -u "+%Y-%m-%d %H:%M:%S.%N" | cut -c-23) DMR Slot 1, received network end of voice transmission from ******** to TG 00000, 0.0 seconds, 0% packet loss, BER: 0.0%" | sudo tee -a $(ls -tr /var/log/pi-star/MMDV* | tail -n 1) >/dev/null');
+     echo '<script type="text/javascript">';
+     echo '  setTimeout(function() { window.location=window.location;},500);';
+     echo '</script>';
+  }
 
   if (!empty($_POST) && isset($_POST["LastHeardSW"])) {
      $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
