@@ -50,6 +50,7 @@ if(isset($_POST['data'])) {
 
         // Reload the affected daemon
 	exec('sudo systemctl restart mmdvmhost.service');		    // Reload mmdvmhost
+	exec('sudo systemctl restart nextiondriver.service');               // Reload Nextion driver
 
         // Re-open the file and read it
         $fh = fopen($filepath, 'r');
