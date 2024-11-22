@@ -10,7 +10,7 @@
     <a href="/admin/configure.php" style="color: #ffffff;"><?php echo $lang['configuration'];?></a>
   </p>
   <p style="padding-right: 5px; text-align: center; color: #ffffff;">
-    <b>Quick Edit:</b>
+    <b>Quick Edit:&nbsp&nbsp</b>
     <a href="edit_dstarrepeater.php" style="color: #ffffff;">DStarRepeater</a> |
     <a href="edit_ircddbgateway.php" style="color: #ffffff;">ircDDBGateway</a> |
     <a href="edit_timeserver.php" style="color: #ffffff;">TimeServer</a> |
@@ -21,7 +21,7 @@
     <a href="edit_p25gateway.php" style="color: #ffffff;">P25</a> |
     <a href="edit_nxdngateway.php" style="color: #ffffff;">NXDN</a> |
     <a href="edit_dapnetgateway.php" style="color: #ffffff;">DAPNET</a><br />
-    <b>Full Edit:</b>
+    <b>Full Edit:&nbsp&nbsp</b>
     <a href="fulledit_mmdvmhost.php" style="color: #ffffff;">MMDVMHost</a> |
     <a href="fulledit_dmrgateway.php" style="color: #ffffff;">DMR GW</a> |
     <a href="fulledit_m17gateway.php" style="color: #ffffff;">M17 GW</a> |
@@ -31,7 +31,7 @@
     <a href="fulledit_dapnetapi.php" style="color: #ffffff;">DAPNET API</a> |
     <a href="fulledit_cron.php" style="color: #ffffff;">System Cron</a> |
     <a href="fulledit_rssidat.php" style="color: #ffffff;">RSSI Dat</a><br />
-    <b>Tools:</b>
+    <b>Tools:&nbsp&nbsp</b>
     <a href="edit_dashboard.php" style="color: #ffffff;">CSS Tool</a> |
     <a href="modem_fw_upgrade.php" style="color: #ffffff;">FW</a> |
     <a href="nextion_fw_update.php" style="color: #ffffff;">Nextion</a> |
