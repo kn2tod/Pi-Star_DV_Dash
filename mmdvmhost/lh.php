@@ -52,6 +52,7 @@ $lcount = $_SESSION['LH_limits'];
   $fsmode = exec ('sed -n "s/\/dev\/.* \/ ext4 \(r[ow]\).*/\1/p" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
   $ovfl = exec ('grep -a -m 1 -ih "overflow in the DMR" /var/log/pi-star/MMDVM*.log | sed "s/.* overflow .*/ov/g"');
+  $sessions = exec ('df /var/lib/php/sessions | sed -n "s/.*\( [0-9]*% \).*/\1/p"');
 ?>
   <table>
     <tr>
@@ -59,6 +60,7 @@ $lcount = $_SESSION['LH_limits'];
       <td align="left">
          <input type="submit" style="font-size: 10px; border-width:thin" value="LH / LL" name="LastHeardSW";/> <?php echo $lhlh; ?>
       </td>
+      <td align="right" width="35"><?php echo $sessions;  echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $ovfl;    echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $fsmode;  echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $pubprv;  echo "&nbsp ";?></td>
