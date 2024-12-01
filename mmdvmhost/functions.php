@@ -1228,8 +1228,6 @@ if (!in_array($_SERVER["PHP_SELF"],array('/mmdvmhost/bm_links.php','/mmdvmhost/b
 		$logLinesP25Gateway = getP25GatewayLog();
 		$logLinesNXDNGateway = getNXDNGatewayLog();
 		$logLinesM17Gateway = getM17GatewayLog();
-		$reverseLogLinesM17Gateway = $logLinesM17Gateway;
-		array_multisort($reverseLogLinesM17Gateway,SORT_DESC);
 	}
 	// Only need these in index.php
 	if (strpos($_SERVER["PHP_SELF"], 'index.php') !== false || strpos($_SERVER["PHP_SELF"], 'pages.php') !== false) {

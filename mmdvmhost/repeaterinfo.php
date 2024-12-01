@@ -7,8 +7,6 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translat
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/ircddblocal.php');
 
-$reverseLogLinesM17Gateway = $lastHeard;
-
 //Load the MMDVMHost config file (passed down)
 if (! isset($_SESSION['TXFreq'])) { $_SESSION['TXFreq'] = getMHZ(getConfigItem("Info", "TXFrequency", $mmdvmconfigs)); }
 if (! isset($_SESSION['RXFreq'])) { $_SESSION['RXFreq'] = getMHZ(getConfigItem("Info", "RXFrequency", $mmdvmconfigs)); }
@@ -414,7 +412,7 @@ echo "<table>\n";
 echo "<tr><th colspan=\"2\">".$lang['m17_repeater']."</th></tr>\n";
 echo "<tr><th>RPT</th><td style=\"background: #ffffff;\">".str_replace(' ','&nbsp;',$configm17gateway['General']['Callsign'])."&nbsp;".str_replace(' ','&nbsp;',$configm17gateway['General']['Suffix'])."</td></tr>\n";
 echo "<tr><th colspan=\"2\">".$lang['m17_net']."</th></tr>\n";
-echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink($reverseLogLinesM17Gateway, "M17")."</td></tr>\n";
+echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink(logLinesM17Gateway, "M17")."</td></tr>\n";
 echo "</table>\n";
 }
 
