@@ -412,7 +412,7 @@ echo "<table>\n";
 echo "<tr><th colspan=\"2\">".$lang['m17_repeater']."</th></tr>\n";
 echo "<tr><th>RPT</th><td style=\"background: #ffffff;\">".str_replace(' ','&nbsp;',$configm17gateway['General']['Callsign'])."&nbsp;".str_replace(' ','&nbsp;',$configm17gateway['General']['Suffix'])."</td></tr>\n";
 echo "<tr><th colspan=\"2\">".$lang['m17_net']."</th></tr>\n";
-echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink(logLinesM17Gateway, "M17")."</td></tr>\n";
+echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink($logLinesM17Gateway, "M17")."</td></tr>\n";
 echo "</table>\n";
 }
 
