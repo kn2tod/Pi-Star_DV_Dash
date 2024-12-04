@@ -219,22 +219,22 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
                 include 'mmdvmhost/tgif_manager.php';			// TGIF DMR Link Manager
 	   }
         }
-	$testMMDVModeYSFnet = getConfigItem("System Fusion Network", "Enable", $mmdvmconfigs);
-        if ( $testMMDVModeYSFnet == 1 ) {				// If YSF network is enabled, add these extra features.
-		if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 	// Admin Only Option
+	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {       // Admin Only Option
+		$testMMDVModeYSFnet = getConfigItem("System Fusion Network", "Enable", $mmdvmconfigs);
+		if ( $testMMDVModeYSFnet == 1 ) {			// If YSF network is enabled, add these extra features.
 			include 'mmdvmhost/ysf_manager.php';		// YSF Links
 		}
-	}
-	$testMMDVModeP25net = getConfigItem("P25 Network", "Enable", $mmdvmconfigs);
-        if ( $testMMDVModeP25net == 1 ) {				// If P25 network is enabled, add these extra features.
-		if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 	// Admin Only Option
+		$testMMDVModeP25net = getConfigItem("P25 Network", "Enable", $mmdvmconfigs);
+		if ( $testMMDVModeP25net == 1 ) {			// If P25 network is enabled, add these extra features.
 			include 'mmdvmhost/p25_manager.php';		// P25 Links
 		}
-	}
-	$testMMDVModeNXDNnet = getConfigItem("NXDN Network", "Enable", $mmdvmconfigs);
-        if ( $testMMDVModeNXDNnet == 1 ) {				// If NXDN network is enabled, add these extra features.
-		if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 	// Admin Only Option
+		$testMMDVModeNXDNnet = getConfigItem("NXDN Network", "Enable", $mmdvmconfigs);
+		if ( $testMMDVModeNXDNnet == 1 ) {			// If NXDN network is enabled, add these extra features.
 			include 'mmdvmhost/nxdn_manager.php';		// NXDN Links
+		}
+		$testMMDVModeM17net = getConfigItem("M17 Network", "Enable", $mmdvmconfigs);
+		if ( $testMMDVModeM17net == 1 ) {			// If NXDN network is enabled, add these extra features.
+			include 'mmdvmhost/m17_manager.php';		// M17 Links
 		}
 	}
 	echo '<script type="text/javascript">'."\n";
