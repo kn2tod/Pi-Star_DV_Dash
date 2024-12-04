@@ -211,7 +211,7 @@ if ($configs['aprsEnabled']) {
 if ($configs['ircddbEnabled']) {
 	echo "<tr><th>IRC</th><td style=\"background: #ffffff;\">".substr($configs['ircddbHostname'], 0 ,16)."</td></tr>\n";
 }
-echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink($reverseLogLinesMMDVM, "D-Star")."</td></tr>\n";
+echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink(" ", "D-Star")."</td></tr>\n";
 echo "</table>\n";
 }
 
