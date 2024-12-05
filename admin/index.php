@@ -169,57 +169,57 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		echo '</script>'."\n";
 		echo '<div id="refLinks">'."\n";
 		include 'dstarrepeater/active_reflector_links.php';	// dstarrepeater gateway config
-	        echo '</div>'."\n";
-	        echo '<br />'."\n";
+		echo '</div>'."\n";
+		echo '<br />'."\n";
 
 		include 'dstarrepeater/link_manager.php';		// D-Star Link Manager
 		echo "<br />\n";
 		}
 
-        echo '<script type="text/javascript">'."\n";
-        echo 'function reloadcssConnections(){'."\n";
-        echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php");'."\n";
-        echo '}'."\n";
-        echo 'setInterval(reloadcssConnections,15000);'."\n";
+	echo '<script type="text/javascript">'."\n";
+	echo 'function reloadcssConnections(){'."\n";
+	echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php");'."\n";
+	echo '}'."\n";
+	echo 'setInterval(reloadcssConnections,15000);'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
-        echo '</script>'."\n";
-        echo '<div id="cssConnects">'."\n";
+	echo '</script>'."\n";
+	echo '<div id="cssConnects">'."\n";
 	include 'dstarrepeater/css_connections.php';			// dstarrepeater gateway config
 	echo '</div>'."\n";
 	}
 
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
 		echo '<script type="text/javascript">'."\n";
-        	echo 'function reloadbmConnections(){'."\n";
-        	echo '  $("#bmConnects").load("/mmdvmhost/bm_links.php");'."\n";
-        	echo '}'."\n";
-        	echo 'setInterval(reloadbmConnections,180000);'."\n";
+		echo 'function reloadbmConnections(){'."\n";
+		echo '  $("#bmConnects").load("/mmdvmhost/bm_links.php");'."\n";
+		echo '}'."\n";
+		echo 'setInterval(reloadbmConnections,180000);'."\n";
 		echo '$(window).trigger(\'resize\');'."\n";
-        	echo '</script>'."\n";
-        	echo '<div id="bmConnects">'."\n";
+		echo '</script>'."\n";
+		echo '<div id="bmConnects">'."\n";
 		include 'mmdvmhost/bm_links.php';                       // BM Links
 		echo '</div>'."\n";
 	}
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {               // Admin Only Options
-                include 'mmdvmhost/bm_manager.php';                     // BM DMR Link Manager
+		include 'mmdvmhost/bm_manager.php';                     // BM DMR Link Manager
         }
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
 	   $testTGIF = getConfigItem("DMR Network", "Address", $mmdvmconfigs);
 	   if ( strpos($testTGIF,"127.0.0.1") || strpos($testTGIF,"tgif.network") ) {  //  suppress if not TGIF
 		echo '<script type="text/javascript">'."\n";
-        	echo 'function reloadtgifConnections(){'."\n";
-        	echo '  $("#tgifConnects").load("/mmdvmhost/tgif_links.php");'."\n";
-        	echo '}'."\n";
-        	echo 'setInterval(reloadtgifConnections,180000);'."\n";
+		echo 'function reloadtgifConnections(){'."\n";
+		echo '  $("#tgifConnects").load("/mmdvmhost/tgif_links.php");'."\n";
+		echo '}'."\n";
+		echo 'setInterval(reloadtgifConnections,180000);'."\n";
 		echo '$(window).trigger(\'resize\');'."\n";
-        	echo '</script>'."\n";
-        	echo '<div id="tgifConnects">'."\n";
+		echo '</script>'."\n";
+		echo '<div id="tgifConnects">'."\n";
 		include 'mmdvmhost/tgif_links.php';			// TGIF Links
 		echo '</div>'."\n";
-                include 'mmdvmhost/tgif_manager.php';			// TGIF DMR Link Manager
+		include 'mmdvmhost/tgif_manager.php';			// TGIF DMR Link Manager
 	   }
-        }
-	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {       // Admin Only Option
+	}
+	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {		// Admin Only Option
 		$testMMDVModeYSFnet = getConfigItem("System Fusion Network", "Enable", $mmdvmconfigs);
 		if ( $testMMDVModeYSFnet == 1 ) {			// If YSF network is enabled, add these extra features.
 			include 'mmdvmhost/ysf_manager.php';		// YSF Links
@@ -275,7 +275,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	}
 
 } elseif (file_exists('/etc/dstar-radio.dstarrepeater')) {
-        echo '<div class="contentwide">'."\n";
+	echo '<div class="contentwide">'."\n";
 	include 'dstarrepeater/gateway_software_config.php';		// dstarrepeater gateway config
 	echo '<script type="text/javascript">'."\n";
 	echo 'function reloadrefLinks(){'."\n";
@@ -284,24 +284,24 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo 'setInterval(reloadrefLinks,15000);'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
-        echo '<br />'."\n";
+	echo '<br />'."\n";
 	echo '<div id="refLinks">'."\n";
 	include 'dstarrepeater/active_reflector_links.php';		// dstarrepeater gateway config
-        echo '</div>'."\n";
-        echo '<br />'."\n";
+	echo '</div>'."\n";
+	echo '<br />'."\n";
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {		// Admin Only Options
 		include 'dstarrepeater/link_manager.php';		// D-Star Link Manager
 		echo "<br />\n";
 		}
 
 	echo '<script type="text/javascript">'."\n";
-        echo 'function reloadcssConnections(){'."\n";
-        echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php");'."\n";
-        echo '}'."\n";
-        echo 'setInterval(reloadcssConnections,15000);'."\n";
+	echo 'function reloadcssConnections(){'."\n";
+	echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php");'."\n";
+	echo '}'."\n";
+	echo 'setInterval(reloadcssConnections,15000);'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
-        echo '</script>'."\n";
-        echo '<div id="cssConnects">'."\n";
+	echo '</script>'."\n";
+	echo '<div id="cssConnects">'."\n";
 	include 'dstarrepeater/css_connections.php';			// dstarrepeater gateway config
 	echo '</div>'."\n";
 
@@ -319,12 +319,12 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo '</script>'."\n";
 	echo '<div id="lh">'."\n";
 	include 'dstarrepeater/last_herd.php';				//dstarrepeater Last Herd
-        echo '</div>'."\n";
+	echo '</div>'."\n";
 	echo "<br />\n";
 	echo '<div id="localTx">'."\n";
 	include 'dstarrepeater/local_tx.php';				//dstarrepeater Local Transmissions
-        echo '</div>'."\n";
-        echo '<br />'."\n";
+	echo '</div>'."\n";
+	echo '<br />'."\n";
 
 } else {
 	echo '<div class="contentwide">'."\n";
@@ -346,7 +346,7 @@ ircDDBGateway Dashboard by Hans-J. Barthen (DL5DI),<br />
 MMDVMDash developed by Kim Huebel (DG9VH), <br />
 Further enhancements by Mark Prichard (KN2TOD), <br />
 Need help? Click <a style="color: #ffffff;" href="https://www.facebook.com/groups/pistarusergroup/" target="_new">here for the Facebook Group</a><br />
-or Click <a style="color: #ffffff;" href="https://forum.pistar.uk/" target="_new">here to join the Support Forum</a><br />	
+or Click <a style="color: #ffffff;" href="https://forum.pistar.uk/" target="_new">here to join the Support Forum</a><br />
 Get your copy of Pi-Star from <a style="color: #ffffff;" href="http://www.pistar.uk/downloads/" target="_new">here</a>.<br />
 </div>
 
