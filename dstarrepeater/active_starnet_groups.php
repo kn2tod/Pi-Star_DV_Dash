@@ -53,7 +53,7 @@ $MYCALL=strtoupper($callsign);
 
 <?php
 	$groupsx = array();
-	if ($starLog = fopen($starLogPath,'r')) {
+	if ($starLog = @fopen($starLogPath,'r')) {
 		while($logLine = fgets($starLog)) {
 		        preg_match_all('/^(.{19}).*(Adding|Removing) (.{8}).*StarNet group (.{8}).*$/',$logLine,$matches);
 		        $groupz = substr($matches[4][0],0,8);

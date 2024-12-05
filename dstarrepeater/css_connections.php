@@ -29,7 +29,7 @@ if (exec('grep "CCS link" '.$linkLogPath.' | wc -l') >=1) {
 <?php
 
     $ci = 0;
-    if ($linkLog = fopen($linkLogPath,'r')) {
+    if ($linkLog = @fopen($linkLogPath,'r')) {
 	$i=0;
 	while ($linkLine = fgets($linkLog)) {
 // 2013-02-27 19:49:27: CCS link - Rptr: DB0LJ  B Remote: DL5DI    Dir: Incoming
