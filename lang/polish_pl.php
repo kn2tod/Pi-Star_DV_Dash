@@ -2,7 +2,7 @@
 //
 // Polish PL Language Pack
 // Translated 02-Sep-2022 from English Language by Pawel SP8MDH
-// Edited: 04-Sep-2022
+// Updated 03-Dec-2024 by Pawel SP8MDH
 //
 $lang = array (
   // Banner texts
@@ -27,8 +27,9 @@ $lang = array (
   "ysf_config"                  =>  "Konfiguracja Yaesu System Fusion",
   "p25_config"                  =>  "Konfiguracja P25",
   "nxdn_config"                 =>  "Konfiguracja NXDN",
+  "m17_config"                  =>  "Konfiguracja M17",
   "pocsag_config"               =>  "Konfiguracja POCSAG",
-  "mobilegps_config"            =>  "Konfiguracja przenośnego GPS",
+  "mobilegps_config"            =>  "Konfiguracja GPS",
   "wifi_config"                 =>  "Konfiguracja WiFi",
   "fw_config"                   =>  "Konfiguracja zapory sieciowej",
   "remote_access_pw"            =>  "Hasło dostępu zdalnego",
@@ -41,7 +42,7 @@ $lang = array (
   "kernel"                      =>  "Kernel",
   "platform"                    =>  "Platforma",
   "cpu_load"                    =>  "Obciążenie CPU",
-  "cpu_temp"                    =>  "Temperatura CPU",
+  "cpu_temp"                    =>  "Temp. CPU",
   // Config Page - Control Software
   "controller_software"         =>  "Oprogramowanie kontrolera",
   "controller_mode"             =>  "Tryb kontrolera",
@@ -51,7 +52,8 @@ $lang = array (
   "ysf_mode"                    =>  "Tryb YSF",
   "p25_mode"                    =>  "Tryb P25",
   "nxdn_mode"                   =>  "Tryb NXDN",
-  "mmdvm_display"               =>  "Typ wyświetlacza MMDVM",
+  "m17_mode"                    =>  "Tryb M17",
+  "mmdvm_display"               =>  "Ekran MMDVM",
   "mode_hangtime"               =>  "Tryb czasu oczekiwania",
   // Config Page - General Configuration
   "node_call"                   =>  "Znak krótkofalarski bramki",
@@ -93,8 +95,11 @@ $lang = array (
   // Config Page - NXDN Configuration
   "nxdn_startup_host"           =>  "Startowy host NXDN",
   "nxdn_ran"                    =>  "NXDN RAN",
+  // Config Page - M17 Configuration
+  "m17_startup_host"            =>  "Startowy host M17",
+  "m17_can"                     =>  "M17 CAN",
   // Config Page - MobileGPS Configuration
-  "mobilegps_enable"            =>  "Włączanie przenośnego GPS",
+  "mobilegps_enable"            =>  "Włączanie GPS",
   "mobilegps_port"              =>  "Port GPS",
   "mobilegps_speed"             =>  "Prędkość portu GPS",
   // Config Page - Firewall Configuration
@@ -119,6 +124,8 @@ $lang = array (
   "p25_net"                     =>  "Sieć P25",
   "nxdn_radio"                  =>  "Radio NXDN",
   "nxdn_net"                    =>  "Sieć NXDN",
+  "m17_radio"                   =>  "Radio M17",
+  "m17_net"                     =>  "Sieć M17",
   // Dashboard Front Page - Calls
   "time"                        =>  "Czas",
   "mode"                        =>  "Tryb",
@@ -139,8 +146,8 @@ $lang = array (
   "utot"                        =>  "UTOT",       // Short for User Timeout
   "gtot"                        =>  "GTOT",       // Short for Group Timeout
   // Dashboard Front Page / Admin - Section Headders
-  "last_heard_list"             =>  "Aktywność bramki",
-  "local_tx_list"               =>  "Atywność radiowa lokalna",
+  "last_heard_list"             =>  "Lista ostatnio słyszanych stacji",
+  "local_tx_list"               =>  "Atywność lokalna",
   "active_starnet_groups"       =>  "Aktywne grupy Starnet",
   "active_starnet_members"      =>  "Aktywni członkowie grupy Starnet",
   "d-star_link_manager"         =>  "Zarządzanie linkami D-Star",
@@ -148,3 +155,4 @@ $lang = array (
   "service_status"              =>  "Status serwisu"
 );
 ?>
+
