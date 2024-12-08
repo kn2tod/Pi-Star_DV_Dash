@@ -177,7 +177,8 @@ if ($system['mem_info']) {
     echo "  <tr><th><b>Memory</b></th><th><b>Stats</b></th></tr>\n";
     $sysRamUsed = $system['mem_info']['MemTotal'] - $system['mem_info']['MemFree'] - $system['mem_info']['Buffers'] - $system['mem_info']['Cached'];
     $sysRamPercent = sprintf('%.2f',($sysRamUsed / $system['mem_info']['MemTotal']) * 100);
-    echo "  <tr><td align=\"left\">RAM</td><td align=\"left\"><div class='progress progress-info' style='margin-bottom: 0;'><div class='bar' style='width: ".$sysRamPercent."%;'>Used&nbsp;".$sysRamPercent."%</div></div>";
+    $machMem = exec ('bash /usr/local/bin/platformMem.sh');
+    echo "  <tr><td align=\"left\">RAM (".$machMem.")</td><td align=\"left\"><div class='progress progress-info' style='margin-bottom: 0;'><div class='bar' style='width: ".$sysRamPercent."%;'>Used&nbsp;".$sysRamPercent."%</div></div>";
     echo "  <b>Total:</b> ".formatSize($system['mem_info']['MemTotal'])."<b> - Used:</b> ".formatSize($sysRamUsed)."<b> - Free:</b> ".formatSize($system['mem_info']['MemTotal'] - $sysRamUsed)."</td></tr>\n";
     echo "  </tbody>\n";
 }
