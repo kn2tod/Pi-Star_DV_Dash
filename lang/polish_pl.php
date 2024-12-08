@@ -125,6 +125,7 @@ $lang = array (
   "nxdn_radio"                  =>  "Radio NXDN",
   "nxdn_net"                    =>  "Sieć NXDN",
   "m17_radio"                   =>  "Radio M17",
+  "m17_radio"                   =>  "M17 Radio",
   "m17_net"                     =>  "Sieć M17",
   // Dashboard Front Page - Calls
   "time"                        =>  "Czas",

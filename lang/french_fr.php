@@ -96,7 +96,9 @@ $lang = array (
   "nxdn_startup_host"            =>  "H&ocirc;te de d&eacute;marrage NXDN",
   "nxdn_ran"                     =>  "NXDN RAN",
   // Config Page - M17 Configuration
-  "m17_startup_reflector"       =>  ""R&eacute;flecteur M17 au d&eacute;marrage",
+  "m17_startup_reflector"       =>  "R&eacute;flecteur M17 au d&eacute;marrage",
+  "m17_startup_host"            =>  "H&ocirc;te de d&eacute;marrage M17",
+  "m17_can"                     =>  "M17 CAN",
   // Config Page - MobileGPS Configuration
   "mobilegps_enable"            =>  "MobileGPS Enable",
   "mobilegps_port"              =>  "GPS Port",
@@ -117,7 +119,6 @@ $lang = array (
   "dstar_repeater"              =>  "Relais D-Star",
   "m17_repeater"                =>  "Relais M17",
   "dstar_net"                   =>  "R&eacute;seau D-Star",
-  "m17_net"                     =>  "R&eacute;seau M17",
   "dmr_repeater"                =>  "Relais DMR",
   "dmr_master"                  =>  "Master DMR",
   "ysf_net"                     =>  "R&eacute;seau YSF",
@@ -125,6 +126,8 @@ $lang = array (
   "p25_net"                     =>  "R&eacute;seau P25",
   "nxdn_radio"                  =>  "Radio NXDN",
   "nxdn_net"                    =>  "R&eacute;seau NXDN",
+  "m17_radio"                   =>  "M17 Radio",
+  "m17_net"                     =>  "R&eacute;seau M17",
   // Dashboard Front Page - Calls
   "time"                        =>  "Heure",
   "mode"                        =>  "Mode",
