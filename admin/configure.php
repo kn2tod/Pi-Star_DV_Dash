@@ -2497,6 +2497,8 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	if ( isset($configdmrgateway['DMR Network 4']['Options']) &&  substr($configdmrgateway['DMR Network 4']['Options'], 0, 1) !== '"' )	{ $configdmrgateway['DMR Network 4']['Options'] = '"'.$configdmrgateway['DMR Network 4']['Options'].'"'; }
 	if ( isset($configdmrgateway['DMR Network 5']['Password']) && substr($configdmrgateway['DMR Network 5']['Password'], 0, 1) !== '"' )	{ $configdmrgateway['DMR Network 5']['Password'] = '"'.$configdmrgateway['DMR Network 5']['Password'].'"'; }
 	if ( isset($configdmrgateway['DMR Network 5']['Options']) &&  substr($configdmrgateway['DMR Network 5']['Options'], 0, 1) !== '"' )	{ $configdmrgateway['DMR Network 5']['Options'] = '"'.$configdmrgateway['DMR Network 5']['Options'].'"'; }
+	if ( isset($configdmrgateway['DMR Network 6']['Password']) && substr($configdmrgateway['DMR Network 6']['Password'], 0, 1) !== '"' )    { $configdmrgateway['DMR Network 6']['Password'] = '"'.$configdmrgateway['DMR Network 6']['Password'].'"'; }
+	if ( isset($configdmrgateway['DMR Network 6']['Options']) &&  substr($configdmrgateway['DMR Network 6']['Options'], 0, 1) !== '"' )     { $configdmrgateway['DMR Network 6']['Options'] = '"'.$configdmrgateway['DMR Network 6']['Options'].'"'; }
 
 	// Add missing values to M17Gateway
 	if (!isset($configm17gateway['General']['RptAddress'])) { $configm17gateway['General']['RptAddress'] = '127.0.0.1'; }

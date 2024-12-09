@@ -47,6 +47,11 @@ if ( $testMMDVModeDMR == 1 ) {
         $dmrID = $configdmrgateway['DMR Network 5']['Id'];
       }
     }
+    if (isset($configdmrgateway['DMR Network 6']['Address'])) {
+      if (($configdmrgateway['DMR Network 6']['Address'] == "tgif.network") && ($configdmrgateway['DMR Network 6']['Enabled'])) {
+        $dmrID = $configdmrgateway['DMR Network 6']['Id'];
+      }
+    }
   } else if ( $dmrMasterHost == 'tgif.network' ) {
     // MMDVMHost Connected directly to TGIF, get the ID form here
     if (getConfigItem("DMR", "Id", $mmdvmconfigs)) {
