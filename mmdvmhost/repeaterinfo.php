@@ -405,15 +405,19 @@ if ( $testMMDVModeNXDN == 1 || isset($testYSF2NXDN) || isset($testDMR2NXDN) ) { 
 	echo "</table>\n";
 }
 
-$testMMDVModeM17 = getConfigItem("M17", "Enable", $mmdvmconfigs);
-if ( $testMMDVModeM17 == 1 ) { //Hide the M17 Reflector information when M17 Network not enabled.
-echo "<br />\n";
-echo "<table>\n";
-echo "<tr><th colspan=\"2\">".$lang['m17_repeater']."</th></tr>\n";
-echo "<tr><th>RPT</th><td style=\"background: #ffffff;\">".str_replace(' ','&nbsp;',$configm17gateway['General']['Callsign'])."&nbsp;".str_replace(' ','&nbsp;',$configm17gateway['General']['Suffix'])."</td></tr>\n";
-echo "<tr><th colspan=\"2\">".$lang['m17_net']."</th></tr>\n";
-echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink($logLinesM17Gateway, "M17")."</td></tr>\n";
-echo "</table>\n";
+$testMMDVModeM17 = getConfigItem("M17 Network", "Enable", $mmdvmconfigs);
+if ( $testMMDVModeM17 == 1 ) { //Hide the M17 information when P25 Network mode not enabled.
+	echo "<br />\n";
+	echo "<table>\n";
+	//echo "<tr><th colspan=\"2\">".$lang['m17_repeater']."</th></tr>\n";
+	echo "<tr><th colspan=\"2\">".$lang['m17_radio']."</th></tr>\n";
+	echo "<tr><th>RPT</th><td style=\"background: #ffffff;\">".str_replace(' ','&nbsp;',$configm17gateway['General']['Callsign'])."&nbsp;".str_replace(' ','&nbsp;',$configm17gateway['General']['Suffix'])."</td></tr>\n";
+	$m17can = getConfigItem("M17", "CAN", $mmdvmconfigs);
+	$m17can = ( $m17can ? $m17can : 0 );
+	echo "<tr><th style=\"width:70px\">CAN</th><td>".$m17can."</td></tr>\n";
+	echo "<tr><th colspan=\"2\">".$lang['m17_net']."</th></tr>\n";
+	echo "<tr><td colspan=\"2\" style=\"background: #ffffff;\">".getActualLink($logLinesM17Gateway, "M17")."</td></tr>\n";
+	echo "</table>\n";
 }
 
 $testMMDVModePOCSAG = getConfigItem("POCSAG Network", "Enable", $mmdvmconfigs);

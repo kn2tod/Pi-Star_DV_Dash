@@ -5035,7 +5035,7 @@ $p25Hosts = fopen("/usr/local/etc/P25Hosts.txt", "r");
         <th colspan="2"><a class="tooltip" href="#"><?php echo $lang['value'];?><span><b>Value</b>The current value from the<br />configuration files</span></a></th>
       </tr>
       <tr>
-        <td align="left"><a class="tooltip2" href="#"><?php echo $lang['m17_startup_reflector'];?>:<span><b>Startup Reflector</b>Set your prefered M17 reflector here</span></a></td>
+        <td align="left"><a class="tooltip2" href="#"><?php echo $lang['m17_startup_host'];?>:<span><b>M17 Host</b>Set your prefered M17 Host here</span></a></td>
         <td style="text-align: left;"><select name="m17StartupRef">
 <?php
     function m17_reflector_options(string $hosts, string $startup) {
