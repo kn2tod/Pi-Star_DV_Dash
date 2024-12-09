@@ -1026,6 +1026,13 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 		}
 	}
 
+	// Set M17 CAN
+	if (isset($_POST['m17can']) && $_POST['m17can'] !== '') {
+		$m17canNew = strtolower(escapeshellcmd($_POST['m17can']));
+		$m17canNew = preg_replace('/[^0-9]/', '', $m17canNew);
+		$configmmdvm['M17']['CAN'] = $m17canNew;
+	}
+
 	// Set the YSF Startup Host
 	if (empty($_POST['ysfStartupHost']) != TRUE ) {
 	  $newYSFStartupHostArr = explode(',', escapeshellcmd($_POST['ysfStartupHost']));
@@ -2554,12 +2561,6 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	if (!isset($configmmdvm['NXDN']['SelfOnly'])) { $configmmdvm['NXDN']['SelfOnly'] = "1"; }
 	if (!isset($configmmdvm['NXDN']['RemoteGateway'])) { $configmmdvm['NXDN']['RemoteGateway'] = "0"; }
 	if (!isset($configmmdvm['NXDN']['TXHang'])) { $configmmdvm['NXDN']['TXHang'] = "5"; }
-	if (!isset($configmmdvm['M17']['Enable']))               { $configmmdvm['M17']['Enable'] = "0"; }
-	if (!isset($configmmdvm['M17']['CAN']))                  { $configmmdvm['M17']['CAN'] = "0"; }
-	if (!isset($configmmdvm['M17']['SelfOnly']))             { $configmmdvm['M17']['SelfOnly'] = "1"; }
-	if (!isset($configmmdvm['M17']['TXHang']))               { $configmmdvm['M17']['TXHang'] = "5"; }
-	if (!isset($configmmdvm['M17']['Enable']))               { $configmmdvm['M17']['Enable'] = "0"; }
-	if (!isset($configmmdvm['M17']['ModeHang']))             { $configmmdvm['M17']['ModeHang'] = "20"; }
 	if (!isset($configmmdvm['M17']['Enable'])) { $configmmdvm['M17']['Enable'] = "0"; }
 	if (!isset($configmmdvm['M17']['CAN'])) { $configmmdvm['M17']['CAN'] = "0"; }
 	if (!isset($configmmdvm['M17']['SelfOnly'])) { $configmmdvm['M17']['SelfOnly'] = "1"; }
@@ -5103,9 +5104,10 @@ $p25Hosts = fopen("/usr/local/etc/P25Hosts.txt", "r");
         <option>X</option>
         <option>Y</option>
         <option>Z</option>
-    </select>
-
-              </td>
+      </select></td>
+      </tr>
+      <tr>
+        <td align="left"><a class="tooltip2" href="#"><?php echo $lang['m17_can'];?>:<span><b>M17 CAN</b>Set your CAN code here, sane values are 0-64</span></a></td>        <td align="left"><input type="text" name="m17can" size="13" maxlength="2" value="<?php echo $configmmdvm['M17']['CAN'];?>" /></td>
       </tr>
     </table>
     <div><input type="button" value="<?php echo $lang['apply'];?>" onclick="submitform()" /><br /><br /></div>
