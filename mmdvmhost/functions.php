@@ -524,6 +524,7 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 M17, received RF end of transmission from IU5BON to INFO, 2.1 seconds, BER: 0.2%, RSSI: -47/-47/-47 dBm
 // M: 2000-00-00 00:00:00.000 M17, received network voice transmission from IU5BON to ECHO
 // M: 2000-00-00 00:00:00.000 M17, received network end of transmission from IU5BON to ECHO, 13.4 seconds
+// M: 2000-00-00 08:11:39.981 DMR Slot 1, Talker Alias "4X1HJ Itzhak"
 function getHeardList($logLines) {
 	//array_multisort($logLines,SORT_DESC);
 	$heardList = array();
@@ -581,6 +582,8 @@ function getHeardList($logLines) {
 		} else if(strpos($logLine,"Embedded Talker Alias")) {
                         continue;
 		} else if(strpos($logLine,"DMR Talker Alias")) {
+			continue;
+		} else if(strpos($logLine,", Talker Alias ")) {
 			continue;
 		} else if(strpos($logLine,"CSBK Preamble")) {
                         continue;
