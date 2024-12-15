@@ -351,17 +351,20 @@ if ( $testMMDVModeYSF == 1 || $testDMR2YSF ) { //Hide the YSF information when S
 $testYSF2DMR = "";
 if ( isset($configysf2dmr['Enabled']['Enabled']) ) { $testYSF2DMR = $configysf2dmr['Enabled']['Enabled']; }
 if ( $testYSF2DMR ) { //Hide the YSF2DMR information when YSF2DMR Network mode not enabled.
-        $dmrMasterFile = fopen("/usr/local/etc/DMR_Hosts.txt", "r");
-        $dmrMasterHost = $configysf2dmr['DMR Network']['Address'];
-        while (!feof($dmrMasterFile)) {
+        $dmrMasterHost = "";
+        if (isset($configysf2dmr['DMR Network']['Address'])) {
+           $dmrMasterFile = fopen("/usr/local/etc/DMR_Hosts.txt", "r");
+           $dmrMasterHost = $configysf2dmr['DMR Network']['Address'];
+           while (!feof($dmrMasterFile)) {
                 $dmrMasterLine = fgets($dmrMasterFile);
                 $dmrMasterHostF = preg_split('/\s+/', $dmrMasterLine);
 		if ((count($dmrMasterHostF) >= 2) && (strpos($dmrMasterHostF[0], '#') === FALSE) && ($dmrMasterHostF[0] != '')) {
                         if ($dmrMasterHost == $dmrMasterHostF[2]) { $dmrMasterHost = str_replace('_', ' ', $dmrMasterHostF[0]); }
                 }
+           }
+           if (strlen($dmrMasterHost) > 19) { $dmrMasterHost = substr($dmrMasterHost, 0, 17) . '..'; }
+           fclose($dmrMasterFile);
         }
-        if (strlen($dmrMasterHost) > 19) { $dmrMasterHost = substr($dmrMasterHost, 0, 17) . '..'; }
-        fclose($dmrMasterFile);
 
         echo "<br />\n";
         echo "<table>\n";
