@@ -205,7 +205,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
         }
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
 	   $testTGIF = getConfigItem("DMR Network", "Address", $mmdvmconfigs);
-	   if ( strpos($testTGIF,"127.0.0.1") || strpos($testTGIF,"tgif.network") ) {  //  suppress if not TGIF
+	   if ( strpos($testTGIF,"127.0.0.1") == 0 || strpos($testTGIF,"tgif.network") == 0 ) {  //  suppress if not TGIF
 		echo '<script type="text/javascript">'."\n";
 		echo 'function reloadtgifConnections(){'."\n";
 		echo '  $("#tgifConnects").load("/mmdvmhost/tgif_links.php");'."\n";
