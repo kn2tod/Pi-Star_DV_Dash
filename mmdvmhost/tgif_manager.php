@@ -158,7 +158,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
 	      <th><a class=tooltip href="#">Action<span><b>Take Action</b></span></a></th>
 	    </tr>
 	    <tr>
-	      <td><input type="text" name="tgifNumber" size="10" maxlength="7" /></td>
+	      <td><input type="text" name="tgifNumber" size="10" maxlength="8" /></td>
 	      <td><input type="radio" name="tgifSlot" value="1" />TS1 <input type="radio" name="tgifSlot" value="2" checked="checked" />TS2</td>
 	      <td><input type="radio" name="tgifAction" value="LINK" />Link <input type="radio" name="tgifAction" value="UNLINK" checked="checked" />UnLink</td>
 	      <td><input type="submit" value="Modify Static" name="tgifSubmit" /></td>
