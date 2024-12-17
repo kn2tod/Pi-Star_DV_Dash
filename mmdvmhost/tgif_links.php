@@ -64,8 +64,9 @@ if ( $testMMDVModeDMR == 1 ) {
   // Use TGIF API to get info about current TGs
   if ( $dmrID ) {
   $jsonContext = stream_context_create(array('http'=>array('timeout' => 2, 'header' => 'User-Agent: Pi-Star Dashboard for '.$dmrID) )); // Add Timout and User Agent to include DMRID
-  $json_data = file_get_contents("http://tgif.network:5040/api/sessions", false, $jsonContext);
+  $json_data = @file_get_contents("http://tgif.network:5040/api/sessions", false, $jsonContext);
   $json = json_decode($json_data, false);
+  $json = ( isset($json) ? $json : array() );
 
   // Work out what session number we are using
   foreach($json as $key => $jsons) {
