@@ -299,13 +299,13 @@ function getP25GatewayLog()  {
 	$logLines2 = array();
         $logPath = P25GATEWAYLOGPATH."/".P25GATEWAYLOGPREFIX."-".gmdate("Y-m-d").".log";
         if (file_exists($logPath)) {
-		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(ink|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
+		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
         }
 	$logLines1 = array_filter($logLines1);
         if (sizeof($logLines1) == 0) {
                 $logPath = P25GATEWAYLOGPATH."/".P25GATEWAYLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
                 if (file_exists($logPath)) {
-			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(ink|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
+			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
                 }
 		$logLines2 = array_filter($logLines2);
         }
@@ -320,13 +320,13 @@ function getNXDNGatewayLog()  {
 	$logLines2 = array();
         $logPath = "/var/log/pi-star/NXDNGateway-".gmdate("Y-m-d").".log";
         if (file_exists($logPath)) {
-		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(ink|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
+		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
         }
 	$logLines1 = array_filter($logLines1);
         if (sizeof($logLines1) == 0) {
                 $logPath = "/var/log/pi-star/NXDNGateway-".gmdate("Y-m-d", time() - 86340).".log";
                 if (file_exists($logPath)) {
-			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(ink|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
+			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
                 }
 		$logLines2 = array_filter($logLines2);
         }
@@ -341,13 +341,13 @@ function getM17GatewayLog() {
 	$logLines2 = array();
 	$logPath = "/var/log/pi-star/M17Gateway-".gmdate("Y-m-d").".log";
 	if (file_exists($logPath)) {
-		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "ink|Starting|witched" $logPath | cut -d" " -f2- | tail -1`);
+		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
 	}
 	$logLines1 = array_filter($logLines1);
 	if (sizeof($logLines1) == 0) {
 		$logPath = "/var/log/pi-star/M17Gateway-".gmdate("Y-m-d", time() - 86340).".log";
 		if (file_exists($logPath)) {
-			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "ink|Starting|witched" $logPath | cut -d" " -f2- | tail -1`);
+			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
 		}
 		$logLines2 = array_filter($logLines2);
 	}
