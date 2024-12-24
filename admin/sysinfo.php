@@ -241,6 +241,10 @@ if (is_executable('/usr/local/bin/YSF2NXDN')) {
     $YSF2NXDN_Ver = exec('/usr/local/bin/YSF2NXDN -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">YSF2NXDN</td><td align=\"left\">".$YSF2NXDN_Ver."</td></tr>\n";
 }
+if (is_executable('/usr/local/bin/YSFParrot')) {
+    $YSFParrot_Ver = exec('/usr/local/bin/YSFParrot -v | cut -d\' \' -f 3-');
+    echo "  <tr><td align=\"left\">YSFParrot</td><td align=\"left\">".$YSFParrot_Ver."</td></tr>\n";
+}
 if (is_executable('/usr/local/bin/P25Gateway')) {
     $P25Gateway_Ver = exec('/usr/local/bin/P25Gateway -v | cut -d\' \' -f 3-');
     echo "  <tr><td align=\"left\">P25Gateway</td><td align=\"left\">".$P25Gateway_Ver."</td></tr>\n";
