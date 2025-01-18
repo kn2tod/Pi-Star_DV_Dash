@@ -47,6 +47,7 @@ $lcount = $_SESSION['LH_limits'];
 <b><?php echo $lang['last_heard_list'];?></b>
 <?php
   $lhsw = $_SESSION['LHSW'];
+  $lhsw = ( file_exists("/tmp/lhsw") ? 1 : $lhsw );
   $lhlh = ( $lhsw ? "Live Log" : "Last Heard" );
   $lhcount = count($lastHeard);
   $fsmode = exec ('sed -n "s/\/dev\/.* \/ ext4 \(r[ow]\).*/\1/p" /proc/mounts');
