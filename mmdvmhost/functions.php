@@ -888,6 +888,9 @@ function getActualMode($metaLastHeard, $mmdvmconfigs) {
 
 function getDSTARLinks() {
 	// returns link-states of all D-Star-modules
+	if (! file_exists(LINKLOGPATH."/Links.log")) {
+		return "Not Linked";
+	}
 	if (filesize(LINKLOGPATH."/Links.log") == 0) {
 		return "Not Linked";
 	}
@@ -1244,11 +1247,11 @@ function getDMRinfo($callSign,$target)  {
   $callsign = trim($callSign);
 
   $DMRq = "/tmp/DMRIdx.dat";
-  exec("grep -w --color=never -m 1 ".$callsign." ".$DMRq,$output);
+  exec("grep -h -w --color=never -m 1 ".$callsign." ".$DMRq,$output);
   if (!$output) {
-     exec("grep --color=never -m 1 \",".$callsign.",\\|^".$callsign.",\" ".DMRIDDATPATH."/DMRIds.xtd.dat", $output);
+     exec("grep -h --color=never -m 1 \",".$callsign.",\\|^".$callsign.",\" ".DMRIDDATPATH."/DMRIds.xtd.dat", $output);
      if (!$output) {
-        exec("grep -w --color=never -m 1 ".$callsign." ".DMRIDDATPATH."/DMRIds.dat", $output);
+        exec("grep -h -w --color=never -m 1 ".$callsign." ".DMRIDDATPATH."/DMRIds.dat", $output);
         if (!$output) {return "?".$callsign."?";}
         $output[0] = $output[0]."\t\t\t\t";
         }
