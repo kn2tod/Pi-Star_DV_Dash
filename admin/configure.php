@@ -970,11 +970,11 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	// Set the P25 Startup Host
 	if (empty($_POST['p25StartupHost']) != TRUE ) {
-          $newP25StartupHost = strtoupper(escapeshellcmd($_POST['p25StartupHost']));
-          if ($newP25StartupHost === "NONE") {
+	  $newP25StartupHost = strtoupper(escapeshellcmd($_POST['p25StartupHost']));
+	  if ($newP25StartupHost === "NONE") {
 		  unset($configp25gateway['Network']['Startup']);
 		  unset($configysf2p25['P25 Network']['StartupDstId']);
-		  unset($configp25gateway['Network']['Static']);
+	//	  unset($configp25gateway['Network']['Static']);
 	  } else {
 		  $configp25gateway['Network']['Startup'] = $newP25StartupHost;
 		  $configysf2p25['P25 Network']['StartupDstId'] = $newP25StartupHost;
@@ -1129,7 +1129,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	  if ($newYSF2P25StartupHost === "NONE") {
 		  unset($configp25gateway['Network']['Startup']);
-		  unset($configp25gateway['Network']['Static']);
+	//	  unset($configp25gateway['Network']['Static']);
 		  unset($configysf2p25['P25 Network']['StartupDstId']);
 	  } else {
 		  $configp25gateway['Network']['Startup'] = $newYSF2P25StartupHost;
@@ -1442,30 +1442,30 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	// Set P25 Hang Timers
 	if (empty($_POST['p25RfHangTime']) != TRUE ) {
 	  $configmmdvm['P25']['ModeHang'] = preg_replace('/[^0-9]/', '', $_POST['p25RfHangTime']);
-	  $configp25gateway['Network']['RFHangTime'] = "0";
+	  $configp25gateway['Network']['RFHangTime'] = preg_replace('/[^0-9]/', '', $_POST['p25RfHangTime']);
 	}
 	if (empty($_POST['p25NetHangTime']) != TRUE ) {
 	  $configmmdvm['P25 Network']['ModeHang'] = preg_replace('/[^0-9]/', '', $_POST['p25NetHangTime']);
-	  $configp25gateway['Network']['NetHangTime'] = "0";
+	  $configp25gateway['Network']['NetHangTime'] = preg_replace('/[^0-9]/', '', $_POST['p25NetHangTime']);
 	}
 	// Set NXDN Hang Timers
 	if (empty($_POST['nxdnRfHangTime']) != TRUE ) {
 	  $configmmdvm['NXDN']['ModeHang'] = preg_replace('/[^0-9]/', '', $_POST['nxdnRfHangTime']);
-	  $confignxdngateway['Network']['RFHangTime'] = "0";
+	  $confignxdngateway['Network']['RFHangTime'] = preg_replace('/[^0-9]/', '', $_POST['nxdnRfHangTime']);
 	}
 	if (empty($_POST['nxdnNetHangTime']) != TRUE ) {
 	  $configmmdvm['NXDN Network']['ModeHang'] = preg_replace('/[^0-9]/', '', $_POST['nxdnNetHangTime']);
-	  $confignxdngateway['Network']['NetHangTime'] = "0";
+	  $confignxdngateway['Network']['NetHangTime'] = preg_replace('/[^0-9]/', '', $_POST['nxdnNetHangTime']);
 	}
 
 	// Set M17 Hang Timers
 	if (empty($_POST['m17RfHangTime']) != TRUE ) {
 	  $configmmdvm['M17']['ModeHang'] = preg_replace('/[^0-9]/', '', $_POST['m17RfHangTime']);
-	  $configm17gateway['Network']['RFHangTime'] = "0";
+	  $configm17gateway['Network']['RFHangTime'] = preg_replace('/[^0-9]/', '', $_POST['m17RfHangTime']);
 	}
 	if (empty($_POST['m17NetHangTime']) != TRUE ) {
 	  $configmmdvm['M17 Network']['ModeHang'] = preg_replace('/[^0-9]/', '', $_POST['m17NetHangTime']);
-	  $configm17gateway['Network']['NetHangTime'] = "0";
+	  $configm17gateway['Network']['NetHangTime'] = preg_replace('/[^0-9]/', '', $_POST['m17NetHangTime']);
 	}
 
 	// Set the hardware type
