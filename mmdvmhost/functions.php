@@ -1278,10 +1278,10 @@ function getTGdesc($target)  {
   if (substr($x,0,3) == "TG ") {
      $x = substr($target,3);
      if (is_numeric($x)) {
-        $TGListq = "/usr/local/etc/TGList_BM.txt";
-        exec("grep -w --color=never -m 1 ".$x." ".$TGListq,$output);
+        $TGListq = "/usr/local/etc/TGList_BM.txt /usr/local/etc/TGList_P25.txt /usr/local/etc/TGList_NXDN.txt";
+        exec("grep -h -w --color=never -m 1 ".$x." ".$TGListq,$output);
         if ($output) {
-           $cx = explode(";",$output[0]);
+           $cx = explode(";",$output[0].";;;;");
            $x = $x.": ".$cx[2];
            }
         }
