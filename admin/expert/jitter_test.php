@@ -35,7 +35,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
     system('sudo touch /tmp/jittertest.log > /dev/null 2>&1 &');
     system('sudo truncate -s 0 /tmp/jittertest.log > /dev/null 2>&1 &');
     system('sudo /usr/local/sbin/pistar-jittertest '.$target.' > /dev/null 2>&1 &');
-    $_SESSION['update_offset'] = filesize('/tmp/jittertest.log');
+    $_SESSION['update_offset'] = @filesize('/tmp/jittertest.log');
     }
 
   else {
@@ -120,6 +120,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/expert/jitter_test.php") {
   <tr><td>
   <?php
     $output = shell_exec('sed -n "s/\(^[A-Za-z+]*\)_.*/\1/p" /usr/local/etc/DMR_Hosts.txt | sort | uniq');
+    $output = $output."M17\nNXDN\nP25\nYSF";   // + some alternate lists/links for jitter tests
 
     if ($output !== null) {
         // Split the output into an array of options
