@@ -135,8 +135,11 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
 	    if ($_POST["tgifAction"] == "UNLINK") { $targetTG = "4000"; }
 	    // Perform the GET request
 	    $tgifApiUrl = "http://tgif.network:5040/api/sessions/update/".$dmrID."/".$targetSlot."/".$targetTG;
+	    syslog(LOG_NOTICE,"TGIF Admin --> $tgifApiUrl");
 	    $result = file_get_contents($tgifApiUrl);
 	    // Output to the browser
+	    $resultx = httpStatusText($result);
+	    syslog(LOG_NOTICE,"TGIF Admin --> $tgifApiUrl $result $resultx");
 	    echo '<b>TGIF Manager</b>'."\n";
 	    echo "<table>\n<tr><th>Command Output</th></tr>\n<tr><td>";
 	    //echo "Sending command to TGIF API";
