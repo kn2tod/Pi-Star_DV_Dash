@@ -21,6 +21,12 @@
     <a href="edit_p25gateway.php" style="color: #ffffff;">P25</a> |
     <a href="edit_nxdngateway.php" style="color: #ffffff;">NXDN</a> |
     <a href="edit_dapnetgateway.php" style="color: #ffffff;">DAPNET</a><br />
+    <b>&nbsp&nbsp</b>
+    <a href="edit_ysf2dmr.php" style="color: #ffffff;">YSF2DMR</a> |
+    <a href="edit_ysf2nxdn.php" style="color: #ffffff;">YSF2NXDN</a> |
+    <a href="edit_ysf2p25.php" style="color: #ffffff;">YSF2P25</a> |
+    <a href="edit_dmr2ysf.php" style="color: #ffffff;">DMR2YSF</a> |
+    <a href="edit_dmr2nxdn.php" style="color: #ffffff;">DMR2NXDN</a><br />
     <b>Full Edit:&nbsp&nbsp</b>
     <a href="fulledit_mmdvmhost.php" style="color: #ffffff;">MMDVMHost</a> |
     <a href="fulledit_dmrgateway.php" style="color: #ffffff;">DMR GW</a> |
