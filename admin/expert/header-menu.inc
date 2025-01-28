@@ -37,6 +37,12 @@
     <a href="fulledit_dapnetapi.php" style="color: #ffffff;">DAPNET API</a> |
     <a href="fulledit_cron.php" style="color: #ffffff;">System Cron</a> |
     <a href="fulledit_rssidat.php" style="color: #ffffff;">RSSI Dat</a><br />
+    <b>&nbsp&nbsp</b>
+    <a href="fulledit_ysf2dmr.php" style="color: #ffffff;">YSF2DMR</a> |
+    <a href="fulledit_ysf2nxdn.php" style="color: #ffffff;">YSF2NXDN</a> |
+    <a href="fulledit_ysf2p25.php" style="color: #ffffff;">YSF2P25</a> |
+    <a href="fulledit_dmr2ysf.php" style="color: #ffffff;">DMR2YSF</a> |
+    <a href="fulledit_dmr2nxdn.php" style="color: #ffffff;">DMR2NXDN</a><br />
     <b>Tools:&nbsp&nbsp</b>
     <a href="edit_dashboard.php" style="color: #ffffff;">CSS Tool</a> |
     <a href="modem_fw_upgrade.php" style="color: #ffffff;">FW</a> |
