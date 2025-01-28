@@ -108,7 +108,7 @@ $prevElem = array();
 for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	if (isset($lastHeard[$i])) {
 		$listElem = $lastHeard[$i];
-//		listElem{0] time, [1] mode, [2] callsign, [3] target, [4] source, [5] duration, [6] loss, [7] BER
+//		listElem[0] time, [1] mode, [2] callsign, [3] target, [4] source, [5] duration, [6] loss, [7] BER
 		$currElem = array($listElem[1],$listElem[2],$listElem[3],$listElem[4],$listElem[5],$listElem[6]);
 		if ( $listElem[2] && $currElem !== $prevElem ) {
 			$prevElem = $currElem;
@@ -142,7 +142,6 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 			$fname = explode(' ',$DMRinfo);
 			$fname[2] = isset($fname[2]) ? strtolower($fname[2]) : "";
 			if ( $listElem[3] && $listElem[3] != '    ' ) {
-				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a>/$listElem[3]</div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
 				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2]</a>/$listElem[3]<a> [$fname[2]]</a></div><div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
 			} else {
 				echo "<td align=\"left\"><div style=\"float:left;\"><a href=\"".$callsignLookupUrl.$listElem[2]."\" title=\"$DMRinfo\" target=\"_blank\">$listElem[2] [$fname[2]]</a></div> <div style=\"text-align:right;\">&#40;<a href=\"https://aprs.fi/#!call=".$listElem[2]."\" target=\"_blank\">GPS</a>&#41;</div></td>";
