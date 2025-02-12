@@ -44,6 +44,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
 		echo '<script type="text/javascript">setTimeout(function() { window.location=window.location;},2000);</script>';
 	      }
 	      if (isset($remoteCommand)) {
+		syslog(LOG_INFO,"NXDN Link Mgr ---> ".substr($remoteCommand, strpos($remoteCommand,'RemoteCommand')));
 		echo "<b>NXDN Link Manager</b>\n";
 		echo "<table>\n<tr><th>Command Output</th></tr>\n<tr><td>";
 		echo exec($remoteCommand);
