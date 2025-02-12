@@ -191,7 +191,7 @@ echo '<form action="" method="post">'."\n";
 		        if ( ! chek_ini_fld($value)) { $err = "background-color: #ff9090;"; }
 		      }
 		    }
-		    echo "<tr><td align=\"right\" width=\"30%\">$key</td><td align=\"left\"><input type=\"text\" name=\"{$section}[$key]\" value=\"$value\" style=\"font-family: monospace; $err\" /></td></tr>\n";
+		    echo "<tr><td align=\"right\" width=\"30%\">$key</td><td align=\"left\"><input type=\"text\" size=\"30\" name=\"{$section}[$key]\" value=\"$value\" style=\"font-family: monospace; $err\" /></td></tr>\n";
 		  }
 		}
 		echo "</table>\n";
