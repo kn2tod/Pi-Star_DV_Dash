@@ -293,45 +293,45 @@ function getYSFGatewayLog()  {
 }
 
 function getP25GatewayLog()  {
-        // Open Logfile and copy loglines into LogLines-Array()
-        $logLines = array();
+	// Open Logfile and copy loglines into LogLines-Array()
+	$logLines = array();
 	$logLines1 = array();
 	$logLines2 = array();
-        $logPath = P25GATEWAYLOGPATH."/".P25GATEWAYLOGPREFIX."-".gmdate("Y-m-d").".log";
-        if (file_exists($logPath)) {
+	$logPath = P25GATEWAYLOGPATH."/".P25GATEWAYLOGPREFIX."-".gmdate("Y-m-d").".log";
+	if (file_exists($logPath)) {
 		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
-        }
+	}
 	$logLines1 = array_filter($logLines1);
-        if (sizeof($logLines1) == 0) {
-                $logPath = P25GATEWAYLOGPATH."/".P25GATEWAYLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
-                if (file_exists($logPath)) {
+	if (sizeof($logLines1) == 0) {
+		$logPath = P25GATEWAYLOGPATH."/".P25GATEWAYLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
+		if (file_exists($logPath)) {
 			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
-                }
+		}
 		$logLines2 = array_filter($logLines2);
-        }
+	}
 	if (sizeof($logLines1) == 0) { $logLines = $logLines2; } else { $logLines = $logLines1; }
-        return array_filter($logLines);
+	return array_filter($logLines);
 }
 
 function getNXDNGatewayLog()  {
-        // Open Logfile and copy loglines into LogLines-Array()
-        $logLines = array();
+	// Open Logfile and copy loglines into LogLines-Array()
+	$logLines = array();
 	$logLines1 = array();
 	$logLines2 = array();
-        $logPath = "/var/log/pi-star/NXDNGateway-".gmdate("Y-m-d").".log";
-        if (file_exists($logPath)) {
+	$logPath = "/var/log/pi-star/NXDNGateway-".gmdate("Y-m-d").".log";
+	if (file_exists($logPath)) {
 		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
-        }
+	}
 	$logLines1 = array_filter($logLines1);
-        if (sizeof($logLines1) == 0) {
-                $logPath = "/var/log/pi-star/NXDNGateway-".gmdate("Y-m-d", time() - 86340).".log";
-                if (file_exists($logPath)) {
+	if (sizeof($logLines1) == 0) {
+		$logPath = "/var/log/pi-star/NXDNGateway-".gmdate("Y-m-d", time() - 86340).".log";
+		if (file_exists($logPath)) {
 			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(inked|Starting|witched)" $logPath | cut -d" " -f2- | tail -1`);
-                }
+		}
 		$logLines2 = array_filter($logLines2);
-        }
+	}
 	if (sizeof($logLines1) == 0) { $logLines = $logLines2; } else { $logLines = $logLines1; }
-        return array_filter($logLines);
+	return array_filter($logLines);
 }
 
 function getM17GatewayLog() {
@@ -356,22 +356,22 @@ function getM17GatewayLog() {
 }
 
 function getDAPNETGatewayLog()  {
-        // Open Logfile and copy loglines into LogLines-Array()
-        $logLines = array();
+	// Open Logfile and copy loglines into LogLines-Array()
+	$logLines = array();
 	$logLines1 = array();
 	$logLines2 = array();
-        $logPath = "/var/log/pi-star/DAPNETGateway-".gmdate("Y-m-d").".log";
-        if (file_exists($logPath)) {
+	$logPath = "/var/log/pi-star/DAPNETGateway-".gmdate("Y-m-d").".log";
+	if (file_exists($logPath)) {
 		$logLines1 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(Sending message)" $logPath | cut -d" " -f2- | tail -n 20 | tac`);
-        }
+	}
 	$logLines1 = array_filter($logLines1);
-        if (sizeof($logLines1) == 0) {
-                $logPath = "/var/log/pi-star/DAPNETGateway-".gmdate("Y-m-d", time() - 86340).".log";
-                if (file_exists($logPath)) {
+	if (sizeof($logLines1) == 0) {
+		$logPath = "/var/log/pi-star/DAPNETGateway-".gmdate("Y-m-d", time() - 86340).".log";
+		if (file_exists($logPath)) {
 			$logLines2 = preg_split('/\r\n|\r|\n/', `egrep -h "^M.*(Sending message)" $logPath | cut -d" " -f2- | tail -n 20 | tac`);
-                }
+		}
 		$logLines2 = array_filter($logLines2);
-        }
+	}
 	$logLines = $logLines1 + $logLines2;
 	$logLines = array_slice($logLines, -20);
 	return array_filter($logLines);
@@ -486,6 +486,7 @@ function getDVModemTCXOFreq() {
 // 00000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000111111111122
 // 01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901
 // M: 2000-00-00 00:00:00.000 D-Star, received network header from M1ABC   /ABCD to CQCQCQ   via REF000 A
+// M: 2000-00-00 00:00:00.000 D-Star, received network end of transmission from M1ABC   /ABCD to CQCQCQ , ...
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received network voice header from M1ABC to TG 1
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received RF voice header from M1ABC to 5000
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received RF end of voice transmission, 1.8 seconds, BER: 3.9%
@@ -541,16 +542,16 @@ function getHeardList($logLines) {
 	$dstarber	= "";
 	$dstarrssi	= "";
 	$ysfduration	= "";
-        $ysfloss	= "";
-        $ysfber		= "";
+	$ysfloss	= "";
+	$ysfber		= "";
 	$ysfrssi	= "";
 	$p25duration	= "";
-        $p25loss	= "";
-        $p25ber		= "";
+	$p25loss	= "";
+	$p25ber		= "";
 	$p25rssi	= "";
 	$nxdnduration	= "";
-        $nxdnloss	= "";
-        $nxdnber	= "";
+	$nxdnloss	= "";
+	$nxdnber	= "";
 	$nxdnrssi	= "";
 	$m17duration	= "";
 	$m17loss	= "";
@@ -565,33 +566,49 @@ function getHeardList($logLines) {
 		$rssi		= "";
 		$eot		= " ";
 		//removing invalid lines
-		if(strpos($logLine,"BS_Dwn_Act")) {
+		if (strpos($logLine,"BS_Dwn_Act")) {
 			continue;
-		} else if(strlen($logLine) < 20) {
+		} else if (strlen($logLine) < 20) {
 			continue;
-		} else if(strpos($logLine,"invalid access")) {
+		} else if (preg_match('/^.: [0-9-]* [0-9:\.]* /',$logLine) < 1) {   //  M: 2000-00-00 00:00:00.000
 			continue;
-		} else if(strpos($logLine,"received RF header for wrong repeater")) {
+		} else if (strpos($logLine,"invalid access")) {
 			continue;
-		} else if(strpos($logLine,"unable to decode the network CSBK")) {
+		} else if (strpos($logLine,"received RF header for wrong repeater")) {
 			continue;
-		} else if(strpos($logLine,"overflow in the DMR slot RF queue")) {
+		} else if (strpos($logLine,"unable to decode the network CSBK")) {
 			continue;
-		} else if(strpos($logLine,"non repeater RF header received")) {
+		} else if (strpos($logLine,"overflow in the DMR slot RF queue")) {
 			continue;
-		} else if(strpos($logLine,"Embedded Talker Alias")) {
-                        continue;
-		} else if(strpos($logLine,"DMR Talker Alias")) {
+		} else if (strpos($logLine,"overflow in the M17 RF queue")) {
 			continue;
-		} else if(strpos($logLine,", Talker Alias ")) {
+		} else if (strpos($logLine,"non repeater RF header received")) {
 			continue;
-		} else if(strpos($logLine,"CSBK Preamble")) {
-                        continue;
-		} else if(strpos($logLine,"Preamble CSBK")) {
-                        continue;
+		} else if (strpos($logLine,"Embedded Talker Alias")) {
+			continue;
+		} else if (strpos($logLine,"DMR Talker Alias")) {
+			continue;
+		} else if (strpos($logLine,", Talker Alias ")) {
+			continue;
+		} else if (strpos($logLine,", text Data: ")) {
+			continue;
+		} else if (strpos($logLine,", slow data text =")) {
+			continue;
+		} else if (strpos($logLine,"interesting non superblock network frame")) {
+			continue;
+		} else if (preg_match('/^.*[0-9]* 00.0:  /',$logLine) > 1) {    // portions of the superblock
+			continue;
+		} else if (strpos($logLine,"CSBK Preamble")) {
+			continue;
+		} else if (strpos($logLine,"Preamble CSBK")) {
+			continue;
+		} else if (strpos($logLine,"Mode set to ")) {
+			continue;
+		} else if (strpos($logLine,"network late entry from ")) {    // M17?
+			continue;
 		}
 
-		if(strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
+		if (strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
 			$eot = "*";
 			$lineTokens = explode(", ",$logLine);
 			if (array_key_exists(2,$lineTokens)) {
@@ -712,12 +729,13 @@ function getHeardList($logLines) {
 
 		$id ="";
 		if ($mode == "D-Star") {
-			$id = substr($callsign2, strpos($callsign2,"/") + 1);
+			$id = trim(substr($callsign2, strpos($callsign2,"/") + 1));
 		}
 
 		$target = trim(substr($logLine, strpos($logLine, "to") + 3));
 		// Handle more verbose logging from MMDVMHost
                 if (strpos($target,",") !== 'false') { $target = explode(",", $target)[0]; }
+		$target = trim($target);
 
 		$source = "RF";
 		if (strpos($logLine,"network") > 0 || strpos($logLine,"POCSAG") > 0) {
@@ -744,27 +762,27 @@ function getHeardList($logLines) {
 				$rssi		= $ts2rssi;
 				break;
 			case "YSF":
-                		$duration	= $ysfduration;
-                		$loss		= $ysfloss;
-                		$ber		= $ysfber;
+				$duration	= $ysfduration;
+				$loss		= $ysfloss;
+				$ber		= $ysfber;
 				$rssi		= $ysfrssi;
 				$target		= preg_replace('!\s+!', ' ', $target);
-                		break;
+				break;
 			case "P25":
 				if ($source == "Net" && $target == "TG 10") {$callsign = "PARROT";}
 				if ($source == "Net" && $callsign == "10999") {$callsign = "MMDVM";}
-                		$duration	= $p25duration;
-                		$loss		= $p25loss;
-                		$ber		= $p25ber;
+				$duration	= $p25duration;
+				$loss		= $p25loss;
+				$ber		= $p25ber;
 				$rssi		= $p25rssi;
-                		break;
+				break;
 			case "NXDN":
 				if ($source == "Net" && $target == "TG 10") {$callsign = "PARROT";}
-                		$duration	= $nxdnduration;
-                		$loss		= $nxdnloss;
-                		$ber		= $nxdnber;
+				$duration	= $nxdnduration;
+				$loss		= $nxdnloss;
+				$ber		= $nxdnber;
 				$rssi		= $nxdnrssi;
-                		break;
+				break;
 			case "M17":
 				$duration       = $m17duration;
 				$loss           = $m17loss;
@@ -796,10 +814,13 @@ function getLastHeard($logLines) {
 	$heardCalls = array();
 	$heardList = getHeardList($logLines);
 	$counter = 0;
-	$modes = array("D-Star","YSF","P25","NXDN","POCSAG");
+	$modes = array("D-Star","YSF","P25","NXDN","POCSAG","M17");
 	$lhsw = isset($_SESSION['LHSW']) ? $_SESSION['LHSW'] : 0;
+	$lhsw = ( file_exists("/tmp/lhsw") ? 1 : $lhsw );
+
 	foreach ($heardList as $listElem) {
 		if ( (in_array($listElem[1],$modes)) || (startsWith($listElem[1], "DMR")) ) {
+			//          Callsign      #  mode         id           target       source
 			$callUuid = $listElem[2]."#".$listElem[1].$listElem[3].$listElem[4].$listElem[5];
 			if ( $lhsw == 1 ) {
 				if ($listElem[10] == " ") {
@@ -866,6 +887,15 @@ function getActualMode($metaLastHeard, $mmdvmconfigs) {
 		else if ($source == "Net" && $mode === "NXDN") {
 			$hangtime = getConfigItem("NXDN Network", "ModeHang", $mmdvmconfigs);
 		}
+		else if ($source == "RF" && $mode === "M17") {
+			$hangtime = getConfigItem("M17", "ModeHang", $mmdvmconfigs);
+		}
+		else if ($source == "Net" && $mode === "M17") {
+			$hangtime = getConfigItem("M17 Network", "ModeHang", $mmdvmconfigs);
+		}
+		else if ($source == "RF" && $mode === "FM") {
+			$hangtime = getConfigItem("FM", "ModeHang", $mmdvmconfigs);
+		}
 		else if ($source == "Net" && $mode === "POCSAG") {
 			$hangtime = getConfigItem("POCSAG Network", "ModeHang", $mmdvmconfigs);
 		}
@@ -924,7 +954,7 @@ function getDSTARLinks() {
 				$linkDest	= $linx[4][0];
 				$linkDir	= $linx[5][0];
 			}
-// Dongle-Link, sample: 
+// Dongle-Link, sample:
 // 2011-09-24 07:26:59: DPlus link - Type: Dongle User: DC1PIA	Dir: Incoming
 // 2012-03-14 21:32:18: DPlus link - Type: Dongle User: DC1PIA Dir: Incoming
 			if(preg_match_all('/^(.{19}).*(D[A-Za-z]*).*Type: ([A-Za-z]*).*User: (.{6,8}).*Dir: (.*)$/',$linkLine,$linx) > 0){
@@ -1018,7 +1048,7 @@ function getActualLink($logLines, $mode) {
 	// M: 0000-00-00 00:00:00.000 Opening YSF network connection
 	// M: 0000-00-00 00:00:00.000 Automatic (re-)connection to 16710 - "GB SOUTH WEST   "
 	// M: 0000-00-00 00:00:00.000 Automatic (re-)connection to FCS00290
-	// M: 0000-00-00 00:00:00.000 Linked to GB SOUTH WEST   
+	// M: 0000-00-00 00:00:00.000 Linked to GB SOUTH WEST
 	// M: 0000-00-00 00:00:00.000 Linked to FCS002-90
 	// M: 0000-00-00 00:00:00.000 Disconnect via DTMF has been requested by M1ABC
 	// M: 0000-00-00 00:00:00.000 Connect to 00003 - "YSF2NXDN        " has been requested by M1ABC
@@ -1120,10 +1150,11 @@ function getActualLink($logLines, $mode) {
         break;
 
     case "M17":
+	// 2025-02-09 11:56:38.570 Linked to reflector M17-SEL A
 	if (isProcessRunning("M17Gateway")) {
 	    foreach ($logLines as $logLine) {
-		    if (preg_match_all('/Linked .* reflector (M17-.\{3\} [A-Z])/',$logLine,$linx) > 0){
-		        return $linx[1][0];
+		    if (preg_match_all('/(Linked|Switched) .* reflector (M17-.{3} [A-Z])/',$logLine,$linx) > 0){
+		        return $linx[2][0];
 		    }
 		    if (strpos($logLine,"Starting M17Gateway")) {
 		        return "Not Linked";
