@@ -52,7 +52,7 @@ $lcount = $_SESSION['LH_limits'];
   $lhcount = count($lastHeard);
   $fsmode = exec ('sed -n "s/\/dev\/.* \/ ext4 \(r[ow]\).*/\1/p" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
-  $ovfl = exec ('grep -a -m 1 -ih "overflow in the DMR" /var/log/pi-star/MMDVM*.log | sed "s/.* overflow .*/ov/g"');
+  $ovfl = exec ('grep -a -m 1 -ih -E "overflow in the (DMR|M17)" /var/log/pi-star/MMDVM*.log | sed "s/.* overflow .*/ov/g"');
   $sessions = exec ('df /var/lib/php/sessions | sed -n "s/.*\( [0-9]*% \).*/\1/p"');
 ?>
   <table>
