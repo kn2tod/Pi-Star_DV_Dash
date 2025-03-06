@@ -2224,38 +2224,53 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	// Set MMDVMHost DMR Mode
 	if (empty($_POST['MMDVMModeDMR']) != TRUE ) {
 	//if (escapeshellcmd($_POST['MMDVMModeDMR']) == 'ON' )  { $configmmdvm['DMR']['Enable'] = "1"; $configmmdvm['DMR Network']['Enable'] = "1"; $configysf2dmr['Enabled']['Enabled'] = "0"; }
-	  if (escapeshellcmd($_POST['MMDVMModeDMR']) == 'ON' )  { $configmmdvm['DMR']['Enable'] = "1"; $configmmdvm['DMR Network']['Enable'] = "1"; }
-	  if (escapeshellcmd($_POST['MMDVMModeDMR']) == 'OFF' ) { $configmmdvm['DMR']['Enable'] = "0"; $configmmdvm['DMR Network']['Enable'] = "0"; }
+	  if (escapeshellcmd($_POST['MMDVMModeDMR']) == 'ON' )  { $configmmdvm['DMR']['Enable'] = "1";
+	                                                          $configmmdvm['DMR Network']['Enable'] = "1"; }
+	  if (escapeshellcmd($_POST['MMDVMModeDMR']) == 'OFF' ) { $configmmdvm['DMR']['Enable'] = "0";
+	                                                          $configmmdvm['DMR Network']['Enable'] = "0"; }
 	}
 
 	// Set MMDVMHost D-Star Mode
 	if (empty($_POST['MMDVMModeDSTAR']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModeDSTAR']) == 'ON' )  { $configmmdvm['D-Star']['Enable'] = "1"; $configmmdvm['D-Star Network']['Enable'] = "1"; }
-          if (escapeshellcmd($_POST['MMDVMModeDSTAR']) == 'OFF' ) { $configmmdvm['D-Star']['Enable'] = "0"; $configmmdvm['D-Star Network']['Enable'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeDSTAR']) == 'ON' )  { $configmmdvm['D-Star']['Enable'] = "1";
+                                                                    $configmmdvm['D-Star Network']['Enable'] = "1"; }
+          if (escapeshellcmd($_POST['MMDVMModeDSTAR']) == 'OFF' ) { $configmmdvm['D-Star']['Enable'] = "0";
+                                                                    $configmmdvm['D-Star Network']['Enable'] = "0"; }
 	}
 
 	// Set MMDVMHost Fusion Mode
 	if (empty($_POST['MMDVMModeFUSION']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModeFUSION']) == 'ON' )  { $configmmdvm['System Fusion']['Enable'] = "1"; $configmmdvm['System Fusion Network']['Enable'] = "1"; $configdmr2ysf['Enabled']['Enabled'] = "0"; }
-          if (escapeshellcmd($_POST['MMDVMModeFUSION']) == 'OFF' ) { $configmmdvm['System Fusion']['Enable'] = "0"; $configmmdvm['System Fusion Network']['Enable'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeFUSION']) == 'ON' )  { $configmmdvm['System Fusion']['Enable'] = "1";
+                                                                     $configmmdvm['System Fusion Network']['Enable'] = "1";
+                                                                     $configdmr2ysf['Enabled']['Enabled'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeFUSION']) == 'OFF' ) { $configmmdvm['System Fusion']['Enable'] = "0";
+                                                                     $configmmdvm['System Fusion Network']['Enable'] = "0"; }
 	}
 
 	// Set MMDVMHost P25 Mode
 	if (empty($_POST['MMDVMModeP25']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModeP25']) == 'ON' )  { $configmmdvm['P25']['Enable'] = "1"; $configmmdvm['P25 Network']['Enable'] = "1"; $configysf2p25['Enabled']['Enabled'] = "0"; }
-          if (escapeshellcmd($_POST['MMDVMModeP25']) == 'OFF' ) { $configmmdvm['P25']['Enable'] = "0"; $configmmdvm['P25 Network']['Enable'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeP25']) == 'ON' )  { $configmmdvm['P25']['Enable'] = "1";
+                                                                  $configmmdvm['P25 Network']['Enable'] = "1";
+                                                                  $configysf2p25['Enabled']['Enabled'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeP25']) == 'OFF' ) { $configmmdvm['P25']['Enable'] = "0";
+                                                                  $configmmdvm['P25 Network']['Enable'] = "0"; }
 	}
 
 	// Set MMDVMHost NXDN Mode
 	if (empty($_POST['MMDVMModeNXDN']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModeNXDN']) == 'ON' )  { $configmmdvm['NXDN']['Enable'] = "1"; $configmmdvm['NXDN Network']['Enable'] = "1"; $configysf2nxdn['Enabled']['Enabled'] = "0"; }
-          if (escapeshellcmd($_POST['MMDVMModeNXDN']) == 'OFF' ) { $configmmdvm['NXDN']['Enable'] = "0"; $configmmdvm['NXDN Network']['Enable'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeNXDN']) == 'ON' )  { $configmmdvm['NXDN']['Enable'] = "1";
+                                                                   $configmmdvm['NXDN Network']['Enable'] = "1";
+                                                                   $configysf2nxdn['Enabled']['Enabled'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeNXDN']) == 'OFF' ) { $configmmdvm['NXDN']['Enable'] = "0";
+                                                                   $configmmdvm['NXDN Network']['Enable'] = "0"; }
 	}
 
 	// Set MMDVMHost M17 Mode
 	if (empty($_POST['MMDVMModeM17']) != TRUE ) {
-	  if (escapeshellcmd($_POST['MMDVMModeM17']) == 'ON' )  { $configmmdvm['M17']['Enable'] = "1"; $configmmdvm['M17 Network']['Enable'] = "1"; }
-	  if (escapeshellcmd($_POST['MMDVMModeM17']) == 'OFF' ) { $configmmdvm['M17']['Enable'] = "0"; $configmmdvm['M17 Network']['Enable'] = "0"; }
+	  if (escapeshellcmd($_POST['MMDVMModeM17']) == 'ON' )   { $configmmdvm['M17']['Enable'] = "1";
+                                                                   $configmmdvm['M17 Network']['Enable'] = "1"; }
+	  if (escapeshellcmd($_POST['MMDVMModeM17']) == 'OFF' )  { $configmmdvm['M17']['Enable'] = "0";
+                                                                   $configmmdvm['M17 Network']['Enable'] = "0"; }
 	}
 
 	// Set YSF2DMR Mode
@@ -2266,15 +2281,19 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	// Set YSF2NXDN Mode
 	if (empty($_POST['MMDVMModeYSF2NXDN']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModeYSF2NXDN']) == 'ON' )  { $configysf2nxdn['Enabled']['Enabled'] = "1"; $configmmdvm['NXDN']['Enable'] = "0"; $configmmdvm['NXDN Network']['Enable'] = "0";}
+          if (escapeshellcmd($_POST['MMDVMModeYSF2NXDN']) == 'ON' )  { $configysf2nxdn['Enabled']['Enabled'] = "1";
+                                                                       $configmmdvm['NXDN']['Enable'] = "0";
+                                                                       $configmmdvm['NXDN Network']['Enable'] = "0";}
           if (escapeshellcmd($_POST['MMDVMModeYSF2NXDN']) == 'OFF' ) { $configysf2nxdn['Enabled']['Enabled'] = "0"; }
 	}
 
 	// Set YSF2P25 Mode
 	if (empty($_POST['MMDVMModeYSF2P25']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModeYSF2P25']) == 'ON' )  { $configysf2p25['Enabled']['Enabled'] = "1"; $configmmdvm['P25']['Enable'] = "0"; $configmmdvm['P25 Network']['Enable'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModeYSF2P25']) == 'ON' )  { $configysf2p25['Enabled']['Enabled'] = "1";
+                                                                      $configmmdvm['P25']['Enable'] = "0";
+                                                                      $configmmdvm['P25 Network']['Enable'] = "0"; }
           if (escapeshellcmd($_POST['MMDVMModeYSF2P25']) == 'OFF' ) { $configysf2p25['Enabled']['Enabled'] = "0"; }
-	  if (escapeshellcmd($_POST['MMDVMModeFUSION']) == 'OFF' ) { $configysf2p25['Enabled']['Enabled'] = "0"; }
+	  if (escapeshellcmd($_POST['MMDVMModeFUSION']) == 'OFF' )  { $configysf2p25['Enabled']['Enabled'] = "0"; }
 	}
 
 	// Set DMR2YSF Mode
@@ -2350,8 +2369,10 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	// Set POCSAG Mode
 	if (empty($_POST['MMDVMModePOCSAG']) != TRUE ) {
-          if (escapeshellcmd($_POST['MMDVMModePOCSAG']) == 'ON' )  { $configmmdvm['POCSAG']['Enable'] = "1"; $configmmdvm['POCSAG Network']['Enable'] = "1"; }
-          if (escapeshellcmd($_POST['MMDVMModePOCSAG']) == 'OFF' ) { $configmmdvm['POCSAG']['Enable'] = "0"; $configmmdvm['POCSAG Network']['Enable'] = "0"; }
+          if (escapeshellcmd($_POST['MMDVMModePOCSAG']) == 'ON' )  { $configmmdvm['POCSAG']['Enable'] = "1";
+                                                                     $configmmdvm['POCSAG Network']['Enable'] = "1"; }
+          if (escapeshellcmd($_POST['MMDVMModePOCSAG']) == 'OFF' ) { $configmmdvm['POCSAG']['Enable'] = "0";
+                                                                     $configmmdvm['POCSAG Network']['Enable'] = "0"; }
 	}
 
 	// Set the MMDVMHost Display Type
@@ -2379,9 +2400,9 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	// Set the Nextion Display Layout
 	if (empty($_POST['mmdvmNextionDisplayType']) != TRUE ) {
-	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "G4KLX") { $configmmdvm['Nextion']['ScreenLayout'] = "0"; }
-	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "ON7LDSL2") { $configmmdvm['Nextion']['ScreenLayout'] = "2"; }
-	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "ON7LDSL3") { $configmmdvm['Nextion']['ScreenLayout'] = "3"; }
+	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "G4KLX")      { $configmmdvm['Nextion']['ScreenLayout'] = "0"; }
+	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "ON7LDSL2")   { $configmmdvm['Nextion']['ScreenLayout'] = "2"; }
+	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "ON7LDSL3")   { $configmmdvm['Nextion']['ScreenLayout'] = "3"; }
 	  if (escapeshellcmd($_POST['mmdvmNextionDisplayType']) == "ON7LDSL3HS") { $configmmdvm['Nextion']['ScreenLayout'] = "4"; }
 	}
 
@@ -2938,14 +2959,14 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	if (file_exists('/etc/mobilegps')) {
 		if (empty($_POST['mobilegps_enable']) != TRUE ) {
 			// Add missing lines to MMDVMHost Config
-			if (!isset($configmmdvm['Mobile GPS']['Enable'])) { $configmmdvm['Mobile GPS']['Enable'] = "0"; }
+			if (!isset($configmmdvm['Mobile GPS']['Enable']))  { $configmmdvm['Mobile GPS']['Enable'] = "0"; }
 			if (!isset($configmmdvm['Mobile GPS']['Address'])) { $configmmdvm['Mobile GPS']['Address'] = "127.0.0.1"; }
-			if (!isset($configmmdvm['Mobile GPS']['Port'])) { $configmmdvm['Mobile GPS']['Port'] = "7834"; }
+			if (!isset($configmmdvm['Mobile GPS']['Port']))    { $configmmdvm['Mobile GPS']['Port'] = "7834"; }
 			// Add missing lines to YSFGateway Config
 			if (!isset($configysfgateway['GPSD'])) {
-				if (!isset($configysfgateway['Mobile GPS']['Enable'])) { $configysfgateway['Mobile GPS']['Enable'] = "0"; }
+				if (!isset($configysfgateway['Mobile GPS']['Enable']))  { $configysfgateway['Mobile GPS']['Enable'] = "0"; }
 				if (!isset($configysfgateway['Mobile GPS']['Address'])) { $configysfgateway['Mobile GPS']['Address'] = "127.0.0.1"; }
-				if (!isset($configysfgateway['Mobile GPS']['Port'])) { $configysfgateway['Mobile GPS']['Port'] = "7834"; }
+				if (!isset($configysfgateway['Mobile GPS']['Port']))    { $configysfgateway['Mobile GPS']['Port'] = "7834"; }
 			}
 			// Add missing lines to NXDNGateway Config
 			//if (!isset($confignxdngateway['Mobile GPS']['Enable'])) { $confignxdngateway['Mobile GPS']['Enable'] = "0"; }
@@ -2962,12 +2983,12 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 			// Enable or Disable MobileGPS
 			if (escapeshellcmd($_POST['mobilegps_enable']) == 'ON' )  {
 				$configmmdvm['Mobile GPS']['Enable'] = "1";
-				if (isset($configysfgateway['Mobile GPS']['Enable'])) { $configysfgateway['Mobile GPS']['Enable'] = "1"; }
+				if (isset($configysfgateway['Mobile GPS']['Enable']))  { $configysfgateway['Mobile GPS']['Enable'] = "1"; }
 				if (isset($confignxdngateway['Mobile GPS']['Enable'])) { $confignxdngateway['Mobile GPS']['Enable'] = "1"; }
 				system('sudo sed -i "/Enabled=/c\\Enabled=1" /etc/mobilegps');
 			} else {
 				$configmmdvm['Mobile GPS']['Enable'] = "0";
-				if (isset($configysfgateway['Mobile GPS']['Enable'])) { $configysfgateway['Mobile GPS']['Enable'] = "0"; }
+				if (isset($configysfgateway['Mobile GPS']['Enable']))  { $configysfgateway['Mobile GPS']['Enable'] = "0"; }
 				if (isset($confignxdngateway['Mobile GPS']['Enable'])) { $confignxdngateway['Mobile GPS']['Enable'] = "0"; }
 				system('sudo sed -i "/Enabled=/c\\Enabled=0" /etc/mobilegps');
 			}
