@@ -162,6 +162,29 @@ function aprspass ($callsign) {
 	return $hash & 0x7fff;
 }
 
+function sortdmrgw($a, $b) {
+	// key recoding/ordering:
+	$xkeys = array ( 'A' => "General",
+			 'B' => "Log",
+			 'C' => "Voice",
+			 'D' => "Info",
+			 'E' => "XLX Network",
+			 'F' => "DMR Network 1",
+			 'G' => "DMR Network 2",
+			 'H' => "DMR Network 3",
+			 'I' => "DMR Network 4",
+			 'J' => "DMR Network 5",
+			 'K' => "DMR Network 6",
+			 'L' => "GPDS",
+			 'M' => "APRS",
+			 'N' => "Dynamic TG Control" );
+	// recode keys:
+	$ax = array_search ($a, $xkeys);
+	$bx = array_search ($b, $xkeys);
+	// return key order:
+	return ($ax == $bx) ? 0 : (($ax < $bx) ? -1 : 1);
+}
+
 $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 $rev=$version;
 $MYCALL=strtoupper($callsign);
@@ -2302,7 +2325,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	if (empty($_POST['MMDVMModeDMR2YSF']) != TRUE ) {
           if (escapeshellcmd($_POST['MMDVMModeDMR2YSF']) == 'ON' )  {
 		  $configdmr2ysf['Enabled']['Enabled'] = "1";
-		  unset($configdmrgateway['DMR Network 3']);
+		  //unset($configdmrgateway['DMR Network 3']);
 		  $configdmrgateway['DMR Network 3']['Enabled'] = "0";
 		  $configdmrgateway['DMR Network 3']['Name'] = "DMR2YSF_Cross-over";
 		  $configdmrgateway['DMR Network 3']['Id'] = $configdmrgateway['DMR Network 2']['Id'];
@@ -2338,7 +2361,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 		  	}
 	  	  }
 		  $configdmr2nxdn['Enabled']['Enabled'] = "1";
-		  unset($configdmrgateway['DMR Network 3']);
+		  //unset($configdmrgateway['DMR Network 3']);
 		  $configdmrgateway['DMR Network 3']['Enabled'] = "0";
 		  $configdmrgateway['DMR Network 3']['Name'] = "DMR2NXDN_Cross-over";
 		  $configdmrgateway['DMR Network 3']['Id'] = $configdmrgateway['DMR Network 2']['Id'];
@@ -3479,6 +3502,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
         }
 
 	// dmrgateway config file wrangling
+	//uksort ($configdmrgateway, 'sortdmrgw');  // reorder before rewrite
 	$dmrgwContent = "";
         foreach($configdmrgateway as $dmrgwSection=>$dmrgwValues) {
                 // UnBreak special cases
