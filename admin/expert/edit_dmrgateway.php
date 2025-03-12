@@ -41,7 +41,7 @@ exec('sudo chmod 664 /tmp/fmehg65694eg.tmp');
 $filepath = '/tmp/fmehg65694eg.tmp';
 
 //after the form submit
-if($_POST) {
+if ($_POST) {
 	$data = $_POST;
 	//update ini file, call function
 	update_ini_file($data, $filepath);
@@ -61,10 +61,11 @@ if($_POST) {
 			$content .= "[".$section."]\n";
 			//append the values
 			foreach($values as $key=>$value) {
-				if (($section == "DMR Network 1" || $section == "DMR Network 2") && $key == "Password" && $value) {
-					$value = str_replace('"', "", $value);
-					$content .= $key."=\"".$value."\"\n";
-				} elseif (($section == "DMR Network 1" || $section == "DMR Network 2") && $key == "Options" && $value) {
+				//if (($section == "DMR Network 1" || $section == "DMR Network 2") && $key == "Password" && $value) {
+				//	$value = str_replace('"', "", $value);
+				//	$content .= $key."=\"".$value."\"\n";
+				//} elseif (($section == "DMR Network 1" || $section == "DMR Network 2") && $key == "Options" && $value) {
+				if (($key == "Options" || $key == "Password") && $value) {
 					$value = str_replace('"', "", $value);
 					$content .= $key."=\"".$value."\"\n";
 				} else {
