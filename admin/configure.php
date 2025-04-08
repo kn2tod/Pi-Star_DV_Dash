@@ -919,31 +919,31 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 
 	  //if ( strlen($newCallsignUpper) < 6 ) { $configysfgateway['General']['Callsign'] = $newCallsignUpper."-1"; }
 	  //else { $configysfgateway['General']['Callsign'] = $newCallsignUpper; }
-	  $configysfgateway['General']['Callsign'] = $newCallsignUpper;
-	  $configmmdvm['General']['Callsign'] = $newCallsignUpper;
-	  $configmmdvm['FM']['Callsign'] = $newCallsignUpper;
-	  $configdapnetgw['General']['Callsign'] = $newCallsignUpper;
-	  $configysfgateway['aprs.fi']['Password'] = aprspass($newCallsignUpper);
-	  $configysfgateway['aprs.fi']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2dmr['aprs.fi']['Password'] = aprspass($newCallsignUpper);
-	  $configysf2dmr['aprs.fi']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2dmr['YSF Network']['Callsign'] = $newCallsignUpper;
-	  $configysf2nxdn['aprs.fi']['Password'] = aprspass($newCallsignUpper);
-	  $configysf2nxdn['aprs.fi']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2nxdn['YSF Network']['Callsign'] = $newCallsignUpper;
-	  $configysf2p25['aprs.fi']['Password'] = aprspass($newCallsignUpper);
-	  $configysf2p25['aprs.fi']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2p25['YSF Network']['Callsign'] = $newCallsignUpper;
-	  $configdmr2ysf['YSF Network']['Callsign'] = $newCallsignUpper;
-	  $configp25gateway['General']['Callsign'] = $newCallsignUpper;
+	  $configysfgateway['General']['Callsign']     = $newCallsignUpper;
+	  $configmmdvm['General']['Callsign']          = $newCallsignUpper;
+	  $configmmdvm['FM']['Callsign']               = $newCallsignUpper;
+	  $configdapnetgw['General']['Callsign']       = $newCallsignUpper;
+	  $configysfgateway['aprs.fi']['Password']     = aprspass($newCallsignUpper);
+	  $configysfgateway['aprs.fi']['Description']  = $newCallsignUpper."_Pi-Star";
+	  $configysf2dmr['aprs.fi']['Password']        = aprspass($newCallsignUpper);
+	  $configysf2dmr['aprs.fi']['Description']     = $newCallsignUpper."_Pi-Star";
+	  $configysf2dmr['YSF Network']['Callsign']    = $newCallsignUpper;
+	  $configysf2nxdn['aprs.fi']['Password']       = aprspass($newCallsignUpper);
+	  $configysf2nxdn['aprs.fi']['Description']    = $newCallsignUpper."_Pi-Star";
+	  $configysf2nxdn['YSF Network']['Callsign']   = $newCallsignUpper;
+	  $configysf2p25['aprs.fi']['Password']        = aprspass($newCallsignUpper);
+	  $configysf2p25['aprs.fi']['Description']     = $newCallsignUpper."_Pi-Star";
+	  $configysf2p25['YSF Network']['Callsign']    = $newCallsignUpper;
+	  $configdmr2ysf['YSF Network']['Callsign']    = $newCallsignUpper;
+	  $configp25gateway['General']['Callsign']     = $newCallsignUpper;
 	  $confignxdngateway['aprs.fi']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $confignxdngateway['aprs.fi']['Password'] = aprspass($newCallsignUpper);
-	  $confignxdngateway['General']['Callsign'] = $newCallsignUpper;
-	  $configm17gateway['General']['Callsign'] = $newCallsignUpper;
-	  $configysfgateway['Info']['Name'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2dmr['Info']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2nxdn['Info']['Description'] = $newCallsignUpper."_Pi-Star";
-	  $configysf2p25['Info']['Description'] = $newCallsignUpper."_Pi-Star";
+	  $confignxdngateway['aprs.fi']['Password']    = aprspass($newCallsignUpper);
+	  $confignxdngateway['General']['Callsign']    = $newCallsignUpper;
+	  $configm17gateway['General']['Callsign']     = $newCallsignUpper;
+	  $configysfgateway['Info']['Name']            = $newCallsignUpper."_Pi-Star";
+	  $configysf2dmr['Info']['Description']        = $newCallsignUpper."_Pi-Star";
+	  $configysf2nxdn['Info']['Description']       = $newCallsignUpper."_Pi-Star";
+	  $configysf2p25['Info']['Description']        = $newCallsignUpper."_Pi-Star";
 	  if (isset($configdgidgateway)) { $configdgidgateway['General']['Callsign'] = $newCallsignUpper; }
 	  if (isset($configdgidgateway)) { $configdgidgateway['Info']['Description'] = $newCallsignUpper."_Pi-Star"; }
 	  if ($configPistarRelease['Pi-Star']['Version'] >= "4.1.4") {
@@ -1198,6 +1198,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	  $configdmrgateway['XLX Network']['Id'] = $newPostDmrId;
 	  $configdmr2ysf['DMR Network']['Id'] = $newPostDmrId;
 	  $configdmr2nxdn['DMR Network']['Id'] = $newPostDmrId;
+	  $configysf2p25['P25 Network']['Id']  = $newPostDmrId;
 	  if (isset($configdgidgateway)) { $configdgidgateway['General']['Id'] = $newPostDmrId; }
 	}
 
@@ -2705,6 +2706,11 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 		$configmmdvm['FM']['ExtAudioBoost'] = "1";
 	}
 
+	// Stop ircDDBGateway from trying to look up rr.openquad.net (the hard coded default) all the time
+	if ( (!isset($configs['ircddbHostname2'])) && (!isset($configs['ircddbEnabled2'])) ) {
+		$fix2ndIRCHost = "sudo sed -i '/^ircddbEnabled=/a ircddbEnabled2=0' /etc/ircddbgateway";
+		system($fix2ndIRCHost);
+	}
 
 	// Add missing options to DMR2YSF
 	if (!isset($configdmr2ysf['YSF Network']['FCSRooms']))     { $configdmr2ysf['YSF Network']['FCSRooms'] = "/usr/local/etc/FCSHosts.txt"; }
