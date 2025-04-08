@@ -43,6 +43,7 @@ if(isset($_POST['data'])) {
         fwrite($fh, $_POST['data']);
         fclose($fh);
         exec('sudo mount -o remount,rw /');
+        exec('sudo dos2unix -q /tmp/fmehg65695mp.tmp 2>/dev/null');         // normalize to linux fmt
         exec('sudo cp /tmp/fmehg65695mp.tmp /etc/mmdvmhost');
         exec('sudo chmod 644 /etc/mmdvmhost');
         exec('sudo chown root:root /etc/mmdvmhost');

@@ -43,11 +43,12 @@ if(isset($_POST['data'])) {
         fwrite($fh, $_POST['data']);
         fclose($fh);
         exec('sudo mount -o remount,rw /');
+        exec('sudo dos2unix -q /tmp/fmehg65694eg.tmp 2>/dev/null');         // normalize to linux fmt
         exec('sudo cp /tmp/fmehg65694eg.tmp /etc/dmrgateway');
         exec('sudo chmod 644 /etc/dmrgateway');
         exec('sudo chown root:root /etc/dmrgateway');
         exec('sudo mount -o remount,ro /');
-  
+
         // Reload the affected daemon
 	exec('sudo systemctl restart mmdvmhost.service');		    // Reload MMDVMHost
 	exec('sudo systemctl restart dmrgateway.service');		    // Reload DMRGateway

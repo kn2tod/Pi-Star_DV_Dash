@@ -43,6 +43,7 @@ if(isset($_POST['data'])) {
         fwrite($fh, $_POST['data']);
         fclose($fh);
         exec('sudo mount -o remount,rw /');
+        exec('sudo dos2unix -q /tmp/k45s7h5s9k3.tmp 2>/dev/null');          // normalize to linux fmt
         exec('sudo cp /tmp/k45s7h5s9k3.tmp /etc/wpa_supplicant/wpa_supplicant.conf');
         exec('sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf');
         exec('sudo chown www-data:www-data /etc/wpa_supplicant/wpa_supplicant.conf');
