@@ -68,7 +68,7 @@ if ($cpuTempC >= 69) { $cpuTempHTML = "<td style=\"background: #f00\">".$cpuTemp
     <td style="background: #<?php if (isProcessRunning('/usr/local/bin/NextionDriver',true)) { echo "1d1"; } else { echo "b55"; } ?>">NextionDriver</td>
     <td style="background: #<?php if (isProcessRunning('/usr/local/bin/M17Gateway',true)) { echo "1d1"; } else { echo "b55"; } ?>">M17Gateway</td>
     <td style="background: #<?php if (isProcessRunning('/usr/local/bin/DGIdGateway',true)) { echo "1d1"; } else { echo "b55"; } ?>">DGIdGateway</td>
-    <td style="background: #<?php echo "b55"; ?>"></td>
+    <td style="background: #<?php if (isProcessRunning('/usr/local/bin/DAPNetGateway',true)) { echo "1d1"; } else { echo "b55"; } ?>">DAPNetgateway</td>
     <td style="background: #<?php echo "b55"; ?>"></td>
   </tr>
 </table>
