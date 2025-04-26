@@ -38,7 +38,7 @@ $callsignLookupUrl = $_SESSION['CS_URL'];
 if ( ! isset($_SESSION['LH_limits'])) {
   $lcount = exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
   if ( $lcount < 20 )  { $lcount = 20; }
-  if ( $lcount > 100 ) { $lcount = 100; }
+  if ( $lcount > 200 ) { $lcount = 200; }
   $_SESSION['LH_limits'] = $lcount;
 }
 $lcount = $_SESSION['LH_limits'];
