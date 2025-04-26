@@ -256,13 +256,13 @@ function getMMDVMLog()  {
 	$logLines2 = array();
 	$logPath = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d").".log";
 	if (file_exists($logPath)) {
-		$logLines1 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
+		$logLines1 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost|slow data)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
 	}
 	$logLines1 = array_slice($logLines1, -400);
 	if (sizeof($logLines1) < 400) {
 		$logPath = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
 		if (file_exists($logPath)) {
-			$logLines2 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
+			$logLines2 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost|slow data)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
 		}
 	}
 	$logLines2 = array_slice($logLines2, -400);
@@ -485,8 +485,15 @@ function getDVModemTCXOFreq() {
 
 // 00000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000111111111122
 // 01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901
+// M: 2000-00-00 00:00:00.000 Mode set to D-Star
+// M: 2000-00-00 00:00:00.000 D-Star, received RF header from M1ABC   /ABCD to CQCQCQ
+// M: 2000-00-00 00:00:00.000 D-Star, received RF end of transmission from M1ABC   /ABCD to CQCQCQ  , 00.0 seconds, BER: 0.0%, RSSI: -43/-43/-43 dBm
 // M: 2000-00-00 00:00:00.000 D-Star, received network header from M1ABC   /ABCD to CQCQCQ   via REF000 A
-// M: 2000-00-00 00:00:00.000 D-Star, received network end of transmission from M1ABC   /ABCD to CQCQCQ , ...
+// M: 2000-00-00 00:00:00.000 D-Star, received network end of transmission from M1ABC   /ABCD to CQCQCQ  , 0.0 seconds, 0% packet loss, BER: 0.0%
+// M: 2000-00-00 00:00:00.000 D-Star, network slow data text = "Charlie NPN, Va.    "
+// M: 2000-00-00 00:00:00.000 D-Star, starting fast data mode
+// M: 2000-00-00 00:00:00.000 D-Star, leaving fast data mode
+// M: 2000-00-00 00:00:00.000 D-Star, invalid slow data header
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received network voice header from M1ABC to TG 1
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received RF voice header from M1ABC to 5000
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received RF end of voice transmission, 1.8 seconds, BER: 3.9%
@@ -507,6 +514,7 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 P25, received RF end of transmission, 0.4 seconds, BER: 0.0%
 // M: 2000-00-00 00:00:00.000 P25, received network transmission from 10999 to TG 10200
 // M: 2000-00-00 00:00:00.000 P25, network end of transmission, 1.8 seconds, 0% packet loss
+// M: 2000-00-00 00:00:00.000 Mode set to System Fusion
 // M: 2000-00-00 00:00:00.000 YSF, received RF data from MW0MWZ     to ALL
 // M: 2000-00-00 00:00:00.000 YSF, received RF end of transmission, 5.1 seconds, BER: 3.8%
 // M: 2000-00-00 00:00:00.000 YSF, received network data from M1ABC      to ALL        at MB6IBK
@@ -525,6 +533,7 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 M17, received RF end of transmission from IU5BON to INFO, 2.1 seconds, BER: 0.2%, RSSI: -47/-47/-47 dBm
 // M: 2000-00-00 00:00:00.000 M17, received network voice transmission from IU5BON to ECHO
 // M: 2000-00-00 00:00:00.000 M17, received network end of transmission from IU5BON to ECHO, 13.4 seconds
+// M: 2000-00-00 00:00:00.000 M17, text Data: "Linked to M17-SEL A       "
 // M: 2000-00-00 08:11:39.981 DMR Slot 1, Talker Alias "4X1HJ Itzhak"
 function getHeardList($logLines) {
 	//array_multisort($logLines,SORT_DESC);
@@ -592,8 +601,6 @@ function getHeardList($logLines) {
 			continue;
 		} else if (strpos($logLine,", text Data: ")) {
 			continue;
-		} else if (strpos($logLine,", slow data text =")) {
-			continue;
 		} else if (strpos($logLine,"interesting non superblock network frame")) {
 			continue;
 		} else if (preg_match('/^.*[0-9]* 00.0:  /',$logLine) > 1) {    // portions of the superblock
@@ -606,9 +613,15 @@ function getHeardList($logLines) {
 			continue;
 		} else if (strpos($logLine,"network late entry from ")) {    // M17?
 			continue;
+		} else if (strpos($logLine,"Modem RX Serial buffer overflow, clearing the buffer")) {
+			continue;
+		} else if (strpos($logLine,"DMR, Closing DMR Network")) {
+			continue;
+		} else if (strpos($logLine,"DMR, Opening DMR Network")) {
+			continue;
 		}
 
-		if (strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
+		if (strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "invalid slow data header") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
 			$eot = "*";
 			$lineTokens = explode(", ",$logLine);
 			if (array_key_exists(2,$lineTokens)) {
@@ -905,7 +918,9 @@ function getActualMode($metaLastHeard, $mmdvmconfigs) {
 		$timestamp->add(new DateInterval('PT' . $hangtime . 'S'));
 	}
 	if ($listElem[6] != null) { //if terminated, hangtime counts after end of transmission
-		$timestamp->add(new DateInterval('PT' . ceil($listElem[6]) . 'S'));
+		$seconds = is_numeric($listElem[6]) ? ceil((float)$listElem[6]) : 0;
+		$timestamp->add(new DateInterval('PT' . $seconds . 'S'));
+		//$timestamp->add(new DateInterval('PT' . ceil($listElem[6]) . 'S'));
 	} else { //if not terminated, always return mode
 		return $mode;
 	}
@@ -1153,7 +1168,7 @@ function getActualLink($logLines, $mode) {
 	// 2025-02-09 11:56:38.570 Linked to reflector M17-SEL A
 	if (isProcessRunning("M17Gateway")) {
 	    foreach ($logLines as $logLine) {
-		    if (preg_match_all('/(Linked|Switched) .* reflector (M17-.{3} [A-Z])/',$logLine,$linx) > 0){
+		    if (preg_match_all('/(Linked|Switched) to .*(M17-.{3} [A-Z])/',$logLine,$linx) > 0){
 		        return $linx[2][0];
 		    }
 		    if (strpos($logLine,"Starting M17Gateway")) {
