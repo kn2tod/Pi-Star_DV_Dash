@@ -28,6 +28,7 @@
     <a href="edit_ysf2p25.php" style="color: #ffffff;">YSF2P25</a> |
     <a href="edit_dmr2ysf.php" style="color: #ffffff;">DMR2YSF</a> |
     <a href="edit_dmr2nxdn.php" style="color: #ffffff;">DMR2NXDN</a><br />
+    <br />
     <b>Full Edit:&nbsp&nbsp</b>
     <a href="fulledit_mmdvmhost.php" style="color: #ffffff;">MMDVMHost</a> |
     <a href="fulledit_dmrgateway.php" style="color: #ffffff;">DMR GW</a> |
@@ -44,6 +45,7 @@
     <a href="fulledit_ysf2p25.php" style="color: #ffffff;">YSF2P25</a> |
     <a href="fulledit_dmr2ysf.php" style="color: #ffffff;">DMR2YSF</a> |
     <a href="fulledit_dmr2nxdn.php" style="color: #ffffff;">DMR2NXDN</a><br />
+    <br />
     <b>Tools:&nbsp&nbsp</b>
     <a href="edit_dashboard.php" style="color: #ffffff;">CSS Tool</a> |
     <a href="modem_fw_upgrade.php" style="color: #ffffff;">Modem FW</a> |
