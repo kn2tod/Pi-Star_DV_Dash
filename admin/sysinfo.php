@@ -166,6 +166,12 @@ $php=exec('php -v | sed -n "s/^\(PHP .* \)(c.*/\1/p"');
 echo "  <tr><td align=\"left\">PHP</td><td align=\"left\">$php</td></tr>\n";
 $git=exec('git --version | sed "s/git version/Git/g"');
 echo "  <tr><td align=\"left\">GIT</td><td align=\"left\">$git $CodeBase</td></tr>\n";
+$sshd=exec('ssh -V 3>&1 1>&2 2>&3 3>&1 1>&2 | sed -n "s/.*SSL \([0-9a-zA-Z.]*\) .*/SSH \1/p"');
+echo "  <tr><td align=\"left\">SSH</td><td align=\"left\">$sshd</td></tr>\n";
+$ntpv=exec('ntpq --version');
+echo "  <tr><td align=\"left\">NTP</td><td align=\"left\">$ntpv</td></tr>\n";
+$clone=exec('sudo rpi-clone -V | sed -n "s/ Version//p"');
+echo "  <tr><td align=\"left\">rpi-clone</td><td align=\"left\">$clone</td></tr>\n";
 if (is_executable('/usr/sbin/cupsd')) {
   $cups=exec("sudo dpkg -l cups 2>/dev/null | tail -n 1 | awk '{print \$3}'");
   echo "  <tr><td align=\"left\">CUPS</td><td align=\"left\">$cups</td></tr>\n";
