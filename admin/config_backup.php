@@ -95,6 +95,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
           $output .= shell_exec("sudo cp -p /var/www/dashboard/config/ircddblocal.php $backupDir 2>&1");
           $output .= shell_exec("sudo cp -p /var/www/dashboard/config/config.php $backupDir 2>&1");
           $output .= shell_exec("sudo cp -p /var/www/dashboard/config/language.php $backupDir 2>&1");
+          $output .= shell_exec("sudo cp -p /var/www/.htpasswd $backupDir 2>&1");
           $output .= "Compressing backup files\n";
           $output .= shell_exec("sudo zip -j $backupZip $backupDir/* 2>&1");
           $output .= "Starting download\n";
