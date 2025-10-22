@@ -3,7 +3,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';
 // $configs = array();
-// 
+//
 // if ($configfile = fopen($gatewayConfigPath,'r')) {
 //         while ($line = fgets($configfile)) {
 //                 list($key,$value) = preg_split('/=/',$line);
@@ -11,13 +11,14 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';
 //                 if ($key != 'ircddbPassword' && strlen($value) > 0)
 //                 $configs[$key] = $value;
 //         }
-// 
+//
 // }
 // $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 // $rev="20141101";
 // $MYCALL=strtoupper($callsign);
 if (! isset($_SESSION['Platform'])) { $_SESSION['Platform'] = exec('/usr/local/bin/platformDetect.sh'); }
 $platform = $_SESSION['Platform'];
+$Debian=exec('sed -n "s/VERSION_CODENAME=\(.*\)/\u\1/p" /etc/os-release')
 ?>
 <?php
 $cpuLoad = sys_getloadavg();
@@ -32,7 +33,7 @@ if ($cpuTempC >= 69) { $cpuTempHTML = "<td style=\"background: #f00\">".$cpuTemp
 <table style="table-layout: fixed;">
   <tr>
     <th><a class="tooltip" href="#"><?php echo $lang['hostname'];?><br /><span><b>System IP Address:<br /><?php echo str_replace(',', ',<br />', exec('hostname -I'));?></b></span></a></th>
-    <th><a class="tooltip" href="#"><?php echo $lang['kernel'];?><span><b>Release</b></span></a></th>
+    <th><a class="tooltip" href="#"><?php echo $lang['kernel'];?><span><b><?php echo "$Debian";?> Release</b></span></a></th>
     <th colspan="2"><a class="tooltip" href="#"><?php echo $lang['platform'];?><span><b>Uptime:<br /><?php echo str_replace(',', ',<br />', exec('uptime -p'));?></b></span></a></th>
     <th><a class="tooltip" href="#"><?php echo $lang['cpu_load'];?><span><b>CPU Load</b></span></a></th>
     <th><a class="tooltip" href="#"><?php echo $lang['cpu_temp'];?><span><b>CPU Temp</b></span></a></th>
