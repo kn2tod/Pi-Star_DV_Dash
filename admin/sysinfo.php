@@ -176,7 +176,7 @@ if (is_executable('/usr/sbin/cupsd')) {
   $cups=exec("sudo dpkg -l cups 2>/dev/null | tail -n 1 | awk '{print \$3}'");
   echo "  <tr><td align=\"left\">CUPS</td><td align=\"left\">$cups</td></tr>\n";
 }
-$bootDev=exec('blkid | sed -n "s/\/dev\/\(.*2\):.*/\1/p"');
+$bootDev=exec('sudo blkid | sed -n "s/\/dev\/\(.*2\):.*/\1/p"');
 echo "  <tr><td align=\"left\">Boot</td><td align=\"left\">$bootDev</td></tr>\n";
 echo "  </tbody>\n";
 // Ram information
