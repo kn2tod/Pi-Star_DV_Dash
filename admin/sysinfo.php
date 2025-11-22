@@ -170,6 +170,8 @@ $sshd=exec('ssh -V 3>&1 1>&2 2>&3 3>&1 1>&2 | sed -n "s/.*SSL \([0-9a-zA-Z.]*\) 
 echo "  <tr><td align=\"left\">SSH</td><td align=\"left\">$sshd</td></tr>\n";
 $ntpv=exec('ntpq --version');
 echo "  <tr><td align=\"left\">NTP</td><td align=\"left\">$ntpv</td></tr>\n";
+$wpi=exec('sudo dpkg-query -l wiringpi | sed -n "s/.* wiringpi .* \([0-9]*\.[0-9]*\) .*/\1/p"');
+echo "  <tr><td align=\"left\">WPI</td><td align=\"left\">$wpi</td></tr>\n";
 $clone=exec('sudo rpi-clone -V | sed -n "s/ Version//p"');
 echo "  <tr><td align=\"left\">rpi-clone</td><td align=\"left\">$clone</td></tr>\n";
 if (is_executable('/usr/sbin/cupsd')) {
