@@ -52,14 +52,26 @@ if ($_SERVER["PHP_SELF"] == "/admin/power.php") {
   <?php
         if ( escapeshellcmd($_POST["action"]) == "reboot" ) {
                 $wait = exec ('grep -i "pi zero" /proc/cpuinfo') ? "90" : "50" ;
+                $wait = exec ('grep -i "pi3" /proc/cpuinfo') ? "$wait" : "45" ;
+                $wait = exec ('grep -i "pi4" /proc/cpuinfo') ? "$wait" : "35" ;
                 $wait = exec ('grep -i "pi5" /proc/cpuinfo') ? "$wait" : "25" ;
                 echo '<tr><td colspan="2" style="background: #000000; color: #00ff00;"><br /><br />Reboot command has been sent to your Pi,
                         <br />please wait up to '.$wait.' secs for it to reboot.<br />
                         <br />You will be re-directed back to the
-                        <br />dashboard automatically in '.$wait.' seconds.<br /><br /><br />
+                        <br />dashboard automatically in <span id="countdown">'.$wait.'</span> seconds.<br /><br /><br />
                         <script language="JavaScript" type="text/javascript">
-                                setTimeout("location.href = \'/index.php\'",'.$wait.'000);
+                                var secondsLeft = '.$wait.';
+                                var countdownElement = document.getElementById("countdown");
+                                var countdownTimer = setInterval(function() {
+                                        secondsLeft--;
+                                        countdownElement.textContent = secondsLeft;
+                                        if (secondsLeft <= 0) {
+                                                clearInterval(countdownTimer);
+                                        }
+                                    }, 1000);
+                                setTimeout(function() { location.href = "/index.php"; },'.$wait.'000);
                         </script>
+
                         </td></tr>';
                 system('sudo sync && sudo sync && sudo sync && sudo mount -o remount,ro / > /dev/null &');
                 exec('sudo reboot > /dev/null &');
