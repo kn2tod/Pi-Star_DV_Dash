@@ -199,6 +199,16 @@ $conn = exec('echo $(route | grep default | awk \'{ print $8 }\') $(sudo wpa_cli
 $ipaddrs = exec('echo "$(hostname -I) ($(route | grep default | awk \'{ print $2 }\')) --> $(dig +short myip.opendns.com @resolver1.opendns.com)"');
 echo "  <tr><td align=\"left\">$conn</td><td align=\"left\">$ipaddrs</td></tr>\n";
 echo "  </tbody>\n";
+// Modem information
+echo "  <tbody>\n";
+echo "  <tr><th><b>Modem/Hat</b></th><th><b>Frequencies/Modes</b></th></tr>\n";
+$tx = exec('sed -n "/\[Info\]/,/^$/ s/TX.*\([0-9]\{3\}\)\([0-9]\{3\}\)\([0-9]\{3\}\)/\1.\2.\3/p" /etc/mmdvmhost');
+$rx = exec('sed -n "/\[Info\]/,/^$/ s/RX.*\([0-9]\{3\}\)\([0-9]\{3\}\)\([0-9]\{3\}\)/\1.\2.\3/p" /etc/mmdvmhost');
+echo "  <tr><td align=\"left\">Transmit</td><td align=\"left\">$tx</td></tr>\n";
+echo "  <tr><td align=\"left\">Receive </td><td align=\"left\">$rx</td></tr>\n";
+$modes = exec ('sed -n "/\[D-Star\]/,/^$/ s/Enable=1/D-Star/p; /\[DMR\]/,/^$/ s/Enable=1/DMR/p; /\[System Fusion\]/,/^$/ s/Enable=1/YSF/p; /\[P25\]/,/^$/ s/Enable=1/P25/p; /\[NXDN\]/,/^$/ s/Enable=1/NXDN/p; /\[M17\]/,/^$/ s/Enable=1/M17/p" /etc/mmdvmhost | tr "\n" "  "');
+echo "  <tr><td align=\"left\">Modes   </td><td align=\"left\">$modes</td></tr>\n";
+echo "  </tbody>\n";
 // Filesystem Information
 if (count($system['partitions']) > 0) {
     echo "  <tbody>\n";
