@@ -181,6 +181,11 @@ if (is_executable('/usr/sbin/cupsd')) {
 $bootDev=exec('sudo blkid | sed -n "s/\/dev\/\(.*2\):.*/\1/p"');
 echo "  <tr><td align=\"left\">Boot</td><td align=\"left\">$bootDev</td></tr>\n";
 echo "  </tbody>\n";
+$macaddr1 = exec('cat /sys/class/net/eth0/address 2>/dev/null | sed "/\x5e\x24/! s/\(.*\)/ETH0: \1/g"');
+$macaddr2 = exec('cat /sys/class/net/wlan0/address 2>/dev/null | sed "/\x5e\x24/! s/\(.*\)/WLAN0: \1/g"');
+echo "  <tr><td align=\"left\">Mac Addrs</td><td align=\"left\">$macaddr1 $macaddr2</td></tr>\n";
+echo "  </tbody>\n";
+
 // Ram information
 if ($system['mem_info']) {
     echo "  <tbody>\n";
