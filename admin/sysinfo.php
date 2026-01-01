@@ -178,7 +178,7 @@ if (is_executable('/usr/sbin/cupsd')) {
   $cups=exec("sudo dpkg -l cups 2>/dev/null | tail -n 1 | awk '{print \$3}'");
   echo "  <tr><td align=\"left\">CUPS</td><td align=\"left\">$cups</td></tr>\n";
 }
-$bootDev=exec('sudo blkid | sed -n "s/\/dev\/\(.*2\):.*/\1/p"');
+$bootDev=exec('sudo blkid | sed -n "s/\/dev\/\(.*2\):.*/\1/p" | head -n 1');
 echo "  <tr><td align=\"left\">Boot</td><td align=\"left\">$bootDev</td></tr>\n";
 $macaddr1 = exec('cat /sys/class/net/eth0/address 2>/dev/null | sed "/\x5e\x24/! s/\(.*\)/ETH0: \1/g"');
 $macaddr2 = exec('cat /sys/class/net/wlan0/address 2>/dev/null | sed "/\x5e\x24/! s/\(.*\)/WLAN0: \1/g"');
