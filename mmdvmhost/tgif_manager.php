@@ -106,7 +106,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") { // Stop this working outside o
 	      }
 	    }
 	  } else if ( $dmrMasterHost == 'tgif.network' ) {
-	    // MMDVMHost Connected directly to TGIF, get the ID form here
+	    // MMDVMHost Connected directly to TGIF, get the ID from here
 	    if (getConfigItem("DMR", "Id", $mmdvmconfigs)) {
 	      $dmrID = getConfigItem("DMR", "Id", $mmdvmconfigs);
 	    } else {

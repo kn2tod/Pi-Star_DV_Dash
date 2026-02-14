@@ -53,7 +53,7 @@ if ( $testMMDVModeDMR == 1 ) {
       }
     }
   } else if ( $dmrMasterHost == 'tgif.network' ) {
-    // MMDVMHost Connected directly to TGIF, get the ID form here
+    // MMDVMHost Connected directly to TGIF, get the ID from here
     if (getConfigItem("DMR", "Id", $mmdvmconfigs)) {
       $dmrID = getConfigItem("DMR", "Id", $mmdvmconfigs);
     } else {

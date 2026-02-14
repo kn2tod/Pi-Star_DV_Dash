@@ -16,7 +16,7 @@ if ( $testMMDVModeDMR == 1 ) {
     if ( strlen($bmAPIkey) <= 20 ) { unset($bmAPIkey); }
     if ( strlen($bmAPIkey) >= 200 ) { $bmAPIkeyV2 = $bmAPIkey; unset($bmAPIkey); }
   }
-  
+
   //Load the dmrgateway config file
   $dmrGatewayConfigFile = '/etc/dmrgateway';
   if (fopen($dmrGatewayConfigFile,'r')) { $configdmrgateway = parse_ini_file($dmrGatewayConfigFile, true); }
@@ -59,7 +59,7 @@ if ( $testMMDVModeDMR == 1 ) {
   $bmStaticTGList = "";
   $bmDynamicTGList = "";
 
-  // Pull the information form JSON
+  // Pull the information from JSON
   if (isset($json->staticSubscriptions)) { $bmStaticTGListJson = $json->staticSubscriptions;
                                           foreach($bmStaticTGListJson as $staticTG) {
                                             if (getConfigItem("DMR Network", "Slot1", $mmdvmconfigs) && $staticTG->slot == "1") {
