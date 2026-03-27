@@ -20,6 +20,7 @@ $Debian=exec('sed -n "s/VERSION_CODENAME=\(.*\)/\u\1/p" /etc/os-release');
 $Linux=php_uname('s')." ".php_uname('r')." ".php_uname('v')." ".php_uname('m');
 $Hardware=exec('sed -n "s|^Model.*: Raspberry \(.*\)|\1|p" /proc/cpuinfo');
 $CodeBase=exec('sed -n "s/.*\/\/.*\/\(.*\)\/.*/(\1)/p" /var/www/dashboard/.git/config 2>/dev/null');
+$Hostname=exec('hostname');
 
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
@@ -52,6 +53,7 @@ $ver=$configPistarRelease['Pi-Star']['Version'];
     <?php echo "<meta name=\"platform\" content=\"$Hardware\" />\n"; ?>
     <?php echo "<meta name=\"version\" content=\"Pi-Star: $ver - $rev\" />\n"; ?>
     <?php echo "<meta name=\"codebase\" content=\"$CodeBase\" />\n"; ?>
+    <?php echo "<meta name=\"hostname\" content=\"$Hostname\" />\n"; ?>
     <meta name="Author" content="Hans-J. Barthen (DL5DI), Kim Huebel (DG9VH), Andy Taylor (MW0MWZ), Mark Prichard (KN2TOD)" />
     <meta name="Description" content="Pi-Star Dashboard" />
     <meta name="KeyWords" content="MW0MWZ,MMDVMHost,ircDDBGateway,D-Star,ircDDB,Pi-Star,Blackwood,Wales,DL5DI,DG9VH,KN2TOD" />
@@ -98,6 +100,7 @@ if ( ($_SERVER["PHP_SELF"] == "/admin/index.php") && ($configPistarRelease['Pi-S
 <h1>Pi-Star+ <?php echo $lang['digital_voice']." ".$lang['dashboard_for']." ".$MYCALL; ?></h1>
 <?php if (isset($piStarCssBannerH1)) { echo "<h1>".$piStarCssBannerH1."</h1>\n"; } ?>
 <?php if (isset($piStarCssBannerExtTxt)) { echo "<p style=\"text-align: center; color: #ffffff;\">".$piStarCssBannerExtTxt."</p>\n"; }?>
+<div style="font-size: 8px; text-align: left; padding-left: 8px; float: left;"> <?php echo date('m/d/y G:i:s'); ?></div>
 <p style="padding-right: 5px; text-align: right; color: #ffffff;">
  <a href="/" style="color: #ffffff;"><?php echo $lang['dashboard'];?></a> |
  <a href="/admin/" style="color: #ffffff;"><?php echo $lang['admin'];?></a> |
@@ -345,9 +348,6 @@ Pi-Star / Pi-Star Dashboard, &copy; Andy Taylor (MW0MWZ) 2014-<?php echo date("Y
 ircDDBGateway Dashboard by Hans-J. Barthen (DL5DI),<br />
 MMDVMDash developed by Kim Huebel (DG9VH), <br />
 Further enhancements by Mark Prichard (KN2TOD), <br />
-Need help? Click <a style="color: #ffffff;" href="https://www.facebook.com/groups/pistarusergroup/" target="_new">here for the Facebook Group</a><br />
-or Click <a style="color: #ffffff;" href="https://forum.pistar.uk/" target="_new">here to join the Support Forum</a><br />
-Get your copy of Pi-Star from <a style="color: #ffffff;" href="http://www.pistar.uk/downloads/" target="_new">here</a>.<br />
 </div>
 
 </div>
