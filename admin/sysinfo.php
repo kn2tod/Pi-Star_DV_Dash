@@ -136,7 +136,8 @@ function formatSize( $bytes ) {
   <div class="container">
   <div class="header">
   <div style="font-size: 8px; text-align: left; padding-left: 8px; float: left;">Hostname: <?php echo php_uname('n'); ?></div><div  style="font-size: 8px; text-align: right; padding-right: 8px;">Pi-Star:<?php echo $configPistarRelease['Pi-Star']['Version']?> / Dashboard:<?php echo $version; ?></div>
-  <h1>Pi-Star <?php echo $lang['digital_voice']." ".$lang['dashboard']." - SysInfo";?></h1>
+  <h1>Pi-Star+ <?php echo $lang['digital_voice']." ".$lang['dashboard']." - SysInfo";?></h1>
+  <div style="font-size: 8px; text-align: left; padding-left: 8px; float: left;"> <?php echo date('m/d/y G:i:s'); ?></div>
   <p style="padding-right: 5px; text-align: right; color: #ffffff;">
     <a href="/" style="color: #ffffff;"><?php echo $lang['dashboard'];?></a> |
     <a href="/admin/" style="color: #ffffff;"><?php echo $lang['admin'];?></a> |
@@ -170,7 +171,7 @@ $sshd=exec('ssh -V 3>&1 1>&2 2>&3 3>&1 1>&2 | sed -n "s/.*SSL \([0-9a-zA-Z.]*\) 
 echo "  <tr><td align=\"left\">SSH</td><td align=\"left\">$sshd</td></tr>\n";
 $ntpv=exec('ntpq --version');
 echo "  <tr><td align=\"left\">NTP</td><td align=\"left\">$ntpv</td></tr>\n";
-$wpi=exec('sudo dpkg-query -l wiringpi | sed -n "s/.* wiringpi .* \([0-9]*\.[0-9]*\) .*/\1/p"');
+$wpi=exec('sudo dpkg-query -l wiringpi | sed -n "s/.* wiringpi.* \([0-9]*\.[0-9]*\) .*/\1/p"');
 echo "  <tr><td align=\"left\">WPI</td><td align=\"left\">$wpi</td></tr>\n";
 $clone=exec('sudo rpi-clone -V | sed -n "s/ Version//p"');
 echo "  <tr><td align=\"left\">rpi-clone</td><td align=\"left\">$clone</td></tr>\n";
@@ -324,8 +325,6 @@ echo "  </tbody>\n";
   <div class="footer">
   Pi-Star web config, &copy; Andy Taylor (MW0MWZ) 2014-<?php echo date("Y"); ?>.<br />
   Further enhancements by Mark Prichard (KN2TOD)<br />
-  Need help? Click <a style="color: #ffffff;" href="https://www.facebook.com/groups/pistarusergroup/" target="_new">here for the Support Group</a><br />
-  Get your copy of Pi-Star from <a style="color: #ffffff;" href="http://www.pistar.uk/downloads/" target="_blank">here</a>.<br />
   <br />
   </div>
   </footer>
