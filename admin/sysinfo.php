@@ -151,6 +151,7 @@ function formatSize( $bytes ) {
   <table role="presentation" width="100%" border="0">
   <tr><th colspan="2">Pi-Star System Information</th></tr>
 <?php
+
 // Platform information
 echo "  <tbody>\n";
 echo "  <tr><th><b>System</b></th><th><b>Version</b></th></tr>\n";
@@ -184,6 +185,10 @@ echo "  <tr><td align=\"left\">Boot</td><td align=\"left\">$bootDev</td></tr>\n"
 $macaddr1 = exec('cat /sys/class/net/eth0/address 2>/dev/null | sed "/\x5e\x24/! s/\(.*\)/ETH0: \1/g"');
 $macaddr2 = exec('cat /sys/class/net/wlan0/address 2>/dev/null | sed "/\x5e\x24/! s/\(.*\)/WLAN0: \1/g"');
 echo "  <tr><td align=\"left\">Mac Addrs</td><td align=\"left\">$macaddr1 $macaddr2</td></tr>\n";
+
+$utime = exec('uptime -p');
+echo "  <tr><td align=\"left\">Up Time</td><td align=\"left\">$utime</td></tr>\n";
+
 echo "  </tbody>\n";
 
 // Ram information
@@ -204,6 +209,7 @@ $conn = exec('echo $(route | grep default | awk \'{ print $8 }\') $(sudo wpa_cli
 $ipaddrs = exec('echo "$(hostname -I) ($(route | grep default | awk \'{ print $2 }\')) --> $(dig +short myip.opendns.com @resolver1.opendns.com)"');
 echo "  <tr><td align=\"left\">$conn</td><td align=\"left\">$ipaddrs</td></tr>\n";
 echo "  </tbody>\n";
+
 // Modem information
 echo "  <tbody>\n";
 echo "  <tr><th><b>Modem/Hat</b></th><th><b>Frequencies/Modes</b></th></tr>\n";
@@ -214,6 +220,16 @@ echo "  <tr><td align=\"left\">Receive </td><td align=\"left\">$rx</td></tr>\n";
 $modes = exec ('sed -n "/\[D-Star\]/,/^$/ s/Enable=1/D-Star/p; /\[DMR\]/,/^$/ s/Enable=1/DMR/p; /\[System Fusion\]/,/^$/ s/Enable=1/YSF/p; /\[P25\]/,/^$/ s/Enable=1/P25/p; /\[NXDN\]/,/^$/ s/Enable=1/NXDN/p; /\[M17\]/,/^$/ s/Enable=1/M17/p" /etc/mmdvmhost | tr "\n" "  "');
 echo "  <tr><td align=\"left\">Modes   </td><td align=\"left\">$modes</td></tr>\n";
 echo "  </tbody>\n";
+
+// Hostfiles
+echo "  <tbody>\n";
+echo "  <tr><th><b>Host Files</b></th><th><b>Stats</b></th></tr>\n";
+$schedx = exec('date -d "$(sed -n "s/^\([0-9]*\).\([0-9]*\).*cron.daily/\2:\1/p" /etc/crontab 2>/dev/null)" "+%R %P"');
+$updtx  = exec('date "+%m/%d/%y - %H:%M:%S" -r /usr/local/etc/DMRIds.dat 2>/dev/null');
+echo "  <tr><td align=\"left\">Schedule</td><td align=\"left\">$schedx</td></tr>\n";
+echo "  <tr><td align=\"left\">Updated </td><td align=\"left\">$updtx</td></tr>\n";
+echo "  </tbody>\n";
+
 // Filesystem Information
 if (count($system['partitions']) > 0) {
     echo "  <tbody>\n";
@@ -231,6 +247,7 @@ if (count($system['partitions']) > 0) {
     }
     echo "  </tbody>\n";
 }
+
 // Binary Information
 echo "  <tbody>\n";
 echo "  <tr><th><b>Modules</b></th><th><b>Version</b></th></tr>\n";
