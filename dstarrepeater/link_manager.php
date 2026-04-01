@@ -13,7 +13,7 @@ if ($_POST["Link"] == "LINK") {
 if ($_POST["Link"] == "UNLINK") {
 	if (preg_match('/[^A-Z0-9 ]/',$_POST["Module"])) { unset ($_POST["Module"]);}
 	}
-	
+
 if (empty($_POST["RefName"]) || empty($_POST["Letter"]) || empty($_POST["Module"])) { echo "Somthing wrong with your input, try again";}
 
 
@@ -27,12 +27,12 @@ else {
 	$targetRef = strtoupper($targetRef);
 	$module = $_POST["Module"];
 
-        if (strlen($module) != 8) {							//Fix the length of the module information
+	if (strlen($module) != 8) {							//Fix the length of the module information
 		$moduleFixedCs = strlen($module) - 1;                                   //Length of the string, -1
-                $moduleFixedBand = substr($module, -1);                                 //Single Band Letter in the 8th position
-                $moduleFixedCallPad = str_pad(substr($module, 0, $moduleFixedCs), 7);   //Pad the callsign area to 7 chars
-                $module = $moduleFixedCallPad.$moduleFixedBand;                         //Re add the band information
-        };
+		$moduleFixedBand = substr($module, -1);                                 //Single Band Letter in the 8th position
+		$moduleFixedCallPad = str_pad(substr($module, 0, $moduleFixedCs), 7);   //Pad the callsign area to 7 chars
+		$module = $moduleFixedCallPad.$moduleFixedBand;                         //Re add the band information
+	};
 
 	$unlinkCommand = "sudo remotecontrold \"".$module."\" unlink";
 	$linkCommand = "sudo remotecontrold \"".$module."\" link never \"".$targetRef."\"";
@@ -40,6 +40,10 @@ else {
 	if ($module != $targetRef && $_POST["Link"] == "LINK") {	// Sanity check that we are not connecting to ourself
 		echo "<b>D-Star Link Manager</b>\n";
 		echo "<table>\n<tr><th>Command Output</th></tr>\n<tr><td>";
+		syslog(LOG_NOTICE,"Link Mgr --> $unlinkCommand");
+		echo exec($unlinkCommand);
+		echo "</td></tr>\n<tr><td>";
+		syslog(LOG_NOTICE,"Link Mgr --> $linkCommand");
 		echo exec($linkCommand);
 		echo "</td></tr>\n</table>\n";
 		}
@@ -52,6 +56,7 @@ else {
 	if ($_POST["Link"] == "UNLINK") {				// Allow Unlink no matter what
 		echo "<b>D-Star Link Manager</b>\n";
 		echo "<table>\n<tr><th>Command Output</th></tr>\n<tr><td>";
+		syslog(LOG_NOTICE,"Link Mgr --> $unlinkCommand");
 		echo exec($unlinkCommand);
 		echo "</td></tr>\n</table>\n";
 		}
@@ -189,11 +194,11 @@ if (!empty($pids))
 	echo "  </tr>\n";
 
 	exec ("tail -n 5 /var/pistar-keeper/pistar-keeper.log", $lines);
-		$counter = 0;
-		foreach ($lines as $line) {
-			echo "<tr><td align=\"left\">".$lines[$counter]."</td></tr>\n";
-			$counter++;
-		}
+	$counter = 0;
+	foreach ($lines as $line) {
+		echo "<tr><td align=\"left\">".$lines[$counter]."</td></tr>\n";
+		$counter++;
+	}
 
 	echo "</table>\n";
 	}
