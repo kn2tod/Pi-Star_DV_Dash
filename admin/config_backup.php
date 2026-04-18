@@ -63,6 +63,7 @@ if ($_SERVER["PHP_SELF"] == "/admin/config_backup.php") {
             $output .= shell_exec("sudo cp -p /etc/dhcpcd.conf $backupDir 2>&1");
           }
           $output .= shell_exec("sudo cp -p /etc/wpa_supplicant/wpa_supplicant.conf $backupDir 2>&1");
+          $output .= shell_exec("sudo cp -p /etc/NetworkManager/system-connections/*.nmconnection $backupDir 2>&1");
           $output .= shell_exec("sudo cp -p /etc/ircddbgateway $backupDir 2>&1");
           $output .= shell_exec("sudo cp -p /etc/mmdvmhost $backupDir 2>&1");
           $output .= shell_exec("sudo cp -p /etc/dstarrepeater $backupDir 2>&1");
