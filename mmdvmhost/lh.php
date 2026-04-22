@@ -52,8 +52,10 @@ $lcount = $_SESSION['LH_limits'];
   $lhcount = count($lastHeard);
   $fsmode = exec ('sed -n "s/\/dev\/.* \/ ext4 \(r[ow]\).*/\1/p" /proc/mounts');
   $pubprv = exec ('sed -n "/\[DMR\]/,/^$/ {s%SelfOnly=\([0-1]\).*%\1%p}" /etc/mmdvmhost');
-  $ovfl = exec ('grep -a -m 1 -ih -E "overflow in the (DMR|M17)" /var/log/pi-star/MMDVM*.log | sed "s/.* overflow .*/ov/g"');
+  $ovfl = exec ('grep -a -m 1 -ih -E "overflow in the .* queue" /var/log/pi-star/MMDVM*.log 2>/dev/null | sed "s/.* overflow .*/ov/g"');
+  $wdog = exec ('grep -a -m 1 -ih -E "network watchdog " /var/log/pi-star/MMDVM*.log 2>/dev/null | sed "s/.* watchdog .*/wd/g"');
   $sessions = exec ('df /var/lib/php/sessions | sed -n "s/.*\( [0-9]*% \).*/\1/p"');
+  $xtd = exec ('head -n 1 /usr/local/etc/DMRIds.xtd.dat 2>/dev/null | sed -n "s/.* (\([A-Z]\).*)/\1/p"');
 ?>
   <table>
     <tr>
@@ -61,6 +63,7 @@ $lcount = $_SESSION['LH_limits'];
       <td align="left">
          <input type="submit" style="font-size: 10px; border-width:thin" value="LH / LL" name="LastHeardSW";/> <?php echo $lhlh; ?>
       </td>
+      <td align="right" width="23"><?php echo $xtd;     echo "&nbsp ";?></td>
       <td align="right" width="35"><?php echo $sessions;  echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $ovfl;    echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $fsmode;  echo "&nbsp ";?></td>
