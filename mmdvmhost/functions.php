@@ -494,6 +494,7 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 D-Star, starting fast data mode
 // M: 2000-00-00 00:00:00.000 D-Star, leaving fast data mode
 // M: 2000-00-00 00:00:00.000 D-Star, invalid slow data header
+// W: 2026-01-01 17:14:55.893 D-Star modem data received when in mode 3
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received network voice header from M1ABC to TG 1
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received RF voice header from M1ABC to 5000
 // M: 2000-00-00 00:00:00.000 DMR Slot 2, received RF end of voice transmission, 1.8 seconds, BER: 3.9%
@@ -619,6 +620,8 @@ function getHeardList($logLines) {
 			continue;
 		} else if (strpos($logLine,"DMR, Opening DMR Network")) {
 			continue;
+		} else if (strpos($logLine,"modem data received when in mode 3")) {
+			continue;
 		}
 
 		if (strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "invalid slow data header") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
@@ -740,7 +743,7 @@ function getHeardList($logLines) {
 		}
 		$callsign = trim($callsign);
 
-		$id ="";
+		$id = "";
 		if ($mode == "D-Star") {
 			$id = trim(substr($callsign2, strpos($callsign2,"/") + 1));
 		}
@@ -939,6 +942,11 @@ function getDSTARLinks() {
 	if (filesize(LINKLOGPATH."/Links.log") == 0) {
 		return "Not Linked";
 	}
+
+	// Get our current configured callsign / module
+	$mmdvmconfigs = getMMDVMConfig();
+	$dstarCallsign = str_pad(getConfigItem("General", "Callsign", $mmdvmconfigs), 7, " ", STR_PAD_RIGHT).getConfigItem("D-Star", "Module", $mmdvmconfigs);
+
 	if ($linkLog = fopen(LINKLOGPATH."/Links.log",'r')) {
 		while ($linkLine = fgets($linkLog)) {
 			$linkDate	= "&nbsp;";
@@ -947,10 +955,10 @@ function getDSTARLinks() {
 			$linkSource	= "&nbsp;";
 			$linkDest	= "&nbsp;";
 			$linkDir	= "&nbsp;";
-// Reflector-Link, sample:
-// 2011-09-22 02:15:06: DExtra link - Type: Repeater Rptr: DB0LJ	B Refl: XRF023 A Dir: Outgoing
-// 2012-04-03 08:40:07: DPlus link - Type: Dongle Rptr: DB0ERK B Refl: REF006 D Dir: Outgoing
-// 2012-04-03 08:40:07: DCS link - Type: Repeater Rptr: DB0ERK C Refl: DCS001 C Dir: Outgoing
+	// Reflector-Link, sample:
+	// 2011-09-22 02:15:06: DExtra link - Type: Repeater Rptr: DB0LJ B Refl: XRF023 A Dir: Outgoing
+	// 2012-04-03 08:40:07: DPlus link - Type: Dongle Rptr: DB0ERK B Refl: REF006 D Dir: Outgoing
+	// 2012-04-03 08:40:07: DCS link - Type: Repeater Rptr: DB0ERK C Refl: DCS001 C Dir: Outgoing
 			if(preg_match_all('/^(.{19}).*(D[A-Za-z]*).*Type: ([A-Za-z]*).*Rptr: (.{8}).*Refl: (.{8}).*Dir: (.{8})/',$linkLine,$linx) > 0){
 				$linkDate	= $linx[1][0];
 				$protocol	= $linx[2][0];
@@ -958,9 +966,17 @@ function getDSTARLinks() {
 				$linkSource	= $linx[4][0];
 				$linkDest	= $linx[5][0];
 				$linkDir	= $linx[6][0];
+				if ($linkSource != $dstarCallsign) {
+					$linkDate       = "&nbsp;";
+					$protocol       = "&nbsp;";
+					$linkType       = "&nbsp;";
+					$linkSource     = "&nbsp;";
+					$linkDest       = "&nbsp;";
+					$linkDir        = "&nbsp;";
+				}
 			}
-// CCS-Link, sample:
-// 2013-03-30 23:21:53: CCS link - Rptr: PE1AGO C Remote: PE1KZU	Dir: Incoming
+	// CCS-Link, sample:
+	// 2013-03-30 23:21:53: CCS link - Rptr: PE1AGO C Remote: PE1KZU	Dir: Incoming
 			if(preg_match_all('/^(.{19}).*(CC[A-Za-z]*).*Rptr: (.{8}).*Remote: (.{8}).*Dir: (.{8})/',$linkLine,$linx) > 0){
 				$linkDate	= $linx[1][0];
 				$protocol	= $linx[2][0];
@@ -969,9 +985,9 @@ function getDSTARLinks() {
 				$linkDest	= $linx[4][0];
 				$linkDir	= $linx[5][0];
 			}
-// Dongle-Link, sample:
-// 2011-09-24 07:26:59: DPlus link - Type: Dongle User: DC1PIA	Dir: Incoming
-// 2012-03-14 21:32:18: DPlus link - Type: Dongle User: DC1PIA Dir: Incoming
+	// Dongle-Link, sample:
+	// 2011-09-24 07:26:59: DPlus link - Type: Dongle User: DC1PIA Dir: Incoming
+	// 2012-03-14 21:32:18: DPlus link - Type: Dongle User: DC1PIA Dir: Incoming
 			if(preg_match_all('/^(.{19}).*(D[A-Za-z]*).*Type: ([A-Za-z]*).*User: (.{6,8}).*Dir: (.*)$/',$linkLine,$linx) > 0){
 				$linkDate	= $linx[1][0];
 				$protocol	= $linx[2][0];
@@ -1135,17 +1151,17 @@ function getActualLink($logLines, $mode) {
                   $to = preg_replace('/[^0-9]/', '', $to);
                   return "TG ".$to;
                }
-	       if (strpos($logLine,"Statically linked to reflector")) {
+               if (strpos($logLine,"Statically linked to reflector")) {
                   $to = preg_replace('/[^0-9]/', '', substr($logLine, 55, 5));
                   $to = preg_replace('/[^0-9]/', '', $to);
                   return "TG ".$to;
                }
-	       if (strpos($logLine,"Switched to reflector")) {
+               if (strpos($logLine,"Switched to reflector")) {
                   $to = preg_replace('/[^0-9]/', '', substr($logLine, 46, 5));
                   $to = preg_replace('/[^0-9]/', '', $to);
                   return "TG ".$to;
                }
-	       if (strpos($logLine,"Starting NXDNGateway")) {
+               if (strpos($logLine,"Starting NXDNGateway")) {
                   return "Not Linked";
                }
                if (strpos($logLine,"unlinking")) {
@@ -1198,32 +1214,32 @@ function getActualLink($logLines, $mode) {
 	    foreach($logLines as $logLine) {
                $to = "";
                if (strpos($logLine,"Linked to")) {
-		  $to = preg_replace('/[^0-9]/', '', substr($logLine, 44, 5));
-		  $to = preg_replace('/[^0-9]/', '', $to);
-		  return "TG ".$to;
+                  $to = preg_replace('/[^0-9]/', '', substr($logLine, 44, 5));
+                  $to = preg_replace('/[^0-9]/', '', $to);
+                  return "TG ".$to;
                }
                if (strpos($logLine,"Linked at startup to")) {
-		  $to = preg_replace('/[^0-9]/', '', substr($logLine, 55, 5));
-		  $to = preg_replace('/[^0-9]/', '', $to);
-		  return "TG ".$to;
+                  $to = preg_replace('/[^0-9]/', '', substr($logLine, 55, 5));
+                  $to = preg_replace('/[^0-9]/', '', $to);
+                  return "TG ".$to;
                }
                if (strpos($logLine,"Statically linked to reflector")) {
                   $to = preg_replace('/[^0-9]/', '', substr($logLine, 55, 5));
                   $to = preg_replace('/[^0-9]/', '', $to);
                   return "TG ".$to;
                }
-	       if (strpos($logLine,"Switched to reflector")) {
-		  $to = preg_replace('/[^0-9]/', '', substr($logLine, 46, 5));
-		  $to = preg_replace('/[^0-9]/', '', $to);
-		  return "TG ".$to;
+               if (strpos($logLine,"Switched to reflector")) {
+                  $to = preg_replace('/[^0-9]/', '', substr($logLine, 46, 5));
+                  $to = preg_replace('/[^0-9]/', '', $to);
+                  return "TG ".$to;
                }
-	       if (strpos($logLine,"Starting P25Gateway")) {
+               if (strpos($logLine,"Starting P25Gateway")) {
                   return "Not Linked";
                }
-	       if (strpos($logLine,"unlinking")) {
+               if (strpos($logLine,"unlinking")) {
                   return "Not Linked";
                }
-	       if (strpos($logLine,"Unlinking")) {
+               if (strpos($logLine,"Unlinking")) {
                   return "Not Linked";
                }
                if (strpos($logLine,"Unlinked")) {
