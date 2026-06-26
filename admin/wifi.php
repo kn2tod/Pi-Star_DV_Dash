@@ -338,7 +338,7 @@ echo '<br />
 			$channel = ConvertToChannel($arrNetwork[1]);
 			$signal = $arrNetwork[2] . " dBm";
 			$security = ConvertToSecurity($arrNetwork[3]);
-			$ssid = $arrNetwork[4];
+			$ssid = $arrNetwork[4] ?? '';
 
 			echo '<tr>';
 			echo '<td style="text-align: left;"><input type="button" value="Select" onclick="AddScanned(\''.$ssid.'\')" /></td>';
