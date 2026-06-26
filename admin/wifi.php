@@ -1,8 +1,7 @@
 <?php
 include('wifi/phpincs.php');
 $output = $return = 0;
-$page = $_GET['page'];
-
+$page = $_GET['page'] ?? '';
 
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
