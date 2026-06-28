@@ -20,17 +20,16 @@
 <br />
 
 <?php if (!empty($_POST)):
-if (preg_match('/[^A-Z]/',$_POST["Link"])) { unset ($_POST["Link"]);}
-if ($_POST["Link"] == "LINK") {
-	if (preg_match('/[^A-Z0-9]/',$_POST["RefName"])) { unset ($_POST["RefName"]);}
-	if (preg_match('/[^A-Z]/',$_POST["Letter"])) { unset ($_POST["Letter"]);}
-	if (preg_match('/[^A-Z0-9 ]/',$_POST["Module"])) { unset ($_POST["Module"]);}
-	}
-if ($_POST["Link"] == "UNLINK") {
-	if (preg_match('/[^A-Z0-9 ]/',$_POST["Module"])) { unset ($_POST["Module"]);}
-	}
+if (preg_match('/[^A-Z]/', $_POST["Link"] ?? '')) { unset ($_POST["Link"]);}
+if (($_POST["Link"] ?? '') == "LINK") {
+    if (preg_match('/[^A-Z0-9]/', $_POST["RefName"] ?? '')) { unset ($_POST["RefName"]);}
+    if (preg_match('/[^A-Z]/', $_POST["Letter"] ?? '')) { unset ($_POST["Letter"]);}
+    if (preg_match('/[^A-Z0-9 ]/', $_POST["Module"] ?? '')) { unset ($_POST["Module"]);}
+    }
+if (($_POST["Link"] ?? '') == "UNLINK") {
+    if (preg_match('/[^A-Z0-9 ]/', $_POST["Module"] ?? '')) { unset ($_POST["Module"]);}
+    }
 if (empty($_POST["RefName"]) || empty($_POST["Letter"]) || empty($_POST["Module"])) { echo "Somthing wrong with your input, try again";}
-
 
 else {
 	$targetRef = $_POST["RefName"]." ".$_POST["Letter"];
@@ -46,13 +45,13 @@ else {
 	$unlinkCommand = "sudo remotecontrold \"".$module."\" unlink";
 	$linkCommand = "sudo remotecontrold \"".$module."\" link never \"".$targetRef."\"";
 
-	if ($_POST["Link"] == "LINK") {
+	if (($_POST["Link"] ?? '') == "LINK")) {
 		echo "<b>Reflector Connector</b>\n";
 		echo "<table>\n<tr><th><a class=tooltip href=\"#\">Command Output<span><b>Command Output</b></span></th></tr>\n<tr><td>";
 		echo exec($linkCommand);
 		echo "</tr></td>\n</table>\n";
 		}
-	if ($_POST["Link"] == "UNLINK") {
+	if (($_POST["Link"] ?? '') == "UNLINK") {
 		echo "<b>Reflector Connector</b>\n";
 		echo "<table>\n<tr><th><a class=tooltip href=\"#\">Command Output<span><b>Command Output</b></span></th></tr>\n<tr><td>";
 		echo exec($unlinkCommand);
