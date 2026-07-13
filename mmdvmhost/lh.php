@@ -37,9 +37,7 @@ $callsignLookupUrl = $_SESSION['CS_URL'];
 
 if ( ! isset($_SESSION['LH_limits'])) {
   $lcount = exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
-  if ( $lcount < 20 )  { $lcount = 20; }
-  if ( $lcount > 200 ) { $lcount = 200; }
-  $_SESSION['LH_limits'] = $lcount;
+  $_SESSION['LH_limits'] = max( min($lcount, 200), 20 );
 }
 $lcount = $_SESSION['LH_limits'];
 
@@ -91,27 +89,20 @@ $lcount = $_SESSION['LH_limits'];
 $i = 0;
 $prevElem = array();
 
-  if (!empty($_POST) && isset($_POST["CutlineSW"])) {
-     unset($_POST);
-     system ('echo "M: $(date -u "+%Y-%m-%d %H:%M:%S.%N" | cut -c-23) DMR Slot 1, received network end of voice transmission from ******** to TG 00000, 0.0 seconds, 0% packet loss, BER: 0.0%" | sudo tee -a $(ls -tr /var/log/pi-star/MMDV* | tail -n 1) >/dev/null');
-     echo '<script type="text/javascript">';
-     echo '  setTimeout(function() { window.location=window.location;},500);';
-     echo '</script>';
-  }
+if (isset($_POST["CutlineSW"])) {
+   system ('echo "M: $(date -u "+%Y-%m-%d %H:%M:%S.%N" | cut -c-23) DMR Slot 1, received network end of voice transmission from ******** to TG 00000, 0.0 seconds, 0% packet loss, BER: 0.0%" | sudo tee -a $(ls -tr /var/log/pi-star/MMDV* | tail -n 1) >/dev/null');
+   unset($_POST["CutlineSW"]);
+}
 
-  if (!empty($_POST) && isset($_POST["LastHeardSW"])) {
-     $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
-     unset($_POST);
-     echo '<script type="text/javascript">';
-     echo '  setTimeout(function() { window.location=window.location;},500);';
-     echo '</script>';
-  }
-  else {
+if (isset($_POST["LastHeardSW"])) {
+   $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
+   unset($_POST["LastHeardSW"]);
+}
 
 for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	if (isset($lastHeard[$i])) {
 		$listElem = $lastHeard[$i];
-//		listElem[0] time, [1] mode, [2] callsign, [3] target, [4] source, [5] duration, [6] loss, [7] BER
+		//listElem[0] time, [1] mode, [2] callsign, [3] target, [4] source, [5] duration, [6] loss, [7] BER
 		$currElem = array($listElem[1],$listElem[2],$listElem[3],$listElem[4],$listElem[5],$listElem[6]);
 		if ( $listElem[2] && $currElem !== $prevElem ) {
 			$prevElem = $currElem;
@@ -199,6 +190,5 @@ for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	}
 }
 
-  }
 ?>
   </table>
