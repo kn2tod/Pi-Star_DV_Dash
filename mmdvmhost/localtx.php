@@ -33,7 +33,6 @@ $_SESSION['CS_URL'] = $callsignLookupUrl;
 $callsignLookupUrl = $_SESSION['CS_URL'];
 $idLookupUrl = "https://database.radioid.net/database/view?id=";
 
-
 ?>
 <b><?php echo $lang['local_tx_list'];?></b>
   <table>
@@ -48,13 +47,17 @@ $idLookupUrl = "https://database.radioid.net/database/view?id=";
       <th style="min-width:8ch"><a class="tooltip" href="#">RSSI<span><b>Received Signal Strength Indication</b></span></a></th>
     </tr>
 <?php
+
+$modes = array("D-Star","YSF","P25","NXDN","POCSAG","M17");
+
 $counter = 0;
 $i = 0;
 $TXListLim = count($localTXList);
 $prevElem = array();
+
 for ($i = 0; $i < $TXListLim; $i++) {
 		$listElem = $localTXList[$i];
-		if ($listElem[5] == "RF" && ($listElem[1] == "D-Star" || startsWith($listElem[1], "DMR") || $listElem[1] == "YSF" || $listElem[1]== "P25" || $listElem[1] == "NXDN" || $listElem[1] == "M17")) {
+		if ($listElem[5] == "RF" && ( in_array($listElem[1],$modes) || startsWith($listElem[1], "DMR") )) {
 			$currElem = array($listElem[1],$listElem[2],$listElem[3],$listElem[4],$listElem[5],$listElem[6]);
 			if ($counter <= 19 && $currElem !== $prevElem ) { //last 20 calls
 				$prevElem = $currElem;
