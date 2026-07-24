@@ -7,8 +7,9 @@ if ($configfile = fopen($gatewayConfigPath,'r')) {
         while ($line = fgets($configfile)) {
                 list($key,$value) = preg_split('/=/',$line);
                 $value = trim(str_replace('"','',$value));
-                if ($key != 'ircddbPassword' && strlen($value) > 0)
-                $configs[$key] = $value;
+                if ($key != 'ircddbPassword' && strlen($value) > 0) {
+                        $configs[$key] = $value;
+                }
         }
 
 }
@@ -25,13 +26,9 @@ $Hostname=exec('hostname');
 // Check if the config file exists
 if (file_exists('/etc/pistar-css.ini')) {
 	$piStarCssFile = '/etc/pistar-css.ini';
-	if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
-	if ($piStarCss['BannerH1']['Enabled']) {
-		$piStarCssBannerH1 = $piStarCss['BannerH1']['Text'];
-	}
-	if ($piStarCss['BannerExtText']['Enabled']) {
-		$piStarCssBannerExtTxt = $piStarCss['BannerExtText']['Text'];
-	}
+	if (fopen($piStarCssFile,'r'))              { $piStarCss = parse_ini_file($piStarCssFile, true); }
+	if ($piStarCss['BannerH1']['Enabled'])      { $piStarCssBannerH1 = $piStarCss['BannerH1']['Text']; }
+	if ($piStarCss['BannerExtText']['Enabled']) { $piStarCssBannerExtTxt = $piStarCss['BannerExtText']['Text']; }
 }
 
 //Load the Pi-Star Release file
@@ -209,16 +206,16 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
 	   $testTGIF = getConfigItem("DMR Network", "Address", $mmdvmconfigs);
 	   if ( strpos($testTGIF,"127.0.0.1") == 0 || strpos($testTGIF,"tgif.network") == 0 ) {  //  suppress if not TGIF
-		echo '<script type="text/javascript">'."\n";
-		echo 'function reloadtgifConnections(){'."\n";
-		echo '  $("#tgifConnects").load("/mmdvmhost/tgif_links.php");'."\n";
-		echo '}'."\n";
-		echo 'setInterval(reloadtgifConnections,180000);'."\n";
-		echo '$(window).trigger(\'resize\');'."\n";
-		echo '</script>'."\n";
-		echo '<div id="tgifConnects">'."\n";
-		include 'mmdvmhost/tgif_links.php';			// TGIF Links
-		echo '</div>'."\n";
+//		echo '<script type="text/javascript">'."\n";
+//		echo 'function reloadtgifConnections(){'."\n";
+//		echo '  $("#tgifConnects").load("/mmdvmhost/tgif_links.php");'."\n";
+//		echo '}'."\n";
+//		echo 'setInterval(reloadtgifConnections,180000);'."\n";
+//		echo '$(window).trigger(\'resize\');'."\n";
+//		echo '</script>'."\n";
+//		echo '<div id="tgifConnects">'."\n";
+//		include 'mmdvmhost/tgif_links.php';			// TGIF Links
+//		echo '</div>'."\n";
 		include 'mmdvmhost/tgif_manager.php';			// TGIF DMR Link Manager
 	   }
 	}
