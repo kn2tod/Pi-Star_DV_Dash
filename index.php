@@ -1,18 +1,20 @@
+<?php session_start(); ?>
 <?php
 require_once('config/version.php');
 require_once('config/ircddblocal.php');
 require_once('config/language.php');
-$configs = array();
-if ($configfile = fopen($gatewayConfigPath,'r')) {
-        while ($line = fgets($configfile)) {
-                list($key,$value) = preg_split('/=/',$line);
-                $value = trim(str_replace('"','',$value));
-                if ($key != 'ircddbPassword' && strlen($value) > 0) {
-                        $configs[$key] = $value;
-                }
-        }
 
-}
+//$configs = array();
+//if ($configfile = fopen($gatewayConfigPath,'r')) {
+//        while ($line = fgets($configfile)) {
+//                list($key,$value) = preg_split('/=/',$line);
+//                $value = trim(str_replace('"','',$value));
+//                if ($key != 'ircddbPassword' && strlen($value) > 0) {
+//                        $configs[$key] = $value;
+//                }
+//        }
+//}
+
 $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 $rev=$version;
 $MYCALL=strtoupper($callsign);
@@ -127,25 +129,14 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") {
 	include 'dstarrepeater/system.php';				// Basic System Info
 	echo '</div>'."\n";
 	echo '</div>'."\n";
-	}
+}
+
 // First lets figure out if we are in MMDVMHost mode, or dstarrepeater mode;
 if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	include 'config/config.php';					// MMDVMDash Config
 	include_once 'mmdvmhost/tools.php';				// MMDVMDash Tools
 	include_once 'mmdvmhost/functions.php';				// MMDVMDash Functions
 
-//	function getMMDVMConfigFileContent() {
-//		// loads /etc/mmdvmhost into array for further use
-//		$conf = array();
-//		if ($configs = @fopen('/etc/mmdvmhost', 'r')) {
-//			while ($config = fgets($configs)) {
-//				array_push($conf, trim ( $config, " \t\n\r\0\x0B"));
-//			}
-//			fclose($configs);
-//		}
-//		return $conf;
-//	}
-//	$mmdvmconfigfile = getMMDVMConfigFileContent();
 	$mmdvmconfigs = getMMDVMConfig();
 
 	echo '<div class="nav">'."\n";					// Start the Side Menu
@@ -158,34 +149,33 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 
 	$testMMDVModeDSTARnet = getConfigItem("D-Star Network", "Enable", $mmdvmconfigs);
         if ( $testMMDVModeDSTARnet == 1 ) {				// If D-Star network is enabled, add these extra features.
+		if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 	// Admin Only Option
+			echo '<script type="text/javascript">'."\n";
+			echo 'function reloadrefLinks(){'."\n";
+			echo '  $("#refLinks").load("/dstarrepeater/active_reflector_links.php");'."\n";
+			echo '}'."\n";
+			echo 'setInterval(reloadrefLinks,15000);'."\n";
+			echo '$(window).trigger(\'resize\');'."\n";
+			echo '</script>'."\n";
+			echo '<div id="refLinks">'."\n";
+			include 'dstarrepeater/active_reflector_links.php';	// dstarrepeater gateway config
+			echo '</div>'."\n";
+			echo '<br />'."\n";
 
-	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
-		echo '<script type="text/javascript">'."\n";
-		echo 'function reloadrefLinks(){'."\n";
-		echo '  $("#refLinks").load("/dstarrepeater/active_reflector_links.php");'."\n";
-		echo '}'."\n";
-		echo 'setInterval(reloadrefLinks,15000);'."\n";
-		echo '$(window).trigger(\'resize\');'."\n";
-		echo '</script>'."\n";
-		echo '<div id="refLinks">'."\n";
-		include 'dstarrepeater/active_reflector_links.php';	// dstarrepeater gateway config
-		echo '</div>'."\n";
-		echo '<br />'."\n";
-
-		include 'dstarrepeater/link_manager.php';		// D-Star Link Manager
-		echo "<br />\n";
+			include 'dstarrepeater/link_manager.php';	// D-Star Link Manager
+			echo "<br />\n";
 		}
 
-	echo '<script type="text/javascript">'."\n";
-	echo 'function reloadcssConnections(){'."\n";
-	echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php");'."\n";
-	echo '}'."\n";
-	echo 'setInterval(reloadcssConnections,15000);'."\n";
-	echo '$(window).trigger(\'resize\');'."\n";
-	echo '</script>'."\n";
-	echo '<div id="cssConnects">'."\n";
-	include 'dstarrepeater/css_connections.php';			// dstarrepeater gateway config
-	echo '</div>'."\n";
+		echo '<script type="text/javascript">'."\n";
+		echo 'function reloadcssConnections(){'."\n";
+		echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php");'."\n";
+		echo '}'."\n";
+		echo 'setInterval(reloadcssConnections,15000);'."\n";
+		echo '$(window).trigger(\'resize\');'."\n";
+		echo '</script>'."\n";
+		echo '<div id="cssConnects">'."\n";
+		include 'dstarrepeater/css_connections.php';		// dstarrepeater gateway config
+		echo '</div>'."\n";
 	}
 
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
@@ -200,9 +190,11 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		include 'mmdvmhost/bm_links.php';                       // BM Links
 		echo '</div>'."\n";
 	}
+
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {               // Admin Only Options
 		include 'mmdvmhost/bm_manager.php';                     // BM DMR Link Manager
         }
+
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
 	   $testTGIF = getConfigItem("DMR Network", "Address", $mmdvmconfigs);
 	   if ( strpos($testTGIF,"127.0.0.1") == 0 || strpos($testTGIF,"tgif.network") == 0 ) {  //  suppress if not TGIF
@@ -219,6 +211,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		include 'mmdvmhost/tgif_manager.php';			// TGIF DMR Link Manager
 	   }
 	}
+
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {		// Admin Only Option
 		$testMMDVModeYSFnet = getConfigItem("System Fusion Network", "Enable", $mmdvmconfigs);
 		if ( $testMMDVModeYSFnet == 1 ) {			// If YSF network is enabled, add these extra features.
@@ -241,7 +234,6 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 //	echo 'function reloadLocalTx(){'."\n";
 //	echo '  $("#localTxs").load("/mmdvmhost/localtx.php");'."\n";
 //	echo '}'."\n";
-
 	echo 'function reloadLastHerd(){'."\n";
 	echo '  $("#lastHerd").load("/mmdvmhost/lh.php");'."\n";
 	echo '  $("#localTxs").load("/mmdvmhost/localtx.php");'."\n";
@@ -250,13 +242,46 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo 'setInterval(reloadLastHerd,1500);'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
+
+	if (isset($_POST["CutlineSW"])) {
+	   system ('echo "M: $(date -u "+%Y-%m-%d %H:%M:%S.%N" | cut -c-23) DMR Slot 1, received network end of voice transmission from ******** to TG 00000, 0.0 seconds, 0% packet loss, BER: 0.0%" | sudo tee -a $(ls -tr /var/log/pi-star/MMDV* | tail -n 1) >/dev/null');
+	   unset($_POST["CutlineSW"]);
+	   syslog(LOG_NOTICE,"CLSW");
+	}
+
+	$_SESSION['LHSW'] = ($_SESSION['LHSW'] ?? 0);
+
+	if (isset($_POST["LastHeardSW"])) {
+	   $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
+	   unset($_POST["LastHeardSW"]);
+	   syslog(LOG_NOTICE,"LHSW: ".$_SESSION['LHSW']);
+	}
+
+	$_SESSION['RFSW'] = ($_SESSION['RFSW'] ?? 0);
+
+	if (isset($_POST["LocalRFSW"])) {
+	   $_SESSION['RFSW'] = 1 - $_SESSION['RFSW'];
+	   unset($_POST["LocalRFSW"]);
+	   syslog(LOG_NOTICE,"RFSW: ".$_SESSION['RFSW']);
+	}
+
+	$rfsw = $_SESSION['RFSW'];
+	if ( $rfsw == 1 ) {						// localtx on top
+		echo '<div id="localTxs">'."\n";
+		include 'mmdvmhost/localtx.php';			// MMDVMDash Local Trasmissions
+		echo '</div>'."\n";
+	}
+
 	echo '<div id="lastHerd">'."\n";
 	include 'mmdvmhost/lh.php';					// MMDVMDash Last Herd
 	echo '</div>'."\n";
 	echo "<br />\n";
-	echo '<div id="localTxs">'."\n";
-	include 'mmdvmhost/localtx.php';				// MMDVMDash Local Trasmissions
-	echo '</div>'."\n";
+
+	if ( $rfsw == 0 ) {						// localtx at bottom
+		echo '<div id="localTxs">'."\n";
+		include 'mmdvmhost/localtx.php';			// MMDVMDash Local Trasmissions
+		echo '</div>'."\n";
+	}
 
 	// If POCSAG is enabled, show the information pannel
 	$testMMDVModePOCSAG = getConfigItem("POCSAG Network", "Enable", $mmdvmconfigs);
