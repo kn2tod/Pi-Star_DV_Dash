@@ -5,38 +5,37 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';        // MMDVMDa
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/functions.php';    // MMDVMDash Functions
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 
-if (! isset($_SESSION['LHSW'])) { $_SESSION['LHSW'] = 0; }
-
 if ( ! isset($_SESSION['CS_URL'])) {
-// Check if the config file exists
-if (file_exists('/etc/pistar-css.ini')) {
-    // Use the values from the file
-    $piStarCssFile = '/etc/pistar-css.ini';
-    if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
+   // Check if the config file exists
+   if (file_exists('/etc/pistar-css.ini')) {
+      // Use the values from the file
+      $piStarCssFile = '/etc/pistar-css.ini';
+      if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
 
-    // Set the Values from the config file
-    if (isset($piStarCss['Lookup']['Service'])) { $callsignLookupSvc = $piStarCss['Lookup']['Service']; }		// Lookup Service "QRZ" or "RadioID"
-    else { $callsignLookupSvc = "RadioID"; }										// Set the default if its missing
-} else {
-    // Default values
-    $callsignLookupSvc = "RadioID";
+      // Set the Values from the config file
+      if (isset($piStarCss['Lookup']['Service'])) { $callsignLookupSvc = $piStarCss['Lookup']['Service']; }  // Lookup Service "QRZ" or "RadioID"
+      else { $callsignLookupSvc = "RadioID"; }                                                               // Set the default if its missing
+   } else {
+      // Default values
+      $callsignLookupSvc = "RadioID";
+   }
+
+   // Safety net
+   if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ") && ($callsignLookupSvc != "Callook")) { $callsignLookupSvc = "RadioID"; }
+
+   // Setup the URL(s)
+   $idLookupUrl = "https://database.radioid.net/database/view?id=";
+   if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
+   if ($callsignLookupSvc == "QRZ")     { $callsignLookupUrl = "https://www.qrz.com/db/"; }
+   if ($callsignLookupSvc == "Callook") { $callsignLookupUrl = "https://callook.info/"; }
+   $_SESSION['CS_URL'] = $callsignLookupUrl;
 }
 
-// Safety net
-if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ") && ($callsignLookupSvc != "Callook")) { $callsignLookupSvc = "RadioID"; }
-
-// Setup the URL(s)
-$idLookupUrl = "https://database.radioid.net/database/view?id=";
-if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
-if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
-if ($callsignLookupSvc == "Callook") { $callsignLookupUrl = "https://callook.info/"; }
-$_SESSION['CS_URL'] = $callsignLookupUrl;
-}
 $idLookupUrl = "https://database.radioid.net/database/view?id=";
 $callsignLookupUrl = $_SESSION['CS_URL'];
 
 if ( ! isset($_SESSION['LH_limits'])) {
-  $lcount = exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
+  $lcount = (int) exec ('sed -n "s%Depth=\([0-9]*\)%\1%p" /etc/pistar-css.ini');
   $_SESSION['LH_limits'] = max( min($lcount, 200), 20 );
 }
 $lcount = $_SESSION['LH_limits'];
@@ -44,7 +43,7 @@ $lcount = $_SESSION['LH_limits'];
 ?>
 <b><?php echo $lang['last_heard_list'];?></b>
 <?php
-  $lhsw = $_SESSION['LHSW'];
+  $lhsw = ($_SESSION['LHSW'] ?? 0);
   $lhsw = ( file_exists("/tmp/lhsw") ? 1 : $lhsw );
   $lhlh = ( $lhsw ? "Live Log" : "Last Heard" );
   $lhcount = count($lastHeard);
@@ -57,9 +56,10 @@ $lcount = $_SESSION['LH_limits'];
 ?>
   <table>
     <tr>
-      <form action="" method="post">
       <td align="left">
-         <input type="submit" style="font-size: 10px; border-width:thin" value="LH / LL" name="LastHeardSW";/> <?php echo $lhlh; ?>
+          <form action="" method="post">
+             <input type="submit" style="font-size: 10px; border-width:thin" value="LH / LL" name="LastHeardSW"> <?php echo $lhlh; ?>
+          </form>
       </td>
       <td align="right" width="23"><?php echo $xtd;     echo "&nbsp ";?></td>
       <td align="right" width="35"><?php echo $sessions;  echo "&nbsp ";?></td>
@@ -69,9 +69,15 @@ $lcount = $_SESSION['LH_limits'];
       <td align="right" width="35"><?php echo $lhcount; echo "&nbsp ";?></td>
       <td align="right" width="25"><?php echo $lcount;  echo "&nbsp ";?></td>
       <td align="right" width="25">
-         <input type="submit" style="font-size: 10px; border-width:thin" value="CL" name="CutlineSW";/>
+          <form action="" method="post">
+             <input type="submit" style="font-size: 10px; border-width:thin" value="RF" name="LocalRFSW">
+          </form>
       </td>
-      </form>
+      <td align="right" width="25">
+          <form action="" method="post">
+             <input type="submit" style="font-size: 10px; border-width:thin" value="CL" name="CutlineSW">
+          </form>
+      </td>
     </tr>
   </table>
   <table>
@@ -88,16 +94,6 @@ $lcount = $_SESSION['LH_limits'];
 <?php
 $i = 0;
 $prevElem = array();
-
-if (isset($_POST["CutlineSW"])) {
-   system ('echo "M: $(date -u "+%Y-%m-%d %H:%M:%S.%N" | cut -c-23) DMR Slot 1, received network end of voice transmission from ******** to TG 00000, 0.0 seconds, 0% packet loss, BER: 0.0%" | sudo tee -a $(ls -tr /var/log/pi-star/MMDV* | tail -n 1) >/dev/null');
-   unset($_POST["CutlineSW"]);
-}
-
-if (isset($_POST["LastHeardSW"])) {
-   $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
-   unset($_POST["LastHeardSW"]);
-}
 
 for ($i = 0;  ($i < $lcount); $i++) { //Last 20 calls
 	if (isset($lastHeard[$i])) {
