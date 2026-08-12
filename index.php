@@ -118,6 +118,7 @@ if ( ($_SERVER["PHP_SELF"] == "/admin/index.php") && ($configPistarRelease['Pi-S
 // Output some default features
 if ($_SERVER["PHP_SELF"] == "/admin/index.php") {
 	echo '<div class="contentwide">'."\n";
+
 	echo '<script type="text/javascript">'."\n";
 	echo 'function reloadSysInfo(){'."\n";
 	echo '  $("#sysInfo").load("/dstarrepeater/system.php");'."\n";
@@ -125,10 +126,13 @@ if ($_SERVER["PHP_SELF"] == "/admin/index.php") {
 	echo 'setInterval(reloadSysInfo,15000);'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
+
 	echo '<div id="sysInfo">'."\n";
 	include 'dstarrepeater/system.php';				// Basic System Info
 	echo '</div>'."\n";
 	echo '</div>'."\n";
+} else {
+        echo '<br />'."\n";
 }
 
 // First lets figure out if we are in MMDVMHost mode, or dstarrepeater mode;
@@ -148,7 +152,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo '<div class="content">'."\n";
 
 	$testMMDVModeDSTARnet = getConfigItem("D-Star Network", "Enable", $mmdvmconfigs);
-        if ( $testMMDVModeDSTARnet == 1 ) {				// If D-Star network is enabled, add these extra features.
+	if ( $testMMDVModeDSTARnet == 1 ) {				// If D-Star network is enabled, add these extra features.
 		if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 	// Admin Only Option
 			echo '<script type="text/javascript">'."\n";
 			echo 'function reloadrefLinks(){'."\n";
@@ -230,6 +234,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 			include 'mmdvmhost/m17_manager.php';		// M17 Links
 		}
 	}
+
 	echo '<script type="text/javascript">'."\n";
 //	echo 'function reloadLocalTx(){'."\n";
 //	echo '  $("#localTxs").load("/mmdvmhost/localtx.php");'."\n";
@@ -246,7 +251,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	if (isset($_POST["CutlineSW"])) {
 	   system ('echo "M: $(date -u "+%Y-%m-%d %H:%M:%S.%N" | cut -c-23) DMR Slot 1, received network end of voice transmission from ******** to TG 00000, 0.0 seconds, 0% packet loss, BER: 0.0%" | sudo tee -a $(ls -tr /var/log/pi-star/MMDV* | tail -n 1) >/dev/null');
 	   unset($_POST["CutlineSW"]);
-	   syslog(LOG_NOTICE,"CLSW");
+	   //syslog(LOG_NOTICE,"CLSW");
 	}
 
 	$_SESSION['LHSW'] = ($_SESSION['LHSW'] ?? 0);
@@ -254,7 +259,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	if (isset($_POST["LastHeardSW"])) {
 	   $_SESSION['LHSW'] = 1 - $_SESSION['LHSW'];
 	   unset($_POST["LastHeardSW"]);
-	   syslog(LOG_NOTICE,"LHSW: ".$_SESSION['LHSW']);
+	   //syslog(LOG_NOTICE,"LHSW: ".$_SESSION['LHSW']);
 	}
 
 	$_SESSION['RFSW'] = ($_SESSION['RFSW'] ?? 0);
@@ -262,7 +267,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	if (isset($_POST["LocalRFSW"])) {
 	   $_SESSION['RFSW'] = 1 - $_SESSION['RFSW'];
 	   unset($_POST["LocalRFSW"]);
-	   syslog(LOG_NOTICE,"RFSW: ".$_SESSION['RFSW']);
+	   //syslog(LOG_NOTICE,"RFSW: ".$_SESSION['RFSW']);
 	}
 
 	$rfsw = $_SESSION['RFSW'];
@@ -294,6 +299,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		echo '$(window).trigger(\'resize\');'."\n";
 		echo '</script>'."\n";
 		echo "<br />\n";
+
 		echo '<div id="Pages">'."\n";
 		include 'mmdvmhost/pages.php';				// POCSAG Messages
 		echo '</div>'."\n";
@@ -310,10 +316,12 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
 	echo '<br />'."\n";
+
 	echo '<div id="refLinks">'."\n";
 	include 'dstarrepeater/active_reflector_links.php';		// dstarrepeater gateway config
 	echo '</div>'."\n";
 	echo '<br />'."\n";
+
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") {		// Admin Only Options
 		include 'dstarrepeater/link_manager.php';		// D-Star Link Manager
 		echo "<br />\n";
@@ -342,10 +350,12 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo 'setInterval(reloadLastHerd,3000);'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
+
 	echo '<div id="lh">'."\n";
 	include 'dstarrepeater/last_herd.php';				//dstarrepeater Last Herd
 	echo '</div>'."\n";
 	echo "<br />\n";
+
 	echo '<div id="localTx">'."\n";
 	include 'dstarrepeater/local_tx.php';				//dstarrepeater Local Transmissions
 	echo '</div>'."\n";
