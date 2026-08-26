@@ -252,23 +252,24 @@ function showMode($mode, $mmdvmconfigs) {
 
 function getMMDVMLog()  {
 	// Open Logfile and copy loglines into LogLines-Array()
+	$depth = ($_SESSION['Scan_limits'] ?? 800);
 	$logLines = array();
 	$logLines1 = array();
 	$logLines2 = array();
 	$logPath = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d").".log";
 	if (file_exists($logPath)) {
-		$logLines1 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost|slow data)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
+		$logLines1 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost|slow data)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -$depth`);
 	}
-	$logLines1 = array_slice($logLines1, -400);
-	if (sizeof($logLines1) < 400) {
+	$logLines1 = array_slice($logLines1, -$depth);
+	if (sizeof($logLines1) < $depth) {
 		$logPath = MMDVMLOGPATH."/".MMDVMLOGPREFIX."-".gmdate("Y-m-d", time() - 86340).".log";
 		if (file_exists($logPath)) {
-			$logLines2 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost|slow data)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -400`);
+			$logLines2 = explode("\n", `egrep -h "^M.*(from|end|watchdog|lost|slow data)" $logPath | sed '/\(CSBK\|overflow\|Downlink\|Received a NAK from\)/d' | tail -$depth`);
 		}
 	}
-	$logLines2 = array_slice($logLines2, -400);
+	$logLines2 = array_slice($logLines2, -$depth);
 	$logLines = $logLines1 + $logLines2;
-	$logLines = array_slice($logLines, -400);
+	$logLines = array_slice($logLines, -$depth);
 	return $logLines;
 }
 
@@ -536,7 +537,9 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 M17, received network voice transmission from IU5BON to ECHO
 // M: 2000-00-00 00:00:00.000 M17, received network end of transmission from IU5BON to ECHO, 13.4 seconds
 // M: 2000-00-00 00:00:00.000 M17, text Data: "Linked to M17-SEL A       "
-// M: 2000-00-00 08:11:39.981 DMR Slot 1, Talker Alias "4X1HJ Itzhak"
+// M: 2000-00-00 00:00:00.000 DMR Slot 1, Talker Alias "4X1HJ Itzhak"
+// M: 2000-00-00 00:00:00.000 GPS position [50.228249,24.959070] (Position error < 2m)
+
 function getHeardList($logLines) {
 	//array_multisort($logLines,SORT_DESC);
 	$heardList = array();
@@ -626,6 +629,8 @@ function getHeardList($logLines) {
 		} else if (strpos($logLine,"DMR, Opening DMR Network")) {
 			continue;
 		} else if (strpos($logLine,"modem data received when in mode 3")) {
+			continue;
+		} else if (strpos($logLine,"GPS position")) {
 			continue;
 		}
 
