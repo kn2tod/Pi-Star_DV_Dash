@@ -38,6 +38,11 @@ $pistarReleaseConfig = '/etc/pistar-release';
 $configPistarRelease = array();
 $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
 $ver=$configPistarRelease['Pi-Star']['Version'];
+
+if ( ! isset($_SESSION['Scan_limits'])) {
+  $scan = (int) (exec ('sed -n "s%Scan=\([0-9]*\)%\1%p" /etc/pistar-css.ini') ?? 400);
+  $_SESSION['Scan_limits'] = min(1200, max(400, $scan));
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
