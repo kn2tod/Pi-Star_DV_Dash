@@ -529,6 +529,7 @@ function getDVModemTCXOFreq() {
 // M: 2000-00-00 00:00:00.000 Debug: NXDNRX: sync found in Ldu pos/centre/threshold 3986 10 112
 // M: 2000-00-00 00:00:00.000 NXDN, received RF end of transmission, 0.4 seconds, BER: 0.0%
 // M: 2000-00-00 00:00:00.000 NXDN, received network transmission from 10999 to TG 65000
+// M: 2000-00-00 00:00:00.000 NXDN, interesting non superblock network frame
 // M: 2000-00-00 00:00:00.000 NXDN, network end of transmission, 1.8 seconds, 0% packet loss
 // M: 2000-00-00 00:00:00.000 POCSAG, transmitted 1 frame(s) of data from 1 message(s)
 // M: 2000-00-00 00:00:00.000 POCSAG, transmitted 1 frame(s) of data from 1 message(s)
@@ -1350,6 +1351,7 @@ function getTGdesc($target)  {
   if (substr($x,0,3) == "TG ") {
      $x = substr($target,3);
      if (is_numeric($x)) {
+        $x = ltrim($x % 100000);
         $TGListq = "/usr/local/etc/TGList_BM.txt /usr/local/etc/TGList_P25.txt /usr/local/etc/TGList_NXDN.txt";
         exec("grep -h -w --color=never -m 1 ".$x." ".$TGListq,$output);
         if ($output) {
