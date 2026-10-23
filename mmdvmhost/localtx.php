@@ -25,9 +25,8 @@ if (file_exists('/etc/pistar-css.ini')) {
 if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ")) { $callsignLookupSvc = "RadioID"; }
 
 // Setup the URL(s)
-$idLookupUrl = "https://database.radioid.net/database/view?id=";
 if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
-if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
+if ($callsignLookupSvc == "QRZ")     { $callsignLookupUrl = "https://www.qrz.com/db/"; }
 $_SESSION['CS_URL'] = $callsignLookupUrl;
 }
 $callsignLookupUrl = $_SESSION['CS_URL'];
