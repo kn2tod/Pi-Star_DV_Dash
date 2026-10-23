@@ -1351,7 +1351,7 @@ function getTGdesc($target)  {
   if (substr($x,0,3) == "TG ") {
      $x = substr($target,3);
      if (is_numeric($x)) {
-        $x = ltrim($x % 100000);
+        $x = ltrim($x % 1000000);
         $TGListq = "/usr/local/etc/TGList_BM.txt /usr/local/etc/TGList_P25.txt /usr/local/etc/TGList_NXDN.txt";
         exec("grep -h -w --color=never -m 1 ".$x." ".$TGListq,$output);
         if ($output) {
